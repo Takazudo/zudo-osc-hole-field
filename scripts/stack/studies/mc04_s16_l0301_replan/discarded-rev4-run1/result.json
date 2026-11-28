@@ -1,0 +1,139 @@
+{
+ "status": "ROWS-LEVEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT",
+ "brief": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md",
+ "brief_sha256": "a638d4b8d6d20def85c63ed51e236153d889da790dee7e7cc0bebe657d36e7b4",
+ "pins": {
+  "written": "2026-11-28T16:33:56Z",
+  "files": {
+   "scripts/stack/studies/mc04_s16_l0301_replan/replan.py": "5bdd8c12c523be13fa5935eebd89c893b03883000b80efa826efbf233f139816",
+   "scripts/stack/studies/mc04_s16_l0301_replan/c13_heartbeat.py": "317d5686c29fadf361f36750079aaac75b1dee684e1e2eb11986d092e136ec71",
+   "scripts/stack/studies/mc04_s16_l0301_replan/test_s16.py": "fd3144f4f63dea08cb47c62088a46f6d2426ac9b4ddf57851321a2b0589aa90b",
+   "scripts/stack/studies/mc04_s12_five_ic_joint/s12.py": "b1e993583c541dc28c3574dfe7b789804937697466e2404b09d5a1a64c7aadcd",
+   "scripts/stack/studies/mc04_s12_five_ic_joint/joint_search.py": "97697c009b3282807191dad7180ca77c0810fc81f33a165b3d505defe60b6d28",
+   "scripts/stack/studies/mc04_s15_no_growth_moves/guard15.py": "5c563ec149b739ced4792130f6d2ca6d76b573200ca1fcaac609c69a1c479172",
+   "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md": "a638d4b8d6d20def85c63ed51e236153d889da790dee7e7cc0bebe657d36e7b4"
+  },
+  "commit": "d313db18036eb7f01d6c61a3686407842d5a835e"
+ },
+ "run": {
+  "clock_s": 140.2142789363861,
+  "steps": {
+   "arm0": 140.21087956428528
+  },
+  "segments": [
+   {
+    "start": 1795883637.0091605,
+    "pid": 4290,
+    "end": 1795883777.2234395
+   }
+  ],
+  "resumes": [],
+  "executor_timed": {
+   "start-circuit-check": 5.0,
+   "start-regen-all": 443.4,
+   "c13-detachment-test": 300.4
+  },
+  "started": "2026-11-28T16:33:57Z",
+  "commit": "d313db18036eb7f01d6c61a3686407842d5a835e",
+  "stop": "STOP 1: control C8 fails",
+  "ended": "2026-11-28T16:36:17Z"
+ },
+ "stop": "STOP 1: control C8 fails",
+ "verdict": null,
+ "bounds": null,
+ "controls": {
+  "C1": true,
+  "C13": true,
+  "C14": true,
+  "C3": true,
+  "C3b": true,
+  "C4": true,
+  "C5": true,
+  "C6": true,
+  "C7": true,
+  "C8": false
+ },
+ "mutations": {
+  "M1": "PPPPPPPPP FPPPPP",
+  "M28": "PF––––––– ––––––",
+  "M2": "––––––––– PPPPPP",
+  "M3": "F–––––––– ––––––",
+  "M4": "PF––––––– ––––––",
+  "M5": "PPF–––––– ––––––",
+  "M6": "PPF–––––– ––––––",
+  "M7": "PPPF––––– ––––––",
+  "M8": "PPPPF–––– ––––––",
+  "M11": "PPPPPPPF– ––––––",
+  "M9": "PPPPPF––– ––––––",
+  "M10": "PPPPPPF–– ––––––",
+  "M12": "PPPPPPPPF ––––––",
+  "M13": "––––––––– FPFPPP",
+  "M14": "––––––––– FPPFPP",
+  "M15": "––––––––– FPPPFP",
+  "M16": "––––––––– FPPPPF",
+  "M17_strict": "PPPPPPPF– ––––––",
+  "M17_default": "PPPPPPPF– ––––––",
+  "M18": "not a vector",
+  "M22": "––––––––– FFFPPP",
+  "M23": "PPF–––––– ––––––",
+  "M24": "PF––––––– ––––––",
+  "M25": "PF––––––– ––––––",
+  "M26": "not a vector",
+  "M27a": "PPF–––––– ––––––",
+  "M27b": "not a vector"
+ },
+ "mutation_problems": [],
+ "candidates": [],
+ "guards": {
+  "run-1": {
+   "returncode": null,
+   "finished": false,
+   "wall_s": 140.2,
+   "peak_tree_rss_mib": 520.2,
+   "min_mem_available_mib": 14884.9,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "start-circuit-check": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 5.0,
+   "peak_tree_rss_mib": 0.0,
+   "min_mem_available_mib": 15313.3,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "start-regen-all": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 443.4,
+   "peak_tree_rss_mib": 397.0,
+   "min_mem_available_mib": 14037.6,
+   "peak_docker_container_mem_mib": 756.6,
+   "watchdog_fired": null
+  }
+ },
+ "digests": {
+  "arm0/c4-census.json": "595715c666a5d3a3806c6d2fe88052f60cc7a58bc7b1d1d3023f292a9ed846c0",
+  "arm0/c5-census.json": "c3a2047afe969e0ac42dfdcad3a6d67fcd73c35ec233dd2a56c186e28d9a6abb",
+  "checkpoints/arm0/C1.json": "17320fbb11824c68ab2e86cb41dc9b39d73aaba71f52d3e89a587272e1ed6527",
+  "checkpoints/arm0/C13.json": "7060023fff3895ee29daa15e148b53e400afdaa101f91e5286fcc218866c6613",
+  "checkpoints/arm0/C14.json": "b2ccb9f5c189f81d7d8c94d016a822bb3d1086ffdb27ea62ee2d72f210a73b69",
+  "checkpoints/arm0/C3.json": "9fac0d0a70abc55b61396f11d987dde40bd26e96aef2d264d6d17d6673473d00",
+  "checkpoints/arm0/C3b.json": "f03c0c363f773b47262f0fd823849f22772da77d415032577fc8796af94f3fab",
+  "checkpoints/arm0/C4.json": "82932f03b988353ddbf336038e28a4a5c1a8c831a6de585d97037ff72a8c6a03",
+  "checkpoints/arm0/C5.json": "2f3badc234622d506f43dcd55b68d9effcfd8e4388bc0458bbc7d82fe00c58ae",
+  "checkpoints/arm0/C6.json": "356947e9b422d2c9c1858ad1c1eebfbac8d7de1d467985d2e21dc224bf3b0ba5",
+  "checkpoints/arm0/C7.json": "22e24a046923971fb6b1ce9a14cf5635cf021f31561f062e1019412335459bdd",
+  "checkpoints/arm0/C8.json": "d438dfabb4cf5dfd6c8e14abe551170540da8720664b294a12b2176feed34263",
+  "checkpoints/arm0/mutation-control.json": "56e2e94c71407176473d6f71a265bf6fce081a11e291fb7942f85fcc00475dc9",
+  "checkpoints/arm0/mutations.json": "33f07c178c39ff1e0ee4e65fba9053c54da8c3d9403efdb0bb42c8faa6989e51",
+  "checkpoints/mutation-slots.json": "01a81bed566b7e6dee3d62761e6d324cd9f8fd47cc03fabd63002908647c95d3"
+ },
+ "bulk_intermediates": {
+  "cache": ".circuit-cache/mc04-s16",
+  "manifest": "bulk-manifest.json",
+  "files": 2,
+  "durable_copy": "/mnt/project-files/osc-s16-cache/"
+ }
+}

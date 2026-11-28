@@ -1,7 +1,7 @@
 """MC04-S16: can the 15 signals of P-K-P-L03.01 be re-planned so that U8409 stands at its paper pose.
 
 Study only. Rows-level evidence on unvalidated drafts; nothing is adopted. Brief:
-circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md (Revision 3).
+circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md (Revision 4).
 """
 from __future__ import annotations
 
@@ -313,8 +313,27 @@ def block_record(w, sites, size=None):
            'unused': sum(1 for p in pos or [] if p['kind'] == 'unused'), 'circuits_needed': need,
            'size': z['id'], 'circuits': n, 'connector': z['connector'], 'cable': z['cable'],
            'cable_length_mm': z['cable_length_mm'], 'positions': pos or [], 'centre': [r4(cx), r4(cy)],
-           'riders_in': [], 'placed': True, 'block': True, 'built': pos is not None}
+           'riders_in': [], 'placed': True, 'block': True, 'built': pos is not None, 'sig_classes': classes}
     return rec
+
+
+def record_block(w, lid):
+    """Ruling P9: the recorded link as a block, with its members, centre, size and cable, and the signals on its
+    recorded positions (host_signals) built by capped_order at its own size. Controls and mutations only."""
+    ctx = w.ctx
+    h = w.byid[lid]
+    sig = host_signals(h, w.site_by)
+    n = h['circuits']
+    pos = capped_order(sig, n, ctx.rule)
+    z = lg.fh12_size(n, ctx.gopts)
+    return {'id': 'S16-RB[%s]' % lid, 'record': lid, 'joint': h['joint'], 'front_board': h['front_board'],
+            'members': list(h['members']), 'signals': len(sig),
+            'grounds': sum(1 for p in pos or [] if p['kind'] == 'ground'),
+            'unused': sum(1 for p in pos or [] if p['kind'] == 'unused'),
+            'circuits_needed': lg.circuits_needed([c for _, c, _ in sig], ctx.rule), 'size': z['id'], 'circuits': n,
+            'connector': z['connector'], 'cable': z['cable'], 'cable_length_mm': z['cable_length_mm'],
+            'positions': pos or [], 'centre': list(h['centre']), 'riders_in': [], 'placed': True, 'block': True,
+            'built': pos is not None, 'sig_classes': [c for _, c, _ in sig]}
 
 
 def s1_class(classes):
@@ -397,7 +416,21 @@ class Rules:
         self.exempt_record = exempt_record
 
     def r2(self, geo):
+        if self.exempt_record:
+            return self.r2_record(geo)
         return self.acc2(geo)
+
+    def r2_record(self, geo):
+        """Ruling P8: R2 at a record slot without its class-distance clause; the cable and compliance clauses of
+        slot_moves.Arm1.accept_for, unchanged."""
+        ctx = self.w.ctx
+        z = lg.rec_size(ctx, self.rec)
+        if z['cable_length_mm'] - ctx.need(self.front, geo['a_mm'], geo['b_mm']) < -1e-9:
+            return 'cable longer than its stock length'
+        c = lg.cvalue(ctx.cmap, geo['K_connector'])
+        if c is None or c > ctx.cmap.limit + 1e-12:
+            return 'K-field compliance above the DS-87 limit'
+        return None
 
     def r4(self, geo):
         why = self.acc4(geo)
@@ -637,21 +670,35 @@ def judge_replan(w, moves, rows, blocks=(), ride_plan=(), overlay_blocks=None, r
     scene_out = scene_links_replan(w, list(blocks), list(ride_plan), moves) if (blocks or ride_plan) else w.scene_links(moves)
     old_rows, old_out = s.rows, s.out
     s.rows, s.out = rb, scene_out
+    crashed = None
     try:
-        res = s12.overlay_part(w, ra, rb, info, fails, overlay_blocks, run_overlay_search)
+        try:
+            res = s12.overlay_part(w, ra, rb, info, fails, overlay_blocks, run_overlay_search)
+        except TypeError as e:
+            # s12.overlay_part places every earlier overlay block, also one with no pose (an A8 failure already); the
+            # S8 search then cannot run. Stricter reading: the scene fails A8, the other items are evaluated without
+            # the search.
+            crashed = 'S8 block search stopped: an earlier overlay block has no pose (%s)' % e
+            fails = defaultdict(list, {k: v for k, v in fails.items() if k not in ('A7', 'A8', 'A9', 'A10', 'A11')})
+            res = s12.overlay_part(w, ra, rb, info, fails, overlay_blocks, False)
+            fails['A8'].append(crashed)
     finally:
         s.rows, s.out = old_rows, old_out
+    if crashed:
+        res['overlay_search_stopped'] = crashed
     res.update({'fails': {k: v for k, v in sorted(fails.items()) if v}, 'rows': info, 'link_figures': figs})
     res['passes'] = {a: not fails.get(a) for a in ('A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11')}
     return res
 
 
-def legal_block(w, rec, e, chosen, later_ids, anchors, class_s='default'):
+def legal_block(w, rec, e, chosen, later_ids, anchors, class_s='default', rules=None, placed=None):
     """(entry or None, reason): a block at a pool entry's slot with every other live link at its record (L03.01 out) and
-    the earlier chosen blocks of the structure placed; R1 to R6."""
+    the earlier chosen blocks of the structure placed; R1 to R6. `rules` and `placed` may be passed prebuilt (the
+    same objects this function would build) so a search does not rebuild them per call."""
     ctx = w.ctx
-    extra = [dict(r, geometry=m['geometry']) for r, m in chosen]
-    placed = placed_except(w, extra=extra)
+    if placed is None:
+        extra = [dict(r, geometry=m['geometry']) for r, m in chosen]
+        placed = placed_except(w, extra=extra)
     front, own = rec['front_board'], lg.rec_own(rec)
     z = lg.rec_size(ctx, rec)
     gm = lg.GeoMaker(z, ctx.opts, ctx.hard)
@@ -662,11 +709,12 @@ def legal_block(w, rec, e, chosen, later_ids, anchors, class_s='default'):
     if why:
         return None, 'R1: ' + why[0]
     cost, geo, disp = c
-    rule, reason, extra2 = Rules(w, rec, anchors, class_s).check(geo, e['dist'])
+    rule, reason, extra2 = (rules or Rules(w, rec, anchors, class_s)).check(geo, e['dist'])
     if rule is not None:
-        return None, '%s: %s' % (rule, reason)
+        return None, '%s: %s' % (rule, reason if rule in ('R2', 'R3', 'R4') else reason.split(':')[0])
     return {'geometry': geo, 'slot_centre': e['slot_centre'], 'direction': e['direction'], 'cost': cost,
-            'dist': e['dist'], 'ring': e['ring'], 'grid_mm': e.get('grid_mm'), 'class_s': extra2['class_s']}, None
+            'dist': e['dist'], 'ring': e['ring'], 'grid_mm': e.get('grid_mm'), 'class_s': extra2['class_s'],
+            'spot': e.get('spot')}, None
 
 
 def reverify_blocks(w, chosen):
@@ -700,7 +748,7 @@ DURABLE = '/mnt/project-files/osc-s16-cache/'  # project file storage (network m
 PY = sys.executable
 CAMPAIGN = 'circuit/orchestration/campaigns/osc-stack-20261114/'
 BRIEF = CAMPAIGN + 'mc04-s16-l0301-replan-brief-20261128.md'
-BRIEF_SHA = 'b0ccdea8f191bde72f89253fdc92aa5d83008cd5923b9e210286492a3460c415'
+BRIEF_SHA = 'a638d4b8d6d20def85c63ed51e236153d889da790dee7e7cc0bebe657d36e7b4'
 PIN_FILES = (
     'scripts/stack/studies/mc04_s16_l0301_replan/replan.py',
     'scripts/stack/studies/mc04_s16_l0301_replan/c13_heartbeat.py',
@@ -898,7 +946,7 @@ def case_vector(w, blocks=(), ride=None, rows=None, placed=None, anchors=None, c
         return vec('', acceptance_vector(f)), {k: v[:4] for k, v in f.items()}
     out, why = '', {}
     for b in blocks:
-        r = s1_class([p[1] for p in site_signals(w.site_by, b['rec']['members'])])
+        r = s1_class(b['rec'].get('sig_classes') or [p[1] for p in site_signals(w.site_by, b['rec']['members'])])
         if r:
             why['S1'] = r
             return vec('F', ''), why
@@ -963,7 +1011,7 @@ MUTATIONS = {
     'M9': 'PPPPPF––– ––––––', 'M10': 'PPPPPPF–– ––––––', 'M11': 'PPPPPPPF– ––––––', 'M12': 'PPPPPPPPF ––––––',
     'M13': '––––––––– FPFPPP', 'M14': '––––––––– FPPFPP', 'M15': '––––––––– FPPPFP', 'M16': '––––––––– FPPPPF',
     'M22': '––––––––– FFFPPP', 'M23': 'PPF–––––– ––––––', 'M24': 'PF––––––– ––––––', 'M25': 'PF––––––– ––––––',
-    'M27a': 'PPF–––––– ––––––',
+    'M27a': 'PPF–––––– ––––––', 'M28': 'PF––––––– ––––––',
 }
 REASONS = {
     'M5': '/E1/REF5 (PRECISION, site K-P-18) has no host within 40 mm',
@@ -986,7 +1034,7 @@ def mutation_cases(w, slots):
     an12 = Anchors(w, 's12')
     pl12 = w.placed_index({}, skip=s12.SEARCHED)
     six26 = block_record(w, list(SITES), 26)
-    l13 = block_record(w, w.byid['P-K-P-L13.01.01.01']['members'], 8)
+    l13 = record_block(w, 'P-K-P-L13.01.01.01')
     rec03 = w.byid[L03]
     rslot = {'slot_centre': rec03['slot_centre'], 'direction': rec03['direction'], 'dist': rec03['slot_distance_from_centre_mm']}
 
@@ -994,7 +1042,9 @@ def mutation_cases(w, slots):
         out[k] = {'vector': v, 'expected': MUTATIONS.get(k), 'why': why, **(extra or {})}
 
     v, why = case_vector(w, [{'rec': six26, 'slot': rslot, 'exempt': True}])
-    put('M1', v, why)
+    put('M1', v, why, {'R2_without_exemption': Rules(w, six26, an16).acc2(rec03['geometry'])})
+    put('M28', *case_vector(w, [{'rec': block_record(w, w.byid['P-K-P-L13.01.01.01']['members'], 8), 'slot': None}]),
+        {'block_size_by_block_record': block_record(w, w.byid['P-K-P-L13.01.01.01']['members'])['circuits']})
     rows = [r for r in w.base_rows_list if (r['board'], r['ref']) != ('K', 'U8409')]
     put('M2', *case_vector(w, rows=rows))
     m3 = block_record(w, ['K-P-16', 'K-P-1'])
@@ -1091,6 +1141,10 @@ def mutation_cases(w, slots):
 
 def mutation_problems(res):
     bad = []
+    if res['M1'].get('R2_without_exemption') != 'a site beyond its class distance of the connector centres':
+        bad.append('M1: R2 without the exemption gives %r' % res['M1'].get('R2_without_exemption'))
+    if res['M28'].get('block_size_by_block_record') != 14:
+        bad.append('M28: block_record size %s, expected 14' % res['M28'].get('block_size_by_block_record'))
     for k, want in MUTATIONS.items():
         if res[k]['vector'] != want:
             bad.append('%s: %s, expected %s' % (k, res[k]['vector'], want))
@@ -1296,8 +1350,8 @@ def census_control(w, rec, lid, want_tot):
 
 
 def l13_block(w):
-    """The C5 block: the three sites of P-K-P-L13.01.01.01 at 8 circuits."""
-    return block_record(w, w.byid[L13]['members'], 8)
+    """The C5 block: the record block of P-K-P-L13.01.01.01 (Ruling P9; 8 circuits)."""
+    return record_block(w, L13)
 
 
 def arm0_mutations(w, clock):
@@ -1310,13 +1364,702 @@ def arm0_mutations(w, clock):
     return not bad, bad
 
 
+# ================================================================ arm 0: the remaining controls
+
+import multiprocessing  # noqa: E402
+
+L13B = 'P-K-P-L13.01.01.02'
+L0322 = 'P-K-P-L03.02.02.01'
+C9_SIZES = {(26,): 1, (14, 26): 7, (8, 26): 15, (14, 14): 9, (8, 14, 14): 27, (8, 8, 26): 24, (8, 8, 14): 39,
+            (8, 8, 14, 14): 3, (8, 8, 8, 26): 4, (8, 8, 8, 14): 46, (8, 8, 8, 8): 12, (8, 8, 8, 8, 14): 6,
+            (8, 8, 8, 8, 8): 9, (8, 8, 8, 8, 8, 8): 1}
+
+
+def full_replay_child(out_json):
+    t = now()
+    doc, reads = s12.full_replay(None)
+    write_json(out_json, {'doc': doc, 'working_tree_reads': reads, 'wall_s': round(now() - t, 1)})
+
+
+def c2_control(w):
+    """C2: S12 P8, the full base replay in a child process, equal to the base."""
+    base_doc = s12.gjson(s12.BASE, s12.GATE)
+    op = BULK / SCRATCH / 'c2-full.json'
+    op.parent.mkdir(parents=True, exist_ok=True)
+    p = subprocess.run([PY, str(HERE / 'replan.py'), '--full-replay', str(op)], capture_output=True, text=True,
+                       timeout=1800, env=env_nobytecode(), cwd=str(ROOT))
+    if p.returncode:
+        return False, {'returncode': p.returncode, 'stderr_tail': p.stderr[-1500:]}
+    d = read_json(op)
+    op.unlink()
+    try:
+        op.parent.rmdir()
+    except OSError:
+        pass
+    doc = d['doc']
+    diffs = s12.compare_links(doc['links'], base_doc['links'])
+    rows_eq = json.dumps(doc['replacement']) == json.dumps(base_doc['replacement']['footprints'])
+    ways = doc['ways_out'] == base_doc['ways_out']
+    cons = doc['consolidation'] == base_doc['consolidation']
+    ok = not diffs and rows_eq and ways and cons and not doc['hold_errors']
+    return ok, {'link_differences': diffs, 'rows_equal': rows_eq, 'ways_out_equal': ways, 'consolidation_equal': cons,
+                'hold_errors': doc['hold_errors'], 'working_tree_reads': len(d['working_tree_reads']),
+                'child_wall_s': d['wall_s']}
+
+
+def c6_control(w):
+    sb = w.site_by
+
+    def gc(ids, n):
+        return sorted(sorted(c['members']) for c in lg.gate_cluster([sb[i] for i in ids], n, 35.0, 'X'))
+    eleven = sorted(set(w.byid[L03]['members']) | set(w.byid['P-K-P-L03.02.01']['members']) |
+                    set(w.byid[L0322]['members']))
+    five = [m for m in eleven if m not in SITES]
+    got = {'eleven_at_26': gc(eleven, 26), 'five_at_14': gc(five, 14), 'six_at_14': gc(list(SITES), 14)}
+    got['each_at_8'] = [gc(x, 8) for x in got['six_at_14']]
+    got['six_at_8_one_step'] = gc(list(SITES), 8)
+    want = {'eleven_at_26': sorted([sorted(SITES), ['K-P-22', 'K-P-24', 'K-P-34', 'K-P-55', 'K-P-63']]),
+            'five_at_14': sorted([['K-P-22', 'K-P-24', 'K-P-34', 'K-P-55'], ['K-P-63']]),
+            'six_at_14': sorted([['K-P-16', 'P-K-E2', 'P-K-E3'], ['K-P-18', 'K-P-20', 'P-K-E1']]),
+            'six_at_8_one_step': sorted([['K-P-16', 'P-K-E3'], ['K-P-18', 'K-P-20'], ['P-K-E1'], ['P-K-E2']])}
+    want['each_at_8'] = [sorted([['K-P-16', 'P-K-E2'], ['P-K-E3']]) if 'K-P-16' in x else
+                         sorted([['K-P-18', 'K-P-20'], ['P-K-E1']]) for x in want['six_at_14']]
+    rec_members = sorted([sorted(w.byid['P-K-P-L03.02.01']['members']), sorted(w.byid[L0322]['members'])])
+    ladder = sorted(x for y in got['each_at_8'] for x in y)
+    ok = got == want and got['five_at_14'] == rec_members and got['six_at_8_one_step'] != ladder
+    return ok, {'got': got, 'recorded_members_L03_02': rec_members, 'one_step_differs_from_ladder':
+                got['six_at_8_one_step'] != ladder}
+
+
+def c7_control(w):
+    sb = w.site_by
+    h = w.byid[L13B]
+    riders = [{'net': y['net'], 'class': y['class'], 'site': y['site'], 'from': y.get('from')} for y in h['riders_in']]
+    d = p2.rider_distance(sb['K-P-63'], h)
+    hs = host_signals(h, sb)
+    al = lg.allocation(hs, 8)
+    want_r = [{'net': n, 'class': 'ANALOGUE', 'site': 'K-P-63', 'from': L0322} for n in ('/M4B/1_REMOTE', '/M4B/2_REMOTE')]
+    rd = Rides(w)
+    mem = [x for x in hs if (x[0], x[1], x[2]) not in {(r['net'], r['class'], r['site']) for r in riders}]
+    st = dict(rd.state0)
+    st[h['id']] = mem
+    why = []
+    sigs = [(r['net'], r['class'], r['site']) for r in want_r]
+    obs = ride_capped(w.ctx, w.byid[L0322], sigs, rd.hosts, st, sb, w.s.limits, rd.eligible, why)
+    ok = all(r in riders for r in want_r) and round(d, 4) == 39.1702 and al is not None and proj(al) == proj(h['positions'])
+    return ok, {'riders': riders, 'rider_distance_mm': round(d, 4), 'allocation_equals_record':
+                al is not None and proj(al) == proj(h['positions']),
+                'observation_ride_capped': {'plan': [[s_[0], hid, dd] for s_, hid, dd in obs[0]] if obs else None,
+                                            'reason': why[0] if why else None,
+                                            'note': 'host state = the host member signals only; the state at '
+                                                    'consolidation time is not on record'}}
+
+
+def c8_control(w):
+    moves, _ = js.returned_moves(w)
+    rows = w.rows_only(w.scene_links(moves))
+    a = json.loads(json.dumps(judge_replan(w, moves, rows), default=_jdefault))
+    b = json.loads(json.dumps(s12.judge(w, moves, rows), default=_jdefault))
+    f, info = s12.check_rows(w, rows)
+    new = sorted(x.split(' ', 1)[1] for x in info['protected']['new'])
+    shifted = sorted(x.split(' ', 1)[1] for x in info['protected']['shifted'])
+    ok = s12.canon(a) == s12.canon(b) and len(f.get('A2', [])) == 9 and \
+        new == ['R5249', 'R5256', 'R8221', 'R8331', 'R8356'] and shifted == ['C8405', 'R5148', 'R5253', 'R8431']
+    return ok, {'judge_replan_equals_s12_judge': s12.canon(a) == s12.canon(b), 'A2_rows': len(f.get('A2', [])),
+                'new': new, 'shifted': shifted, 'rows_digest': s12.digest(rows)}
+
+
+def c8b_control(w):
+    sb = w.site_by
+    live = [r for r in p2.live(w.base_out) if r['placed'] and r['id'] != L03 and r['joint'] == 'P-K' and
+            r['front_board'] == 'P']
+    got = {}
+    for s_ in ('P-K-E1', 'P-K-E2', 'P-K-E3'):
+        got[s_] = round(min(p2.rider_distance(sb[s_], x) for x in live
+                            if sum(1 for p in x['positions'] if p['kind'] == 'unused') > 0), 4)
+    return got == {'P-K-E1': 50.3968, 'P-K-E2': 40.9004, 'P-K-E3': 37.2}, got
+
+
+def c9_control(w):
+    sts = structures()
+    empty = [s_ for s_ in sts if not s_['rides']]
+    sizes = defaultdict(int)
+    built = 0
+    for s_ in empty:
+        recs = [block_record(w, b) for b in s_['blocks']]
+        built += all(r['built'] for r in recs)
+        sizes[tuple(sorted(r['circuits'] for r in recs))] += 1
+    tri = block_record(w, ['K-P-16', 'K-P-18', 'K-P-20'])['circuits']
+    got = {'structures': len(sts), 'empty_ride_set': len(empty), 'built': built,
+           'sizes': {'+'.join(map(str, k)): v for k, v in sorted(sizes.items())}, 'K-P-16+K-P-18+K-P-20': tri}
+    ok = len(sts) == 877 and len(empty) == 203 and built == 203 and dict(sizes) == C9_SIZES and tri == 14
+    return ok, got
+
+
+def c10_control(w):
+    rows = w.rows_only(w.scene_links({}))
+    j = judge_replan(w, {}, rows)
+    f0, info = check_rows16(w, rows)
+    ok = all(j['passes'].values()) and bool(f0.get('A0')) and s12.digest(rows) == s12.digest(w.base_rows_list)
+    return ok, {'passes': j['passes'], 'A0': f0.get('A0'), 'rows_equal_base': s12.digest(rows) == s12.digest(w.base_rows_list),
+                'claimed': info['claimed']}
+
+
+def c11_control(w, c4_ok):
+    """C11: C4 holds with class_s='strict'; the count of candidates passing R5 only because class S is deferred is
+    reported (here for the 26-way block on the 2.0 mm grid, then per block in stage 1)."""
+    rec = block_record(w, list(SITES), 26)
+    pl = placed_except(w)
+    out = {}
+    for st in ('default', 'strict'):
+        c, _ = census_block(w, rec, s12.GRIDS[0], pl, Anchors(w), st)
+        out[st] = {'class_s_deferred': c['class_s_deferred'], 'class_s_parts': c['class_s_parts'],
+                   'after_R5': sum(c['after']['R5'].values())}
+    ok = c4_ok and out['strict']['class_s_deferred'] == 0 and set(out['default']['class_s_parts']) <= set(CLASS_S_PARTS)
+    return ok, {'C4_strict_holds': c4_ok, 'grid_2_mm_26_way': out}
+
+
+def ride_key(rset):
+    return '+'.join(sorted(rset))
+
+
+def c15_control(w):
+    rd = Rides(w)
+    rd0 = Rides(w, fn='plain')
+    res, plain = {}, {}
+    for k in range(1, 7):
+        for rs in itertools.combinations(SITES, k):
+            res[ride_key(rs)] = rd.test(rs)
+            plain[ride_key(rs)] = rd0.test(rs)
+    rides = [k for k, v in res.items() if v['rides']]
+    partial = sorted(k for k, v in res.items() if v['rides'] and v['legal_orders'] < v['orders'])
+    two = {k: v['host_plans'] for k, v in res.items() if v['host_plans'] > 1}
+    hosts = sorted({p[3] for v in res.values() if v['plan'] for p in v['plan']})
+    got = {'ride': len(rides), 'none': len(res) - len(rides), 'member_order': sum(bool(v['member_order_rides'])
+                                                                                for v in res.values()),
+           'some_orders_only': partial, 'host_plans_above_1': two, 'hosts': hosts,
+           'with_E1_rides': sorted(k for k in rides if 'P-K-E1' in k),
+           'plain': [sum(v['rides'] for v in plain.values()), sum(bool(v['member_order_rides']) for v in plain.values())],
+           'eligible_hosts': len(rd.eligible), 'not_eligible': sorted(rd.not_eligible)}
+    want_p = sorted(['K-P-16+K-P-18+P-K-E2', 'K-P-16+K-P-18+P-K-E3', 'K-P-16+K-P-20+P-K-E2', 'K-P-16+K-P-20+P-K-E3'])
+    ok = (got['ride'], got['none'], got['member_order']) == (19, 44, 16) and partial == want_p and \
+        two == {'K-P-16+K-P-20+P-K-E3': 2} and hosts == ['P-K-P-L01.01.02', 'P-K-P-L05.01.01'] and \
+        not got['with_E1_rides'] and got['plain'] == [27, 24]
+    return ok, {'summary': got, 'sets': res}
+
+
+def screen_s123(w, st, rides):
+    """S1, S2 and S3 of one structure: (dead test or None, reason, block records)."""
+    brs = [block_record(w, b) for b in st['blocks']]
+    for b in brs:
+        r = s1_class(b['sig_classes'])
+        if r:
+            return 'S1', '%s: %s' % (b['id'], r), brs
+    for b in brs:
+        r = s2_order(b)
+        if r:
+            return 'S2', '%s: %s' % (b['id'], r), brs
+    if st['rides']:
+        t = rides[ride_key(st['rides'])]
+        if not t['rides']:
+            return 'S3', t['reason'], brs
+    return None, None, brs
+
+
+def c16_control(w, rides):
+    by = defaultdict(lambda: [0, 0])
+    fail_at = defaultdict(int)
+    for st in structures():
+        if is_present(st):
+            continue
+        dead, _, _ = screen_s123(w, st, rides)
+        by[len(st['rides'])][0 if dead is None else 1] += 1
+        if dead:
+            fail_at[dead] += 1
+    passed = sum(v[0] for v in by.values())
+    failed = sum(v[1] for v in by.values())
+    got = {'pass': passed, 'fail': failed, 'fail_at': dict(fail_at), 'pass_by_ride_size': {str(k): by[k][0] for k in sorted(by)}}
+    ok = passed == 622 and failed == 254 and dict(fail_at) == {'S3': 254} and \
+        [by[k][0] for k in range(4)] == [202, 260, 135, 25] and all(by[k][0] == 0 for k in by if k > 3)
+    return ok, got
+
+
+# ================================================================ workers (fork pool)
+
+_W = None
+_CTX = {}
+
+
+def _init_ctx():
+    if 'placed' not in _CTX:
+        _CTX['placed'] = placed_except(_W)
+        _CTX['an'] = Anchors(_W)
+
+
+def stage1_one(sites):
+    w = _W
+    _init_ctx()
+    t0 = now()
+    rec = block_record(w, list(sites))
+    per, accs = {}, []
+    for g in s12.GRIDS:
+        c, a = census_block(w, rec, g, _CTX['placed'], _CTX['an'], 'default', _CTX.get('deadline'))
+        per['%g' % g] = c
+        accs.append(a)
+    dist = distinct(accs)
+    rings = ('≤ 24 mm', '24–35 mm')
+    after = {t: sum(sum(c['after'][t].values()) for c in per.values()) for t in ('R2', 'R3', 'R4', 'R5', 'R6')}
+    parts = defaultdict(int)
+    for c in per.values():
+        for k, v in c['class_s_parts'].items():
+            parts[k] += v
+    summ = {'block': rec['id'], 'sites': rec['members'], 'size': rec['circuits'], 'cable': rec['cable'],
+            'cable_length_mm': rec['cable_length_mm'], 'centre': rec['centre'],
+            'complete': all(c['complete'] for c in per.values()),
+            'legal_R1': sum(sum(c['legal_R1'].values()) for c in per.values()), 'after': after,
+            'after_R6_by_ring': {r: sum(c['after']['R6'][r] for c in per.values()) for r in rings},
+            'distinct_survivors': len(dist), 'distinct_by_ring': {r: sum(1 for e in dist if e['ring'] == r) for r in rings},
+            'class_s_deferred': sum(c['class_s_deferred'] for c in per.values()), 'class_s_parts': dict(parts),
+            'cheapest_cost': dist[0]['cost'] if dist else None, 'wall_s': round(now() - t0, 1)}
+    slim = [{k: e[k] for k in ('cost', 'key', 'direction', 'slot_centre', 'dist', 'ring', 'grid_mm', 'spot', 'class_s',
+                               'anchored_covered')} for e in dist]
+    return summ, slim, per
+
+
+def pool_of(survivors):
+    """Cheapest survivor per spot (a direction and a 2.0 mm cell), at most POOL_SPOTS spots."""
+    best = {}
+    for e in survivors:
+        k = tuple(e['spot'])
+        if k not in best or (e['cost'], e['key']) < (best[k]['cost'], best[k]['key']):
+            best[k] = e
+    return sorted(best.values(), key=lambda e: (e['cost'], e['key']))[:POOL_SPOTS]
+
+
+def block_pool(bid):
+    pools = _CTX.setdefault('pools', {})
+    if bid not in pools:
+        pools[bid] = pool_of(read_json(bulk('stage1/%s.json' % bid))['survivors'])
+    return pools[bid]
+
+
+def scene_rows(w, chosen, plan, moves=None):
+    return w.rows_only(scene_links_replan(w, chosen, plan, moves))
+
+
+def search_one(task):
+    """Best-first search of one live structure; stops at its first passing scene or a bound."""
+    w = _W
+    _init_ctx()
+    t0 = now()
+    st, plan = task['structure'], task['plan']
+    brs = [block_record(w, b) for b in st['blocks']]
+    pl = [(r, block_pool(r['id'])) for r in brs]
+    rules = {r['id']: Rules(w, r, _CTX['an']) for r in brs}
+    mins = [p[0]['cost'] for _, p in pl]
+    rest = [sum(mins[i:]) for i in range(len(pl) + 1)]
+    log_ = {'structure': struct_id(st), 'pool_sizes': [len(p) for _, p in pl], 'legality_calls': 0, 'replays': [],
+            'complete_scenes': 0, 'rejected_scenes': [], 'illegal': {}, 'bound': None, 'passed': None}
+    heap = [(round(rest[0], 6), 0, ())]
+    seq = itertools.count(1)
+    placed_memo = {}
+    while heap:
+        cost, _, choice = heapq.heappop(heap)
+        depth = len(choice)
+        chosen = [(pl[i][0], m) for i, (j, m) in enumerate(choice)]
+        if depth == len(pl):
+            log_['complete_scenes'] += 1
+            bad = reverify_blocks(w, chosen) if len(pl) > 1 else []
+            if bad:
+                log_['rejected_scenes'].append({'choice': [j for j, _ in choice], 'reverify': bad})
+                continue
+            if len(log_['replays']) >= REPLAY_CAP_STRUCT:
+                log_['bound'] = '12 rows-only replays per structure'
+                break
+            t1 = now()
+            rows = scene_rows(w, chosen, plan)
+            f, info = check_rows16(w, rows)
+            rec = {'n': len(log_['replays']) + 1, 'choice': [j for j, _ in choice],
+                   'blocks': [{'block': r['id'], 'slot_centre': m['slot_centre'], 'direction': m['direction'],
+                               'dist': m['dist'], 'ring': m['ring'], 'grid_mm': m['grid_mm'], 'cost': m['cost'],
+                               'class_s': m['class_s'], 'geometry': m['geometry']} for r, m in chosen],
+                   'vector': acceptance_vector(f), 'fails': {k: v[:4] for k, v in sorted(f.items())},
+                   'returned': info['protected']['returned'], 'digest': s12.digest(rows),
+                   'legality_calls_before': log_['legality_calls'], 'wall_s': round(now() - t1, 1)}
+            log_['replays'].append(rec)
+            if not f:
+                log_['passed'] = rec['n']
+                break
+            continue
+        rec_b, pool = pl[depth]
+        key = tuple((pl[i][0]['id'], j) for i, (j, m) in enumerate(choice))
+        if key not in placed_memo:
+            placed_memo[key] = placed_except(w, extra=[dict(r, geometry=m['geometry']) for r, m in chosen])
+        later = [x[0]['id'] for x in pl[depth + 1:]]
+        for j, e in enumerate(pool):
+            if log_['legality_calls'] >= LEGAL_CAP:
+                log_['bound'] = '20 000 legality calls per structure'
+                break
+            log_['legality_calls'] += 1
+            m, why = legal_block(w, rec_b, e, chosen, later, _CTX['an'], rules=rules[rec_b['id']],
+                                 placed=placed_memo[key])
+            if m is None:
+                k = '%s %s' % (rec_b['id'], why)
+                log_['illegal'][k] = log_['illegal'].get(k, 0) + 1
+                continue
+            c2 = sum(mm['cost'] for _, mm in chosen) + m['cost'] + rest[depth + 1]
+            heapq.heappush(heap, (round(c2, 6), next(seq), choice + ((j, m),)))
+        if log_['bound']:
+            break
+    log_['exhausted'] = not heap and log_['bound'] is None and log_['passed'] is None
+    log_['rejected_scenes'] = log_['rejected_scenes'][:40]
+    log_['wall_s'] = round(now() - t0, 1)
+    return task['index'], log_
+
+
+def stage4_one(task):
+    """One S12 survivor of P-K-P-L13.01.01.01 with a kept scene's links in place: R1, then one rows-only replay."""
+    w = _W
+    chosen = [(block_record(w, b['sites']), {'geometry': b['geometry'], 'slot_centre': b['slot_centre'],
+                                             'direction': b['direction']}) for b in task['blocks']]
+    e = task['entry']
+    ctx = w.ctx
+    rec = w.rec(L13)
+    placed = placed_except(w, skip=(L03, L13), extra=[dict(r, geometry=m['geometry']) for r, m in chosen])
+    z = lg.rec_size(ctx, rec)
+    gm = lg.GeoMaker(z, ctx.opts, ctx.hard)
+    d = [k for k, v in lg.DIR_NAMES.items() if v == e['direction']][0]
+    ctx.model.memo_for(None)
+    why, c = lg.candidate(ctx, placed, rec['front_board'], z, lg.rec_own(rec), e['slot_centre'][0], e['slot_centre'][1],
+                          d, e['dist'], ctx.spare(rec['front_board'], z), True, gm)
+    out = {'index': task['index'], 'slot_centre': e['slot_centre'], 'direction': e['direction'], 'grid_mm': e['grid_mm']}
+    if why:
+        out['legal'] = False
+        out['why'] = why[0]
+        return out
+    geo = c[1]
+    rows = scene_rows(w, chosen, task['plan'], {L13: {'geometry': geo, 'slot_centre': e['slot_centre'],
+                                                      'direction': e['direction']}})
+    f, info = check_rows16(w, rows)
+    u = ('K', 'U5210') in s12.rowmap(rows)
+    out.update({'legal': True, 'vector': acceptance_vector(f), 'U5210_has_row': u, 'fails': {k: v[:4] for k, v in f.items()},
+                'pass': not f and not u, 'digest': s12.digest(rows)})
+    return out
+
+
+def pool_ctx():
+    return multiprocessing.get_context('fork')
+
+
+# ================================================================ stages
+
+def all_subsets():
+    return [list(rs) for k in range(1, 7) for rs in itertools.combinations(SITES, k)]
+
+
+def stage1(w, clock):
+    subs = all_subsets()
+    todo = [x for x in subs if not bulk('stage1/%s.json' % block_id(x)).exists()]
+    _CTX['deadline'] = now() + clock.left('stage1')
+    done = len(subs) - len(todo)
+    if todo:
+        with pool_ctx().Pool(WORKERS) as pool:
+            for summ, slim, per in pool.imap(stage1_one, todo):
+                write_json(bulk('stage1/%s.json' % summ['block']), {'summary': summ, 'survivors': slim, 'per_grid': per})
+                done += 1
+                if not summ['complete']:
+                    raise Stop('STOP 5: stage 1 cannot complete inside its ceiling (%s incomplete)' % summ['block'])
+                if done % 8 == 0 or done == len(subs):
+                    write_json(ck('stage1/progress.json'), {'blocks_done': done, 'of': len(subs)})
+                    clock.tick()
+    out = {}
+    for x in subs:
+        out[block_id(x)] = read_json(bulk('stage1/%s.json' % block_id(x)))['summary']
+    write_json(ck('stage1/summary.json'), {'status': STATUS, 'reference_only': block_id(list(SITES)), 'blocks': out})
+    clock.tick()
+    return out
+
+
+def stage2a(w, clock, rides, st1):
+    recs = []
+    n = 0
+    for st in structures():
+        if is_present(st):
+            continue
+        n += 1
+        dead, why, brs = screen_s123(w, st, rides)
+        r = {'id': struct_id(st), 'rides': st['rides'], 'blocks': st['blocks'], 'links': len(brs),
+             'circuits': sum(b['circuits'] for b in brs), 'sizes': sorted(b['circuits'] for b in brs)}
+        t = rides[ride_key(st['rides'])] if st['rides'] else None
+        if t:
+            r.update({'first_order': t['first_order'], 'host_plans': t['host_plans'], 'plan': t['plan']})
+        else:
+            r.update({'first_order': [], 'host_plans': 1, 'plan': []})
+        if dead is None:
+            empty = [b['id'] for b in brs if st1[b['id']]['distinct_survivors'] == 0]
+            if empty:
+                dead, why = 'census', 'no census survivor for %s' % ', '.join(empty)
+        r['dead_at'], r['reason'] = dead, why
+        r['live'] = dead is None
+        r['cheapest_sum'] = round(sum(st1[b['id']]['cheapest_cost'] for b in brs), 6) if dead is None else None
+        recs.append(r)
+        if n % 100 == 0:
+            write_json(ck('stage2a/progress.json'), {'structures_done': n})
+            clock.tick()
+    write_json(ck('stage2a/progress.json'), {'structures_done': n})
+    write_json(bulk('stage2a/structures.json'), {'status': STATUS, 'structures': recs})
+    clock.tick()
+    return recs
+
+
+def stage2b(w, clock, recs):
+    live = [r for r in recs if r['live']]
+    order = sorted(live, key=lambda r: (r['links'], r['circuits'], r['cheapest_sum'], r['id']))
+    tasks = [{'index': i, 'structure': {'rides': r['rides'], 'blocks': r['blocks']}, 'plan': r['plan'] or [],
+              'id': r['id']} for i, r in enumerate(order)]
+    logs = {}
+    for t in tasks:
+        f = bulk('stage2b/%04d.json' % t['index'])
+        if f.exists():
+            logs[t['index']] = read_json(f)
+    total = sum(len(l_['replays']) for l_ in logs.values())
+    bound = next((l_['global_bound'] for l_ in logs.values() if l_.get('global_bound')), None)
+    todo = [t for t in tasks if t['index'] not in logs]
+    discarded = {'structures_in_flight_at_stop': 0}
+    if todo and not bound and total < REPLAY_CAP:
+        with pool_ctx().Pool(WORKERS) as pool:
+            it = pool.imap(search_one, todo)
+            for t in todo:
+                i, lg_ = next(it)
+                n = len(lg_['replays'])
+                if total + n > REPLAY_CAP:
+                    keep = REPLAY_CAP - total
+                    cut = lg_['replays'][keep:]
+                    lg_['replays'] = lg_['replays'][:keep]
+                    if lg_['passed'] and lg_['passed'] > keep:
+                        lg_['passed'] = None
+                    lg_['discarded_replays_after_global_cap'] = len(cut)
+                    bound = '1200 rows-only replays in stage 2b'
+                total += len(lg_['replays'])
+                if total >= REPLAY_CAP and not bound:
+                    bound = '1200 rows-only replays in stage 2b'
+                lg_['global_bound'] = bound
+                lg_['id'] = t['id']
+                write_json(bulk('stage2b/%04d.json' % i), lg_)
+                logs[i] = lg_
+                write_json(ck('stage2b/progress.json'), {'structures_done': len(logs), 'of': len(tasks),
+                                                         'replays': total, 'bound': bound})
+                clock.tick()
+                if bound:
+                    discarded['structures_in_flight_at_stop'] = min(WORKERS, len(todo) - (todo.index(t) + 1))
+                    pool.terminate()
+                    break
+    # C12: the first 12 complete legal scenes, replayed again in sequence in this process
+    first = []
+    for i in sorted(logs):
+        for rp in logs[i]['replays']:
+            if len(first) < 12:
+                first.append((i, rp))
+    c12 = {'scenes': len(first)}
+    if not first:
+        c12.update({'pass': None, 'status': 'NOT RUN: no replay exists; no pool result is used'})
+    else:
+        diffs = []
+        for i, rp in first:
+            t = tasks[i]
+            chosen = [(block_record(w, b), {'geometry': x['geometry'], 'slot_centre': x['slot_centre'],
+                                           'direction': x['direction']}) for b, x in zip(t['structure']['blocks'], rp['blocks'])]
+            if s12.digest(scene_rows(w, chosen, t['plan'])) != rp['digest']:
+                diffs.append('%s replay %d' % (t['id'], rp['n']))
+        c12.update({'pass': not diffs, 'differences': diffs})
+    write_json(ck('arm0/C12.json'), {'control': 'C12', 'pass': c12['pass'], 'detail': c12})
+    clock.tick()
+    if c12['pass'] is False:
+        raise Stop('STOP 1: control C12 fails: %s' % c12['differences'])
+    summary = []
+    for i in sorted(logs):
+        l_ = logs[i]
+        summary.append({'index': i, 'id': tasks[i]['id'], 'legality_calls': l_['legality_calls'],
+                        'replays': len(l_['replays']), 'passed': l_['passed'], 'bound': l_['bound'],
+                        'exhausted': l_['exhausted'], 'pool_sizes': l_['pool_sizes'], 'wall_s': l_['wall_s']})
+    info = {'live': len(live), 'searched': len(logs), 'not_searched': len(tasks) - len(logs), 'replays': total,
+            'bound': bound, 'discarded': discarded, 'C12': c12}
+    write_json(ck('stage2b/summary.json'), {'status': STATUS, 'info': info, 'structures': summary})
+    return tasks, logs, info
+
+
+def scene_rank_key(w, rec_by, t, rp):
+    disp_k = trims = newt = 0
+    for b, x in zip(t['structure']['blocks'], rp['blocks']):
+        geo = x['geometry']
+        disp_k += len(lg.k_union(lg.displaced(w.model, 'P', geo, w.ctx.latch)))
+        trims += len(lg.trim_list(w.model, 'P', geo))
+        ut = links.under_tails(w.model, 'P', geo)
+        tails = {('P', r) for r in ut['front tail']} | {('K', r) for r in ut['K tail']}
+        newt += sum(1 for k in tails if k in w.protected and k not in w.base_tail)
+    cost = round(sum(x['cost'] for x in rp['blocks']), 6)
+    return [len(rp['blocks']), disp_k, trims, newt, cost, t['id']]
+
+
+def neighbours(positions):
+    out = []
+    for i, p in enumerate(positions):
+        if p['kind'] != 'signal':
+            continue
+        nb = []
+        for j in (i - 1, i + 1):
+            if 0 <= j < len(positions):
+                q = positions[j]
+                nb.append(q['net'] if q['kind'] == 'signal' else q['kind'])
+        out.append({'net': p['net'], 'class': p['class'], 'site': p['site'], 'neighbours': nb})
+    return out
+
+
+def scene_body(w, n, t, rp, judge, vec_c, rows):
+    chosen = [(block_record(w, b), x) for b, x in zip(t['structure']['blocks'], rp['blocks'])]
+    out = scene_links_replan(w, [(r, x) for r, x in chosen], t['plan'])
+    by = {r['id']: r for r in out}
+    hosts = sorted({p[3] for p in t['plan']})
+    host_tab = []
+    for h in hosts:
+        old = w.byid[h]['positions']
+        new = by[h]['positions']
+        host_tab.append({'host': h, 'old_order': proj(old), 'new_order': proj(new),
+                         'neighbours_changed': [x for x in neighbours(new) if x not in neighbours(old)]})
+    blocks = []
+    for (r, x) in chosen:
+        f, _ = block_figures(w, r, x)
+        blocks.append({'block': r['id'], 'sites': r['members'], 'size': r['circuits'], 'cable': r['cable'],
+                       'cable_length_mm': r['cable_length_mm'], 'slot_centre': x['slot_centre'],
+                       'direction': x['direction'], 'ring': x['ring'], 'conductor_order': proj(r['positions']),
+                       'figures': f, 'check4_input': neighbours(r['positions'])})
+    return {'status': STATUS + '; DS-122 pair ratio of every built order NOT RUN; A12 NOT RUN', 'scene': n,
+            'structure': t['id'], 'ride_set': t['structure']['rides'], 'ride_plan': t['plan'], 'hosts': host_tab,
+            'blocks': blocks, 'vector': vec_c, 'judge': {k: judge[k] for k in ('passes', 'fails', 'protected_effective',
+                                                                               'rows')},
+            'returned_to_paper': rp['returned'],
+            'P4_against_record': {'links_before': 1, 'links_after': len(blocks),
+                                  'connectors_before': 2, 'connectors_after': 2 * len(blocks),
+                                  'cables_before': [w.byid[L03]['cable']], 'cables_after': [b['cable'] for b in blocks],
+                                  'trim_leads': {b['block']: b['figures']['trim_leads'] for b in blocks},
+                                  'hold_K_by_hand': {b['block']: b['figures']['hold_K_by_hand'] for b in blocks},
+                                  'host_orders_changed': hosts},
+            'digest': s12.digest(rows)}
+
+
+def stage3(w, clock, tasks, logs):
+    passes = []
+    for i in sorted(logs):
+        l_ = logs[i]
+        if l_['passed']:
+            rp = l_['replays'][l_['passed'] - 1]
+            passes.append((scene_rank_key(w, None, tasks[i], rp), i, rp))
+    passes.sort(key=lambda x: x[0])
+    info = {'passing_stage2b': len(passes), 'kept_cap_reached': len(passes) > KEEP, 'overlay_searches': 0,
+            'overlay_cap_reached': False, 'judged': []}
+    kept = []
+    for rank, i, rp in passes[:KEEP]:
+        t = tasks[i]
+        f = ck('stage3/%s.json' % i)
+        if f.exists():
+            res = read_json(f)
+        else:
+            chosen = [(block_record(w, b), {'geometry': x['geometry'], 'slot_centre': x['slot_centre'],
+                                           'direction': x['direction'], 'ring': x['ring']})
+                      for b, x in zip(t['structure']['blocks'], rp['blocks'])]
+            rows = scene_rows(w, chosen, t['plan'])
+            can = info['overlay_searches'] < OVERLAY_CAP
+            j = judge_replan(w, {}, rows, chosen, t['plan'], run_overlay_search=can)
+            nsearch = len(j.get('overlay_blocks') or []) if can else 0
+            f0, _ = check_rows16(w, rows)
+            j = json.loads(json.dumps(j, default=_jdefault))
+            res = {'structure': t['id'], 'rank': rank, 'A0': not f0.get('A0'), 'passes': j['passes'],
+                   'fails': j['fails'], 'overlay_searches': nsearch, 'overlay_search_run': can,
+                   'pass': not f0.get('A0') and all(j['passes'].values()), 'rows_digest': s12.digest(rows),
+                   'judge': {k: j[k] for k in ('passes', 'fails', 'protected_effective', 'rows', 'link_figures')}}
+            write_json(f, res)
+        info['overlay_searches'] += res['overlay_searches']
+        if not res['overlay_search_run']:
+            info['overlay_cap_reached'] = True
+        info['judged'].append({k: res[k] for k in ('structure', 'rank', 'A0', 'passes', 'pass', 'overlay_searches')})
+        clock.tick()
+        if res['pass']:
+            kept.append((i, rp, res))
+    CAND.mkdir(exist_ok=True)
+    for n, (i, rp, res) in enumerate(kept, 1):
+        t = tasks[i]
+        chosen = [(block_record(w, b), {'geometry': x['geometry'], 'slot_centre': x['slot_centre'],
+                                       'direction': x['direction'], 'ring': x['ring']})
+                  for b, x in zip(t['structure']['blocks'], rp['blocks'])]
+        rows = scene_rows(w, chosen, t['plan'])
+        body = scene_body(w, n, t, dict(rp, blocks=[dict(x, geometry=x['geometry']) for x in rp['blocks']]),
+                          res['judge'], 'PPPPPPPPP ' + 'P' * 6, rows)
+        write_json(CAND / ('scene-%d.json' % n), body)
+    info['kept'] = len(kept)
+    write_json(ck('stage3/summary.json'), info)
+    return kept, info
+
+
+def stage4(w, clock, tasks, kept):
+    cen = read_json(S12CENSUS)['accepted'][L13]
+    seen, ents = set(), []
+    for e in cen:
+        k = (tuple(e['slot_centre']), e['direction'])
+        if k not in seen:
+            seen.add(k)
+            ents.append(e)
+    out = {'survivors': len(ents), 'scenes': []}
+    jobs = []
+    for n, (i, rp, res) in enumerate(kept, 1):
+        t = tasks[i]
+        blocks = [{'sites': b, 'geometry': x['geometry'], 'slot_centre': x['slot_centre'], 'direction': x['direction']}
+                  for b, x in zip(t['structure']['blocks'], rp['blocks'])]
+        for k, e in enumerate(ents):
+            jobs.append({'scene': n, 'index': k, 'blocks': blocks, 'plan': t['plan'],
+                         'entry': {x: e[x] for x in ('slot_centre', 'direction', 'dist', 'grid_mm')}})
+    results = []
+    if jobs:
+        with pool_ctx().Pool(WORKERS) as pool:
+            for job, r in zip(jobs, pool.imap(stage4_one, jobs)):
+                r['scene'] = job['scene']
+                results.append(r)
+                if r['index'] == len(ents) - 1:
+                    write_json(ck('stage4/scene-%d.json' % job['scene']), [x for x in results if x['scene'] == job['scene']])
+                    clock.tick()
+    for n in range(1, len(kept) + 1):
+        rs = [x for x in results if x['scene'] == n]
+        out['scenes'].append({'scene': n, 'legal': sum(1 for x in rs if x['legal']),
+                              'replays': sum(1 for x in rs if x['legal']), 'pass': sum(1 for x in rs if x.get('pass')),
+                              'reading': 'U5210 FOLLOW-ON SEEN AT ROWS LEVEL' if any(x.get('pass') for x in rs)
+                              else 'U5210 FOLLOW-ON NOT SEEN'})
+    out['replays'] = sum(s_['replays'] for s_ in out['scenes'])
+    write_json(ck('stage4/summary.json'), out)
+    return out
+
+
+def verdict_of(recs, info2b, info3, kept, st_bounds):
+    if kept:
+        return 'RE-PLAN SCENE AT ROWS LEVEL, GATE REPLAY NOT RUN, NOT ADOPTED', []
+    live = [r for r in recs if r['live']]
+    if not live and not st_bounds:
+        return 'NO RE-PLAN ON THIS DOMAIN (CENSUS-COMPLETE)', []
+    bounds = ['pool of 20 spots per block']
+    if info2b:
+        if info2b.get('bound'):
+            bounds.append(info2b['bound'])
+        if info2b.get('not_searched'):
+            bounds.append('%d live structures not searched' % info2b['not_searched'])
+    if info3 and info3.get('kept_cap_reached'):
+        bounds.append('5 kept scenes')
+    if info3 and info3.get('overlay_cap_reached'):
+        bounds.append('10 overlay block searches')
+    return 'NO RE-PLAN FOUND (BOUNDED)', bounds
+
+
 # ================================================================ the driver
 
-REMAINING = ('C2', 'C6', 'C7', 'C8', 'C8b', 'C9', 'C10', 'C11', 'C15', 'C16', 'stage1', 'stage2a', 'stage2b (C12)',
-             'stage3', 'stage4')
-
-
 def drive(resume=False):
+    global _W
     CK.mkdir(parents=True, exist_ok=True)
     run_path = ck('run.json')
     if run_path.exists() and not resume:
@@ -1340,66 +2083,92 @@ def drive(resume=False):
         gd = HERE / 'checkpoints' / 'guard'
         for f in sorted(gd.glob('start-*.json')) if gd.exists() else ():
             rec['executor_timed'][f.stem] = read_json(f)['wall_s']
-        for f in sorted(gd.glob('discarded-*.json')) if gd.exists() else ():
-            rec['executor_timed'][f.stem] = read_json(f)['wall_s']
         c13g = HERE / 'checkpoints' / 'c13' / 'guard.json'
         if c13g.exists():
             rec['executor_timed']['c13-detachment-test'] = read_json(c13g)['wall_s']
     rec['stop'] = None
-    rec['not_run'] = []
     write_json(run_path, rec)
+
+    def control(name, fn, *a):
+        f = CK / 'arm0' / ('%s.json' % name)
+        if f.exists() and read_json(f)['pass']:
+            return read_json(f)['detail']
+        t0 = now()
+        ok, detail = fn(*a)
+        control_record(name, ok, detail, t0)
+        clock.tick()
+        if not ok:
+            raise Stop('STOP 1: control %s fails' % name)
+        return detail
+
+    stage_bounds = []
     try:
         clock.begin('arm0')
-        for name, fn in (('C14', c14_control), ('C13', c13_control), ('C1', c1_control)):
-            f = CK / 'arm0' / ('%s.json' % name)
-            if not (f.exists() and read_json(f)['pass']):
-                t0 = now()
-                ok, detail = fn()
-                control_record(name, ok, detail, t0)
-                clock.tick()
-                if not ok:
-                    raise Stop('STOP 1: control %s fails' % name)
+        control('C14', c14_control)
+        control('C13', c13_control)
+        control('C1', c1_control)
         w = s12.World()
+        _W = w
         clock.tick()
-        for name, fn in (('C3', c3_control), ('C3b', c3b_control)):
-            f = CK / 'arm0' / ('%s.json' % name)
-            if not (f.exists() and read_json(f)['pass']):
-                t0 = now()
-                ok, detail = fn(w)
-                control_record(name, ok, detail, t0)
-                clock.tick()
-                if not ok:
-                    raise Stop('STOP 1: control %s fails' % name)
+        control('C3', c3_control, w)
+        control('C3b', c3b_control, w)
         six = block_record(w, list(SITES), 26)
         l13 = l13_block(w)
-        t0 = now()
-        ok, detail, f4, acc4, cnt4 = census_control(w, six, L03, (813, 183, 183, 0, 0))
-        write_json(bulk('arm0/c4-census.json'), {'counts': cnt4, 'firsts_grid_2': f4, 'accepted': acc4})
-        control_record('C4', ok, detail, t0)
-        clock.tick()
-        if not ok:
-            raise Stop('STOP 1: control C4 fails')
-        t0 = now()
-        ok, detail, f5, acc5, cnt5 = census_control(w, l13, L13, (9464, 8841, 6903, 27, 27))
-        write_json(bulk('arm0/c5-census.json'), {'counts': cnt5, 'firsts_grid_2': f5, 'accepted': acc5})
-        control_record('C5', ok, detail, t0)
-        clock.tick()
-        if not ok:
-            raise Stop('STOP 1: control C5 fails')
+        for name, rb, lid, tot in (('C4', six, L03, (813, 183, 183, 0, 0)), ('C5', l13, L13, (9464, 8841, 6903, 27, 27))):
+            f = CK / 'arm0' / ('%s.json' % name)
+            if not (f.exists() and read_json(f)['pass']):
+                t0 = now()
+                ok, detail, fi, acc, cnt = census_control(w, rb, lid, tot)
+                write_json(bulk('arm0/%s-census.json' % name.lower()), {'counts': cnt, 'firsts_grid_2': fi, 'accepted': acc})
+                control_record(name, ok, detail, t0)
+                clock.tick()
+                if not ok:
+                    raise Stop('STOP 1: control %s fails' % name)
         if not ck('mutation-slots.json').exists():
-            write_json(ck('mutation-slots.json'), mutation_slots(w, f4, f5, acc5, l13))
-        t0 = now()
-        ok, bad = arm0_mutations(w, clock)
-        rec_m = {'control': 'mutations', 'pass': ok, 'problems': bad, 'wall_s': round(now() - t0, 1)}
-        write_json(ck('arm0/mutation-control.json'), rec_m)
-        log('mutations', 'PASS' if ok else 'FAIL', bad)
+            c4 = read_json(bulk('arm0/c4-census.json'))
+            c5 = read_json(bulk('arm0/c5-census.json'))
+            write_json(ck('mutation-slots.json'), mutation_slots(w, c4['firsts_grid_2'], c5['firsts_grid_2'],
+                                                                 c5['accepted'], l13))
+        if not (ck('arm0/mutation-control.json').exists() and read_json(ck('arm0/mutation-control.json'))['pass']):
+            t0 = now()
+            ok, bad = arm0_mutations(w, clock)
+            write_json(ck('arm0/mutation-control.json'), {'control': 'mutations', 'pass': ok, 'problems': bad,
+                                                          'wall_s': round(now() - t0, 1)})
+            log('mutations', 'PASS' if ok else 'FAIL', bad)
+            clock.tick()
+            if not ok:
+                raise Stop('STOP 3: computed mutation vectors differ from the brief: %s' % '; '.join(bad))
+        control('C6', c6_control, w)
+        control('C7', c7_control, w)
+        control('C8', c8_control, w)
+        control('C8b', c8b_control, w)
+        control('C9', c9_control, w)
+        control('C10', c10_control, w)
+        control('C11', c11_control, w, read_json(CK / 'arm0' / 'C4.json')['pass'])
+        rides = control('C15', c15_control, w)['sets']
+        control('C16', c16_control, w, rides)
+        control('C2', c2_control, w)
+        clock.begin('stage1')
+        st1 = stage1(w, clock)
+        clock.begin('stage2a')
+        if bulk('stage2a/structures.json').exists():
+            recs = read_json(bulk('stage2a/structures.json'))['structures']
+        else:
+            recs = stage2a(w, clock, rides, st1)
+        clock.begin('stage2b')
+        tasks, logs, info2b = stage2b(w, clock, recs)
+        clock.begin('stage3')
+        kept, info3 = stage3(w, clock, tasks, logs)
+        clock.begin('stage4')
+        info4 = stage4(w, clock, tasks, kept)
+        clock.begin(None)
         clock.tick()
-        if not ok:
-            raise Stop('STOP 3: computed mutation vectors differ from the brief: %s' % '; '.join(bad))
-        raise Stop('the remaining controls and stages are not part of this driver revision')
+        v, bounds = verdict_of(recs, info2b, info3, kept, stage_bounds)
+        rec['verdict'] = v
+        rec['bounds'] = bounds
+        rec['finished'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     except Stop as e:
         rec['stop'] = str(e)
-        rec['not_run'] = list(REMAINING)
         log(str(e))
     try:
         clock.tick(save=False)
@@ -1408,7 +2177,24 @@ def drive(resume=False):
     rec['ended'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
     write_json(run_path, rec)
     finish(rewrite_manifest=True)
-    log('driver end', rec.get('stop'))
+    log('driver end', rec.get('stop') or rec.get('verdict'))
+
+
+def tallies(recs, s2b):
+    """Per structure class (links, ride set size): dead at S1, S2, S3, at the census, live, searched, passing."""
+    done = {x['id']: x for x in (s2b or {}).get('structures', [])}
+    t = {}
+    for r in recs:
+        k = '%d links, %d ride sites' % (r['links'], len(r['rides']))
+        d = t.setdefault(k, {'S1': 0, 'S2': 0, 'S3': 0, 'census': 0, 'live': 0, 'searched': 0, 'passing': 0})
+        if r['dead_at']:
+            d[r['dead_at']] += 1
+        else:
+            d['live'] += 1
+            if r['id'] in done:
+                d['searched'] += 1
+                d['passing'] += bool(done[r['id']]['passed'])
+    return dict(sorted(t.items()))
 
 
 def finish(rewrite_manifest=False):
@@ -1419,13 +2205,30 @@ def finish(rewrite_manifest=False):
         raise SystemExit('finish needs the bulky intermediates in %s, matching the manifest: %s' % (BULK, bad or 'absent'))
     run = read_json(ck('run.json'))
     res = {'status': STATUS, 'brief': BRIEF, 'brief_sha256': BRIEF_SHA, 'pins': read_json(PINS), 'run': run,
-           'stop': run.get('stop'), 'not_run': run.get('not_run')}
+           'stop': run.get('stop'), 'verdict': run.get('verdict'), 'bounds': run.get('bounds')}
     res['controls'] = {f.stem: read_json(f)['pass'] for f in sorted((CK / 'arm0').glob('C*.json'))}
     if ck('arm0/mutations.json').exists():
         m = read_json(ck('arm0/mutations.json'))
-        res['mutations'] = {k: {kk: v.get(kk) for kk in ('vector', 'expected') if kk in v} or v
-                            for k, v in m['results'].items()}
+        res['mutations'] = {k: v.get('vector', 'not a vector') for k, v in m['results'].items()}
         res['mutation_problems'] = m['problems']
+    if ck('stage1/summary.json').exists():
+        res['stage1'] = {k: {x: v[x] for x in ('size', 'centre', 'legal_R1', 'after', 'distinct_survivors',
+                                                'distinct_by_ring', 'class_s_deferred')}
+                         for k, v in read_json(ck('stage1/summary.json'))['blocks'].items()}
+    s2b = read_json(ck('stage2b/summary.json')) if ck('stage2b/summary.json').exists() else None
+    if bulk('stage2a/structures.json').exists():
+        recs = read_json(bulk('stage2a/structures.json'))['structures']
+        res['stage2a'] = {'structures': len(recs), 'live': sum(r['live'] for r in recs),
+                          'dead_at': {k: sum(1 for r in recs if r['dead_at'] == k) for k in ('S1', 'S2', 'S3', 'census')},
+                          'by_class': tallies(recs, s2b),
+                          'outcomes': [[r['id'], r['dead_at'] or 'live'] for r in recs]}
+    if s2b:
+        res['stage2b'] = s2b['info']
+    for k in ('stage3', 'stage4'):
+        if ck('%s/summary.json' % k).exists():
+            res[k] = read_json(ck('%s/summary.json' % k))
+    res['candidates'] = sorted(({'scene': int(f.stem.split('-')[1]), 'digest': read_json(f)['digest']}
+                                for f in CAND.glob('scene-*.json')), key=lambda x: x['scene']) if CAND.exists() else []
     guards = {}
     gd = HERE / 'checkpoints' / 'guard'
     for f in sorted(gd.glob('*.json')) if gd.exists() else ():
@@ -1433,13 +2236,15 @@ def finish(rewrite_manifest=False):
         guards[f.stem] = {k: g.get(k) for k in ('returncode', 'finished', 'wall_s', 'peak_tree_rss_mib',
                                                 'min_mem_available_mib', 'peak_docker_container_mem_mib', 'watchdog_fired')}
     res['guards'] = guards
-    res['verdict'] = None if run.get('stop') else 'not reached'
     cks = {}
     for f in sorted(CK.rglob('*.json')):
         rel = f.relative_to(OUTDIR)
-        if 'guard' in rel.parts or 'c13' in rel.parts or f.name == 'run.json' or 'discarded' in str(rel):
+        if 'guard' in rel.parts or 'c13' in rel.parts or f.name in ('run.json', 'durable-copy.json') or \
+                'progress' in f.name:
             continue
         cks[str(rel)] = sha_file(f)
+    for f in sorted(CAND.glob('*.json')) if CAND.exists() else ():
+        cks[str(f.relative_to(OUTDIR))] = sha_file(f)
     for r in bulk_files():
         cks[r] = sha_file(BULK / r)
     res['digests'] = dict(sorted(cks.items()))
@@ -1452,8 +2257,10 @@ def finish(rewrite_manifest=False):
 # ================================================================ check
 
 def check():
-    """Source pins (SOURCE CHANGED AFTER RUN), the offline controls against their records, every digest, the cache
-    against its manifest (PARTIAL CHECK when absent, CHECK FAILED when partial or altered)."""
+    """Source pins (SOURCE CHANGED AFTER RUN), offline controls against their records, the mutations re-run, every
+    digest, three stage 2b replays and every kept scene re-run; the cache against its manifest (PARTIAL CHECK when
+    absent, CHECK FAILED when partial or altered)."""
+    global _W
     errs, changed = [], verify_pins()
     if changed:
         print('SOURCE CHANGED AFTER RUN: %s' % changed)
@@ -1463,7 +2270,10 @@ def check():
         raise SystemExit('CHECK FAILED: the bulky intermediates in %s are partly present or differ from the manifest: %s'
                          % (BULK, bad))
     w = s12.World()
-    for name, fn in (('C3', c3_control), ('C3b', c3b_control)):
+    _W = w
+    for name, fn in (('C3', c3_control), ('C3b', c3b_control), ('C8b', c8b_control), ('C9', c9_control)):
+        if not (CK / 'arm0' / ('%s.json' % name)).exists():
+            continue
         ok, detail = fn(w)
         want = read_json(CK / 'arm0' / ('%s.json' % name))
         if ok != want['pass'] or s12.canon(json.loads(json.dumps(detail, default=_jdefault))) != s12.canon(want['detail']):
@@ -1487,14 +2297,46 @@ def check():
         checked += 1
         if not f.exists() or sha_file(f) != want:
             errs.append('digest of %s differs' % path)
+    reran = 0
+    if present and bulk('stage2a/structures.json').exists():
+        recs = read_json(bulk('stage2a/structures.json'))['structures']
+        live = sorted([r for r in recs if r['live']], key=lambda r: (r['links'], r['circuits'], r['cheapest_sum'], r['id']))
+        for i, r in enumerate(live):
+            f = bulk('stage2b/%04d.json' % i)
+            if reran >= 3 or not f.exists():
+                break
+            lg_ = read_json(f)
+            for rp in lg_['replays'][:1]:
+                chosen = [(block_record(w, b), {'geometry': x['geometry'], 'slot_centre': x['slot_centre'],
+                                               'direction': x['direction']}) for b, x in zip(r['blocks'], rp['blocks'])]
+                if s12.digest(scene_rows(w, chosen, r['plan'] or [])) != rp['digest']:
+                    errs.append('stage 2b replay of %s differs' % r['id'])
+                reran += 1
+    for f in sorted(CAND.glob('scene-*.json')) if CAND.exists() else ():
+        body = read_json(f)
+        chosen = [(block_record(w, b['sites']), {'geometry': None, 'slot_centre': b['slot_centre'], 'direction': b['direction'],
+                                                 'dist': math.hypot(b['slot_centre'][0] - block_record(w, b['sites'])['centre'][0],
+                                                                    b['slot_centre'][1] - block_record(w, b['sites'])['centre'][1]),
+                                                 'ring': b['ring']}) for b in body['blocks']]
+        placed_chosen = []
+        for r, e in chosen:
+            m, why = legal_block(w, r, e, placed_chosen, [], Anchors(w))
+            if m is None:
+                errs.append('%s: block %s not legal: %s' % (f.name, r['id'], why))
+                break
+            placed_chosen.append((r, m))
+        else:
+            if s12.digest(scene_rows(w, placed_chosen, body['ride_plan'])) != body['digest']:
+                errs.append('%s: rows digest differs' % f.name)
     if errs or changed:
-        raise SystemExit('CHECK FAILED: %s' % (errs + ['SOURCE CHANGED AFTER RUN: %s' % changed] if changed else errs))
-    head = 'C3 and C3b re-run equal, mutation results re-run equal, %d digests' % checked
+        raise SystemExit('CHECK FAILED: %s' % ((errs + ['SOURCE CHANGED AFTER RUN: %s' % changed]) if changed else errs))
+    head = 'offline controls and the mutations re-run equal, %d digests, %d stage 2b replays and %d scenes re-run' % (
+        checked, reran, len(list(CAND.glob('scene-*.json'))) if CAND.exists() else 0)
     if not present:
         print('PARTIAL CHECK (bulky intermediates absent from %s; the copy is at %s): %s; the %d cached digests were '
-              'compared with the manifest only (NOT RUN against the files)' % (BULK, DURABLE, head, len(man)))
+              'compared with the manifest only, and the stage 2b replays were NOT RUN' % (BULK, DURABLE, head, len(man)))
         return
-    print('result.json current: pins verified, %s (%d cached, verified against the manifest)' % (head, len(man)))
+    print('result.json current: pins verified, %s (%d cached files verified against the manifest)' % (head, len(man)))
 
 
 def main():
@@ -1505,9 +2347,12 @@ def main():
     ap.add_argument('--resume', action='store_true')
     ap.add_argument('--finish', action='store_true')
     ap.add_argument('--check', action='store_true')
+    ap.add_argument('--full-replay', metavar='OUT')
     a = ap.parse_args()
     if a.pin:
         print(json.dumps(write_pins(), indent=1))
+    elif a.full_replay:
+        full_replay_child(a.full_replay)
     elif a.run or a.resume:
         drive(resume=a.resume)
     elif a.finish:

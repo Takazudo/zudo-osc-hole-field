@@ -1,42 +1,48 @@
 {
- "clock_s": 82.92476153373718,
+ "clock_s": 3525.904228925705,
  "steps": {
-  "arm0": 82.92127203941345
+  "arm0": 390.1833281517029,
+  "stage1": 465.19877457618713,
+  "stage2a": 0.16490983963012695,
+  "stage2b": 2593.5827252864838,
+  "stage3": 76.58204340934753,
+  "stage4": 0.1875934600830078
  },
  "segments": [
   {
-   "start": 1795881400.897792,
-   "pid": 1476,
-   "end": 1795881483.8225536
+   "start": 1795883879.571261,
+   "pid": 4968,
+   "end": 1795887202.6473293
+  },
+  {
+   "start": 1795887278.104952,
+   "pid": 537,
+   "end": 1795887480.9331126
   }
  ],
- "resumes": [],
+ "resumes": [
+  {
+   "at": "2026-11-28T17:34:38Z",
+   "reason": "container restart at about 17:33Z during stage 2b (structures 121 to 123 in flight; the driver and its guard were killed)"
+  }
+ ],
  "executor_timed": {
   "start-circuit-check": 5.0,
-  "start-regen-all": 395.5,
-  "discarded-try1-start-circuit-check": 5.0,
-  "discarded-try1-start-regen-all": 5.0,
-  "c13-detachment-test": 300.5
+  "start-discarded-rev4-run1": 145.2,
+  "start-regen-all": 443.4,
+  "c13-detachment-test": 300.4
  },
- "started": "2026-11-28T15:56:40Z",
- "commit": "08d66e21466b13ec20ff4e7df431a4e8b551cb0b",
- "stop": "STOP 3: computed mutation vectors differ from the brief: M1: PPPPF–––– ––––––, expected PPPPPPPPP FPPPPP; M9: PF––––––– ––––––, expected PPPPPF––– ––––––; M10: PF––––––– ––––––, expected PPPPPPF–– ––––––; M12: PF––––––– ––––––, expected PPPPPPPPF ––––––",
- "not_run": [
-  "C2",
-  "C6",
-  "C7",
-  "C8",
-  "C8b",
-  "C9",
-  "C10",
-  "C11",
-  "C15",
-  "C16",
-  "stage1",
-  "stage2a",
-  "stage2b (C12)",
-  "stage3",
-  "stage4"
+ "started": "2026-11-28T16:37:59Z",
+ "commit": "d313db18036eb7f01d6c61a3686407842d5a835e",
+ "stop": null,
+ "verdict": "NO RE-PLAN FOUND (BOUNDED)",
+ "bounds": [
+  "pool of 20 spots per block",
+  "1200 rows-only replays in stage 2b",
+  "411 live structures not searched",
+  "5 kept scenes",
+  "10 overlay block searches"
  ],
- "ended": "2026-11-28T15:58:03Z"
+ "finished": "2026-11-28T17:38:00Z",
+ "ended": "2026-11-28T17:38:00Z"
 }

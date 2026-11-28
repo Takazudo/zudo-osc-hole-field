@@ -1,11 +1,22 @@
 {
  "results": {
   "M1": {
-   "vector": "PPPPF–––– ––––––",
+   "vector": "PPPPPPPPP FPPPPP",
    "expected": "PPPPPPPPP FPPPPP",
    "why": {
-    "R2": "a site beyond its class distance of the connector centres"
-   }
+    "A0": [
+     "U8409 has a row (no position)"
+    ]
+   },
+   "R2_without_exemption": "a site beyond its class distance of the connector centres"
+  },
+  "M28": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PF––––––– ––––––",
+   "why": {
+    "S2": "no built order at 8 circuits"
+   },
+   "block_size_by_block_record": 14
   },
   "M2": {
    "vector": "––––––––– PPPPPP",
@@ -99,10 +110,10 @@
    }
   },
   "M9": {
-   "vector": "PF––––––– ––––––",
+   "vector": "PPPPPF––– ––––––",
    "expected": "PPPPPF––– ––––––",
    "why": {
-    "S2": "no built order at 8 circuits"
+    "R3": "slot centre 35.0100 mm from the block centre, beyond 35.0 mm"
    },
    "slot": {
     "slot_centre": [
@@ -114,10 +125,10 @@
    }
   },
   "M10": {
-   "vector": "PF––––––– ––––––",
+   "vector": "PPPPPPF–– ––––––",
    "expected": "PPPPPPF–– ––––––",
    "why": {
-    "S2": "no built order at 8 circuits"
+    "R4": "covers the recorded courtyard of U5210"
    },
    "slot": {
     "slot_centre": [
@@ -130,10 +141,10 @@
    }
   },
   "M12": {
-   "vector": "PF––––––– ––––––",
+   "vector": "PPPPPPPPF ––––––",
    "expected": "PPPPPPPPF ––––––",
    "why": {
-    "S2": "no built order at 8 circuits"
+    "R6": "T2: K C1101 under K tail"
    },
    "footprint": {
     "board": "K",
@@ -353,16 +364,11 @@
    ]
   }
  },
- "problems": [
-  "M1: PPPPF–––– ––––––, expected PPPPPPPPP FPPPPP",
-  "M9: PF––––––– ––––––, expected PPPPPF––– ––––––",
-  "M10: PF––––––– ––––––, expected PPPPPPF–– ––––––",
-  "M12: PF––––––– ––––––, expected PPPPPPPPF ––––––"
- ],
+ "problems": [],
  "first_four_directly_after_C4_C5": {
   "M7": "PPPF––––– ––––––",
   "M8": "PPPPF–––– ––––––",
-  "M10": "PF––––––– ––––––",
+  "M10": "PPPPPPF–– ––––––",
   "M11": "PPPPPPPF– ––––––"
  }
 }

@@ -1,6 +1,6 @@
 """MC04-S16 unit tests: the order builder (Ruling P7) and the mutations M1 to M27 with the brief's full vectors.
 
-The expected vectors are copied from the brief (Revision 3, section "Tests and mutations") and are not taken from
+The expected vectors are copied from the brief (Revision 4, section "Tests and mutations") and are not taken from
 replan.py, so a change to either side shows. The mutation vectors need the slots that arm 0 writes to
 checkpoints/mutation-slots.json; without that file those tests are skipped and say so.
 """
@@ -26,7 +26,7 @@ BRIEF_VECTORS = {
     'M9': 'PPPPPF––– ––––––', 'M10': 'PPPPPPF–– ––––––', 'M11': 'PPPPPPPF– ––––––', 'M12': 'PPPPPPPPF ––––––',
     'M13': '––––––––– FPFPPP', 'M14': '––––––––– FPPFPP', 'M15': '––––––––– FPPPFP', 'M16': '––––––––– FPPPPF',
     'M22': '––––––––– FFFPPP', 'M23': 'PPF–––––– ––––––', 'M24': 'PF––––––– ––––––', 'M25': 'PF––––––– ––––––',
-    'M27a': 'PPF–––––– ––––––',
+    'M27a': 'PPF–––––– ––––––', 'M28': 'PF––––––– ––––––',
 }
 SLOTS = HERE / 'checkpoints' / 'mutation-slots.json'
 
@@ -54,6 +54,7 @@ class Builder(unittest.TestCase):
 
 
 class WithWorld(unittest.TestCase):
+    """Ruling P9's record block and the builder on the World."""
     @classmethod
     def setUpClass(cls):
         cls.w = R.s12.World()
@@ -72,6 +73,11 @@ class WithWorld(unittest.TestCase):
                 n = cls.count('LOGIC')
                 need = R.lg.circuits_needed(cls) + (math.ceil(n / 3) - 1 if n >= 4 else 0)
                 self.assertEqual(rec['circuits'], min(s for s in R.STOCK if s >= need), sub)
+
+    def test_record_block_l13(self):
+        rb = R.record_block(self.w, 'P-K-P-L13.01.01.01')
+        self.assertEqual((rb['circuits'], rb['signals'], rb['built'], R.s2_order(rb)), (8, 5, True, None))
+        self.assertEqual(sum(1 for p in rb['positions'] if p['kind'] != 'unused'), 7)
 
     def test_m19_scene_row_digest(self):
         rows = copy.deepcopy(self.w.base_rows_list)
