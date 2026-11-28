@@ -1,0 +1,45 @@
+{
+ "clock_s": 4786.802944421768,
+ "steps": {
+  "arm0": 770.6851065158844,
+  "stage1": 350.4466161727905,
+  "stage2a": 0.9570968151092529,
+  "stage2b": 3559.955258846283,
+  "stage3": 0.06291556358337402,
+  "stage4": 0.003214597702026367,
+  "end": 104.68228697776794
+ },
+ "segments": [
+  {
+   "start": 1795895073.228702,
+   "pid": 22359,
+   "end": 1795899860.0316465
+  }
+ ],
+ "resumes": [],
+ "executor_timed": {
+  "start-circuit-check": 5.0,
+  "start-regen-all": 357.7
+ },
+ "started": "2026-11-28T19:44:33Z",
+ "commit": "6e72c4b2e69b3543184dd7552f7e8de98ebbe494",
+ "stop": null,
+ "verdict": "NO RE-PLAN FOUND (BOUNDED)",
+ "bounds": [
+  "pool of 20 spots per block, cutting 12 blocks (the E1 block is never cut)",
+  "1800 rows-only replays in stage 2b",
+  "20 000 legality calls per structure, reached in 6 structures",
+  "410 live structures unfinished when stage 2b ended"
+ ],
+ "verdict_extra": {
+  "stop_rule": "Ruling Q6 applies: the run reached its end with a verdict of Ruling P6, no STOP, no STAGE 3 INCOMPLETE (CAP) scene and no LITE UNDECIDED scene unjudged, and no scene passes stage 3 full; the design authority will propose no further placement study for U8409, whatever bounds the verdict names",
+  "finished_by": {
+   "no legal scene left": 86,
+   "unfinished": 410,
+   "legality cap of 20 000 calls": 6
+  },
+  "every_structure_finished": false
+ },
+ "finished": "2026-11-28T21:04:20Z",
+ "ended": "2026-11-28T21:04:20Z"
+}

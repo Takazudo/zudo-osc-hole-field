@@ -1,0 +1,907 @@
+{
+ "status": "ROWS-LEVEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT",
+ "brief": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16b-continuation-brief-20261128.md",
+ "brief_sha256": "09e9a22855b141429abb55b842085bb4e9ce2daae696e3bb596579b38100e625",
+ "pins": {
+  "written": "2026-11-28T19:38:15Z",
+  "files": {
+   "scripts/stack/studies/mc04_s16b_l0301_continuation/s16b.py": "975ec041fbac9d6155af7dd2e546823fe90a9f316440fe0eae5cd41ce09259ea",
+   "scripts/stack/studies/mc04_s16b_l0301_continuation/k3_heartbeat.py": "bc72a5521334bb09679937072893c740c2b55234898858a01522de811dcd01fd",
+   "scripts/stack/studies/mc04_s16b_l0301_continuation/test_s16b.py": "0e29fa7dd2ff689b8add24d2c14bc6180edcc414cfc7a57315b4cfe16eb00a6f",
+   "scripts/stack/studies/mc04_s16_l0301_replan/replan.py": "64636f64884e98d99e8c0a0d6997bee057272f4e3496f286d1aadc41afedaf0a",
+   "scripts/stack/studies/mc04_s16_l0301_replan/test_s16.py": "fd3144f4f63dea08cb47c62088a46f6d2426ac9b4ddf57851321a2b0589aa90b",
+   "scripts/stack/studies/mc04_s16_l0301_replan/bulk-manifest.json": "f031a429a707c1ab44df742f95effff660c8a112d7c691de5c272c212992caed",
+   "scripts/stack/studies/mc04_s16_l0301_replan/result.json": "a42e143147e59ed0ee7d3b55686d68d19cad8b17bb066c9d98e6c962398861fb",
+   "scripts/stack/studies/mc04_s12_five_ic_joint/s12.py": "b1e993583c541dc28c3574dfe7b789804937697466e2404b09d5a1a64c7aadcd",
+   "scripts/stack/studies/mc04_s12_five_ic_joint/joint_search.py": "97697c009b3282807191dad7180ca77c0810fc81f33a165b3d505defe60b6d28",
+   "scripts/stack/studies/mc04_s15_no_growth_moves/guard15.py": "5c563ec149b739ced4792130f6d2ca6d76b573200ca1fcaac609c69a1c479172",
+   "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md": "a638d4b8d6d20def85c63ed51e236153d889da790dee7e7cc0bebe657d36e7b4",
+   "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16b-continuation-brief-20261128.md": "fa8dde3edefb84bc098baba413b75564de120ff4c796f5ab92cea975e9dc0bb6"
+  },
+  "commit": "5caaac988cb8466f1e52a94ee41b22b149d71bcf",
+  "note": "Fresh pins of the second recorded run (brief erratum 1, DS-219), computed by compute_pins without write_pins check against BRIEF_SHA, which still holds the Revision 2 hash; the first run pins are at 6d5e435f."
+ },
+ "run": {
+  "clock_s": 4786.795634508133,
+  "steps": {
+   "arm0": 770.6851065158844,
+   "stage1": 350.4466161727905,
+   "stage2a": 0.9570968151092529,
+   "stage2b": 3559.955258846283,
+   "stage3": 0.06291556358337402,
+   "stage4": 0.003214597702026367,
+   "end": 104.68228697776794
+  },
+  "segments": [
+   {
+    "start": 1795895073.228702,
+    "pid": 22359,
+    "end": 1795899860.0243366
+   }
+  ],
+  "resumes": [],
+  "executor_timed": {
+   "start-circuit-check": 5.0,
+   "start-regen-all": 357.7
+  },
+  "started": "2026-11-28T19:44:33Z",
+  "commit": "6e72c4b2e69b3543184dd7552f7e8de98ebbe494",
+  "stop": null,
+  "verdict": "NO RE-PLAN FOUND (BOUNDED)",
+  "bounds": [
+   "pool of 20 spots per block, cutting 12 blocks (the E1 block is never cut)",
+   "1800 rows-only replays in stage 2b",
+   "20 000 legality calls per structure, reached in 6 structures",
+   "410 live structures unfinished when stage 2b ended"
+  ],
+  "verdict_extra": {
+   "stop_rule": "Ruling Q6 applies: the run reached its end with a verdict of Ruling P6, no STOP, no STAGE 3 INCOMPLETE (CAP) scene and no LITE UNDECIDED scene unjudged, and no scene passes stage 3 full; the design authority will propose no further placement study for U8409, whatever bounds the verdict names",
+   "finished_by": {
+    "no legal scene left": 86,
+    "unfinished": 410,
+    "legality cap of 20 000 calls": 6
+   },
+   "every_structure_finished": false
+  },
+  "finished": "2026-11-28T21:04:20Z"
+ },
+ "verdict": "NO RE-PLAN FOUND (BOUNDED)",
+ "bounds": [
+  "pool of 20 spots per block, cutting 12 blocks (the E1 block is never cut)",
+  "1800 rows-only replays in stage 2b",
+  "20 000 legality calls per structure, reached in 6 structures",
+  "410 live structures unfinished when stage 2b ended"
+ ],
+ "exclusions": {
+  "a": "the 40-way size and any size larger than needed",
+  "b": "a block as a host",
+  "c": "a ride that divides a site",
+  "d": "a slot beyond 35 mm from its block centre",
+  "e": "a block slot with a member site beyond its class distance",
+  "f": "a slot of the block that holds P-K-E1 on C8443 or R7213 (Ruling Q2, R7); for R7213 alone the evidence is indirect: no S16 scene had the E1 block on R7213 only and passed rows"
+ },
+ "verdict_extra": {
+  "stop_rule": "Ruling Q6 applies: the run reached its end with a verdict of Ruling P6, no STOP, no STAGE 3 INCOMPLETE (CAP) scene and no LITE UNDECIDED scene unjudged, and no scene passes stage 3 full; the design authority will propose no further placement study for U8409, whatever bounds the verdict names",
+  "finished_by": {
+   "no legal scene left": 86,
+   "unfinished": 410,
+   "legality cap of 20 000 calls": 6
+  },
+  "every_structure_finished": false
+ },
+ "controls": {
+  "K1-end": true,
+  "K1-start": true,
+  "K10": true,
+  "K11": true,
+  "K12": true,
+  "K2": true,
+  "K3": true,
+  "K4": true,
+  "K5": true,
+  "K6": true,
+  "K7": true,
+  "K8": true,
+  "K9": true,
+  "N": true
+ },
+ "stage1": {
+  "S16-B[K-P-16]": {
+   "size": 8,
+   "distinct_after_R6": 743,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 743,
+   "spots": 59,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 8.85272058492637
+  },
+  "S16-B[K-P-18]": {
+   "size": 8,
+   "distinct_after_R6": 397,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 397,
+   "spots": 31,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 7.5
+  },
+  "S16-B[K-P-20]": {
+   "size": 8,
+   "distinct_after_R6": 676,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 676,
+   "spots": 55,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 6.430770730829005
+  },
+  "S16-B[P-K-E1]": {
+   "size": 8,
+   "distinct_after_R6": 179,
+   "distinct_R7_rejected": 47,
+   "distinct_survivors": 132,
+   "spots": 14,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 14.352621336620038
+  },
+  "S16-B[P-K-E2]": {
+   "size": 8,
+   "distinct_after_R6": 474,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 474,
+   "spots": 41,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 12.379929095582472
+  },
+  "S16-B[P-K-E3]": {
+   "size": 8,
+   "distinct_after_R6": 696,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 696,
+   "spots": 54,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 11.356435965266456
+  },
+  "S16-B[K-P-16+K-P-18]": {
+   "size": 8,
+   "distinct_after_R6": 397,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 397,
+   "spots": 31,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 7.865188528237008
+  },
+  "S16-B[K-P-16+K-P-20]": {
+   "size": 8,
+   "distinct_after_R6": 692,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 692,
+   "spots": 55,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 7.510407640085654
+  },
+  "S16-B[K-P-16+P-K-E1]": {
+   "size": 8,
+   "distinct_after_R6": 201,
+   "distinct_R7_rejected": 47,
+   "distinct_survivors": 154,
+   "spots": 18,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 11.573709789001771
+  },
+  "S16-B[K-P-16+P-K-E2]": {
+   "size": 8,
+   "distinct_after_R6": 532,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 532,
+   "spots": 44,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 10.592927061281571
+  },
+  "S16-B[K-P-16+P-K-E3]": {
+   "size": 8,
+   "distinct_after_R6": 671,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 671,
+   "spots": 52,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 11.1373774391991
+  },
+  "S16-B[K-P-18+K-P-20]": {
+   "size": 8,
+   "distinct_after_R6": 397,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 397,
+   "spots": 31,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 6.251644452187053
+  },
+  "S16-B[K-P-18+P-K-E1]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 14,
+   "distinct_survivors": 28,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 18.922019292437334
+  },
+  "S16-B[K-P-18+P-K-E2]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 42,
+   "spots": 4,
+   "on_parts_survivors": 14,
+   "cheapest_cost": 17.438507802408854
+  },
+  "S16-B[K-P-18+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 42,
+   "spots": 4,
+   "on_parts_survivors": 14,
+   "cheapest_cost": 15.58838834764832
+  },
+  "S16-B[K-P-20+P-K-E1]": {
+   "size": 8,
+   "distinct_after_R6": 201,
+   "distinct_R7_rejected": 47,
+   "distinct_survivors": 154,
+   "spots": 18,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 11.340851502942106
+  },
+  "S16-B[K-P-20+P-K-E2]": {
+   "size": 8,
+   "distinct_after_R6": 503,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 503,
+   "spots": 43,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 10.625
+  },
+  "S16-B[K-P-20+P-K-E3]": {
+   "size": 8,
+   "distinct_after_R6": 676,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 676,
+   "spots": 53,
+   "on_parts_survivors": 47,
+   "cheapest_cost": 12.447145558284419
+  },
+  "S16-B[P-K-E1+P-K-E2]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 14,
+   "distinct_survivors": 28,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 19.99832569262106
+  },
+  "S16-B[P-K-E1+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 14,
+   "distinct_survivors": 28,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 19.6875
+  },
+  "S16-B[P-K-E2+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 105,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 105,
+   "spots": 10,
+   "on_parts_survivors": 14,
+   "cheapest_cost": 15.903916460966196
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20]": {
+   "size": 14,
+   "distinct_after_R6": 30,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 30,
+   "spots": 4,
+   "on_parts_survivors": 12,
+   "cheapest_cost": 14.485608040500589
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E1]": {
+   "size": 14,
+   "distinct_after_R6": 36,
+   "distinct_R7_rejected": 12,
+   "distinct_survivors": 24,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 17.393265442697494
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E2]": {
+   "size": 14,
+   "distinct_after_R6": 36,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 36,
+   "spots": 4,
+   "on_parts_survivors": 12,
+   "cheapest_cost": 16.644344934278312
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 42,
+   "spots": 4,
+   "on_parts_survivors": 14,
+   "cheapest_cost": 16.31490030065033
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E1]": {
+   "size": 14,
+   "distinct_after_R6": 36,
+   "distinct_R7_rejected": 12,
+   "distinct_survivors": 24,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 15.583753326074298
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E2]": {
+   "size": 14,
+   "distinct_after_R6": 82,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 82,
+   "spots": 8,
+   "on_parts_survivors": 14,
+   "cheapest_cost": 15.1875
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 108,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 108,
+   "spots": 14,
+   "on_parts_survivors": 12,
+   "cheapest_cost": 15.551041453994818
+  },
+  "S16-B[K-P-16+P-K-E1+P-K-E2]": {
+   "size": 14,
+   "distinct_after_R6": 30,
+   "distinct_R7_rejected": 12,
+   "distinct_survivors": 18,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 18.245906141935823
+  },
+  "S16-B[K-P-16+P-K-E1+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 35,
+   "distinct_R7_rejected": 14,
+   "distinct_survivors": 21,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 18.0625
+  },
+  "S16-B[K-P-16+P-K-E2+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 78,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 78,
+   "spots": 10,
+   "on_parts_survivors": 12,
+   "cheapest_cost": 17.11293598757049
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E1]": {
+   "size": 14,
+   "distinct_after_R6": 36,
+   "distinct_R7_rejected": 12,
+   "distinct_survivors": 24,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 16.563048203434807
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E2]": {
+   "size": 14,
+   "distinct_after_R6": 36,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 36,
+   "spots": 4,
+   "on_parts_survivors": 12,
+   "cheapest_cost": 15.583753326074298
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 42,
+   "spots": 4,
+   "on_parts_survivors": 14,
+   "cheapest_cost": 15.1875
+  },
+  "S16-B[K-P-18+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-18+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-18+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-20+P-K-E1+P-K-E2]": {
+   "size": 14,
+   "distinct_after_R6": 36,
+   "distinct_R7_rejected": 12,
+   "distinct_survivors": 24,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 17.11172105084963
+  },
+  "S16-B[K-P-20+P-K-E1+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 14,
+   "distinct_survivors": 28,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 16.875
+  },
+  "S16-B[K-P-20+P-K-E2+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 84,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 84,
+   "spots": 10,
+   "on_parts_survivors": 12,
+   "cheapest_cost": 16.971075286992477
+  },
+  "S16-B[P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E1]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 14,
+   "distinct_survivors": 28,
+   "spots": 2,
+   "on_parts_survivors": 0,
+   "cheapest_cost": 15.916815472394509
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E2]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 42,
+   "spots": 4,
+   "on_parts_survivors": 14,
+   "cheapest_cost": 15.292140102611532
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E3]": {
+   "size": 14,
+   "distinct_after_R6": 42,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 42,
+   "spots": 4,
+   "on_parts_survivors": 14,
+   "cheapest_cost": 15.0625
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-18+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-20+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "distinct_after_R6": 0,
+   "distinct_R7_rejected": 0,
+   "distinct_survivors": 0,
+   "spots": 0,
+   "on_parts_survivors": 0,
+   "cheapest_cost": null
+  }
+ },
+ "stage2b": {
+  "replays": 1800,
+  "bound": [
+   "1800 rows-only replays in stage 2b"
+  ],
+  "rounds": [
+   {
+    "round": 1,
+    "tried": 502,
+    "replays": 414,
+    "rows_passers": 0,
+    "lite_passers": 0,
+    "undecided": 0,
+    "no_scene_left": 84,
+    "not_started_time": 0
+   },
+   {
+    "round": 2,
+    "tried": 414,
+    "replays": 413,
+    "rows_passers": 0,
+    "lite_passers": 0,
+    "undecided": 0,
+    "no_scene_left": 0,
+    "not_started_time": 0
+   },
+   {
+    "round": 3,
+    "tried": 413,
+    "replays": 410,
+    "rows_passers": 0,
+    "lite_passers": 0,
+    "undecided": 0,
+    "no_scene_left": 2,
+    "not_started_time": 0
+   },
+   {
+    "round": 4,
+    "tried": 410,
+    "replays": 410,
+    "rows_passers": 0,
+    "lite_passers": 0,
+    "undecided": 0,
+    "no_scene_left": 0,
+    "not_started_time": 0
+   },
+   {
+    "round": 5,
+    "tried": 153,
+    "replays": 153,
+    "rows_passers": 0,
+    "lite_passers": 0,
+    "undecided": 0,
+    "no_scene_left": 0,
+    "not_started_time": 0
+   }
+  ],
+  "discarded": [],
+  "in_flight_at_cap": 3,
+  "finished_by": {
+   "no legal scene left": 86,
+   "unfinished": 410,
+   "legality cap of 20 000 calls": 6
+  }
+ },
+ "stage3": {
+  "lite_passers": 0,
+  "undecided": 0,
+  "incomplete_cap": 0,
+  "passed_full": 0,
+  "overlay_count": {
+   "cap": 10,
+   "count": 0,
+   "before_each": []
+  }
+ },
+ "stage4": {
+  "survivors": 23,
+  "scenes": [],
+  "replays": 0
+ },
+ "candidates": [],
+ "digests": {
+  "checkpoints/arm0/K1-end.json": "d5375ae8ec7922f621653603bda12ab067002df511788a17ea781e3c554673dc",
+  "checkpoints/arm0/K1-start.json": "bc823a87f6c341f74f495f7ce6990d55782817358130f7db397b59d915741adb",
+  "checkpoints/arm0/K10.json": "ecaaab0009350cbda43e9b24f8eab6e51401c5913d5e33dc80843d596cc7c941",
+  "checkpoints/arm0/K11.json": "f1abdce2397617c60bb7b9088e6b1ebe8ae60638ff5a77d1541b1ccd73843379",
+  "checkpoints/arm0/K12.json": "9425966acf419f2c7c7c775f096d0ca15baaae0145bbd7b777bc58481485808f",
+  "checkpoints/arm0/K2.json": "26dbf95e1724c0c8e969be8ebb7d7c3d49e0588f2b7dfd639d03b83617ce6dc2",
+  "checkpoints/arm0/K3.json": "1d9f17c071b3ce72d5249fcf7fc1c7a949937ea586ef137bd74a86c15b72be11",
+  "checkpoints/arm0/K4.json": "d8a6ee64af3a937b5143c41fab251de5ea56ecfd402c10658443145b52671e69",
+  "checkpoints/arm0/K5.json": "acab584742b1703a3eb25a3f74e75375dad9361f09d708eeebba47bd20d96fd9",
+  "checkpoints/arm0/K6.json": "971bd74536953f9b6d8477551f42bd27c9c99f43fe7948505f56e0175ded1ba9",
+  "checkpoints/arm0/K7.json": "b2998d1794685f276168fc2a6490cb647c1a3004ed30e4173383bbf10978ed47",
+  "checkpoints/arm0/K8.json": "a604105a34525f508c80090886cdb65a218703f8898bd3c6b7b9d3977aaff902",
+  "checkpoints/arm0/K9.json": "b087ac408004238769097f30e4d0368a541e7f8f79129473a5fdd5dab8004238",
+  "checkpoints/arm0/N.json": "17b8a28e3c1016e278f9523deb5e0cfa68abf39a1463837e953741f262761c1e",
+  "checkpoints/durable-copy.json": "89221607c68071d7a14bebb4f1cd21c5ee9a8998ae0f299387f9938e73def7cd",
+  "checkpoints/guard/k1-end-s12-check.json": "03d3eabc3ae89f32004086e360c6f4a9e7153daeb1047f174d9885e7f9eceed4",
+  "checkpoints/guard/k1-end-s16-check.json": "8e81b660751b1b481ffa978541595742997fdac5e4ad6c07ce9d516a644f71eb",
+  "checkpoints/guard/k1-end-s16-unittest.json": "b6dcb5fb1f728eabc92367505bb6d01f0d8edc982f1c7f20fd71a4de5418151f",
+  "checkpoints/guard/k1-start-s12-check.json": "438a73bcb03477ee02c4bb15afaff80e59a3213fb37c15b084e2de9ddfe5cf69",
+  "checkpoints/guard/k1-start-s16-check.json": "dd6bce8877b7778e1f971509a72b94b3aa6ec4f3368ad3779e42e8ac63ed2ecc",
+  "checkpoints/guard/k1-start-s16-unittest.json": "3becbaa810abb5c592d3c25bafbf47cc7d18b1894fb08c88e45c5013f65eee96",
+  "checkpoints/guard/k2-full-replay.json": "fd4e0a146fc8e9ce04cb671996d82dfaa0b78efd0ea14342920f826392bdb275",
+  "checkpoints/guard/n-cases-test-s16b.json": "e5dec19ec64b71b0c5fc8defd1c0f40b7132ef19c70033465202dcfae68139f1",
+  "checkpoints/guard/run-2.json": "a8fa948f5c086242d510073836eea920fe073d9f712fd7964966839f0a735d89",
+  "checkpoints/guard/start-circuit-check.json": "04b6066678320c22e2a4cbf53317def6c3fa4d9c90a07a9b575ed0aab0f45c4e",
+  "checkpoints/guard/start-regen-all.json": "3ff4d27273e8189a38c2b80e6cf5c6c226468f64ddaeb17b39acd7583627e926",
+  "checkpoints/ruling.json": "8189b06f663bb4da9852231ad18b4619e1dd54171d31d8206ce4e6d55c2c7a8b",
+  "checkpoints/stage1/progress.json": "12c7bfda71a1f333155205858025d1cb8f771533f9661c216377bc54a64663b5",
+  "checkpoints/stage1/summary.json": "17f6f9a2df59bdc14645911dd65c9f10885c5d77582846bf00751b16b59e6feb",
+  "checkpoints/stage2a/pools.json": "fb7f58f6706cc76f55b0c21e9481e101ae1c92435d14ec2cba5cca04b87eb43f",
+  "checkpoints/stage2a/progress.json": "032cd6619c3154c5ffb3d3cb1139b095b8a06dfe81ecbfa737e0e54c6a42cd36",
+  "checkpoints/stage2a/rides.json": "35edf99637c3a9c1b7d7f278d4450dd07383ee238653999a6f8625ca0d6d4e67",
+  "checkpoints/stage2b/k11-sequential.json": "159c06a90f743b80349acce2fc8c649dc290ae03222c18a52682f52187319556",
+  "checkpoints/stage2b/progress.json": "d64d52656c9881e577e3a8e902af119f8417f002c5beaf1b9c6a6fcbef9168f8",
+  "checkpoints/stage3/summary.json": "d2eaf6febeac962f56809d17bfb35484898dd23fc890ce3d500be61e0fe8ddce",
+  "checkpoints/stage4/summary.json": "3e7913438daf93995cde35093770553c09a4d1805f12dfc95b5dd0c049f1bff8",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3].json": "291a6c2b60a0bec1920f1a0402f6123f5b8b97a5ad7b1aa2ae2f690578e67859",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2].json": "8c718d1f88ff949edff0beb0cf2c054fca7a6556877b73fae160860d2aa9a3d9",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E3].json": "b765983964e6a4387477528a9aab4b768f124da7433c3a06234b0e236dae2e74",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E1].json": "1dcc8d32eca64733c52b4dad1841e21d57b351e2cfa7c394c2c27d1b185d55e2",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E2+P-K-E3].json": "429cfe4216910bdbc001f490d1604acc48a1269f83b8c4565ad17a62862dd358",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E2].json": "c9851cf1639d0c8849701193770f416910509ce128429cbd48889a93b5143f5a",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E3].json": "efc8a9ea1808f177400a686ac5226572ae49339a1403460e288300bbc5279b96",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20].json": "3f4b0cc1144ff2fafcea6ce71b0b66e3e31eda6634cb4f79eb13a036ecbf81fa",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E1+P-K-E2+P-K-E3].json": "d0f9c27d72ddfe3f15097fbb2164f38abbeecfd1b0539bc3eaf83c53b49496dd",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E1+P-K-E2].json": "077533fba4ade987991976c4984228d67261515b2075a01318c8e8f7ef5b9738",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E1+P-K-E3].json": "1740db725dbea1ebc048fa5f41f844e2a079040f78f1107b77772782746fe5dc",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E1].json": "21487088d885a33a9c9346576de8037b0134b19303756c69cd131722e54c540b",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E2+P-K-E3].json": "d577ac725a840aeaf72e34fa20ca87329a11646c12fa6dadcc50a52947e00e73",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E2].json": "409d017a71f0e633a3635809570e92d41df4e776bb1770a0a4cd42de0d735eb1",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E3].json": "d2049019214e0db1a5a57c6896a243aaf98ea6f0e8366e20a1ea62660cc8c837",
+  "stage1/S16-B[K-P-16+K-P-18].json": "3fb196a59bf8f3adda726df5fcd136cfe2923d590d265ef863dd3aa395000ae4",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E1+P-K-E2+P-K-E3].json": "9dd76f3a428ae2d0a45cf3a43ce842bb6f76a2d585059c980338748d59395f3b",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E1+P-K-E2].json": "722fb0ed1f2b303d359b37cc6e74a3d302fa8202deb73f601238eba9157e6db3",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E1+P-K-E3].json": "22d1753b1fc5f7a0ad1bdfa1859683fdb1782901d8f9a77160d48bf193b2bf94",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E1].json": "5d175fe8c14dfdbe8d0bc5c7a906459efcf42dfd48ccaffa6fbae5fc77b063e9",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E2+P-K-E3].json": "f8f41fa12db5f5794f527a2f1a267377d42cc28e8c3f66adec86ea5b7d431edb",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E2].json": "fa1ba2045af42f1afa649b6089c2ade31bc7efb471d4972f4f805302c93ec88d",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E3].json": "5ac75a147edd7520a84ea01b33f5bb0231375484da9a0fd8da2006b056ae2b1b",
+  "stage1/S16-B[K-P-16+K-P-20].json": "8ebc3077a3dbc59cede5920719ed561b5b9fc8bdb7471c6b63eb99a78be44f5d",
+  "stage1/S16-B[K-P-16+P-K-E1+P-K-E2+P-K-E3].json": "fe4d72042f420369ad189b767132fd80183c2cd8be17bd37f7911adfcade4033",
+  "stage1/S16-B[K-P-16+P-K-E1+P-K-E2].json": "2e294aa8d21efd6e38b6be93e4b90fd33748fcd425c60f6df9c10aec91f8e70b",
+  "stage1/S16-B[K-P-16+P-K-E1+P-K-E3].json": "15f037efc5abaedd646ab00a72449692126620a7bc115baa962f89c2ba4c1d64",
+  "stage1/S16-B[K-P-16+P-K-E1].json": "14ce2cf5d4ebee61b5b530479360d265b8f65da1240b9d124b22fba6f9007c81",
+  "stage1/S16-B[K-P-16+P-K-E2+P-K-E3].json": "829959bd6135feb5a473f7f7db024a633d29f23674dcdfc217d366e560f5eff6",
+  "stage1/S16-B[K-P-16+P-K-E2].json": "ae71d846e4111b19b10b64057fbb8786963974e8805965fe5704818adc74dcca",
+  "stage1/S16-B[K-P-16+P-K-E3].json": "29faa897a184064a10c8beded2ece0ce8b2ac7d4535f850ab29dce10d6460aa5",
+  "stage1/S16-B[K-P-16].json": "4e09ffa25ec17a046b9cd06fcf2070c6565741573251a59192bf6aa60c573fab",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3].json": "5197f2cca263faa09e4fe0c3046976008a88d01f20c2733acedb58af5d16eebe",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E1+P-K-E2].json": "0a86917a274262295dd9f314f6507e7c795668268473ff78498367725627ddf0",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E1+P-K-E3].json": "2580d78aa1d4e187ef56ae8f58d154098b239164d37d633ca4e9ec255d5be05c",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E1].json": "1745749b95b3d88bec15cb8586eb6c67418e18ad429430eae17d0a9e38626bfe",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E2+P-K-E3].json": "5429ff7279cc17ec0d6c68e7c3d0e7d7d4879f140a5434b16134c9741cdfd854",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E2].json": "7df0a8639430638184cdb83e84a29c94d138b21268f9f10de0cc04968071eaaa",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E3].json": "ed09c02374dd237cb3ebe008b801e8df60f6b71cd98b59a6e63fd4ed9d7a364b",
+  "stage1/S16-B[K-P-18+K-P-20].json": "297c1daa4b3dd5668a7c425feb94a5f53c75922ee16cb77e29dce83b5db44f3d",
+  "stage1/S16-B[K-P-18+P-K-E1+P-K-E2+P-K-E3].json": "7b878bbebe77518513987bd0421b74d6edf3b4a5ff31bd1820c895049bab7c0c",
+  "stage1/S16-B[K-P-18+P-K-E1+P-K-E2].json": "e291319510c59c3f8ebe843134980335110a1cd6e150aeee6ee4aeb1271910be",
+  "stage1/S16-B[K-P-18+P-K-E1+P-K-E3].json": "c7626ab27836f1c456cc881c80bc551b546f8f617c14ca57d0bc7076863b6381",
+  "stage1/S16-B[K-P-18+P-K-E1].json": "09c1eed60d8d223616c34d61f755df3764454d4452533e9a5705a4d85708c70d",
+  "stage1/S16-B[K-P-18+P-K-E2+P-K-E3].json": "ea67cceec807d9e090ad3a407c19e31e67b6ba264a4ff2ed1069a67eb45e589c",
+  "stage1/S16-B[K-P-18+P-K-E2].json": "0d6488793d3ef13c9b73b011184a39a69eac9de6c436738f1c2a77d9a0ba8e9b",
+  "stage1/S16-B[K-P-18+P-K-E3].json": "c217b59c8daf62bbaa377bc84d1b527069b32731f708fdd376b6bc45ad3f994d",
+  "stage1/S16-B[K-P-18].json": "540269d0cecfd809ed0be7a19f43d113cb8744ee16296173e86d6661a126167f",
+  "stage1/S16-B[K-P-20+P-K-E1+P-K-E2+P-K-E3].json": "8e2c0f47ca24fa96883131598b362799fcf9db317839918b01e0ff0e16d87740",
+  "stage1/S16-B[K-P-20+P-K-E1+P-K-E2].json": "a69c22f8f9c779b45052b4a8e3f5fc020a133c6408fc52411572978f173e0e73",
+  "stage1/S16-B[K-P-20+P-K-E1+P-K-E3].json": "cd1a5e1b0e0dbb98ff53e3b410388427d359f1fa778723e848c5bfa9473ee4ef",
+  "stage1/S16-B[K-P-20+P-K-E1].json": "997833c39216f9ce55922222e772f2941a2d7144cbed91760f0c0190bbfc2834",
+  "stage1/S16-B[K-P-20+P-K-E2+P-K-E3].json": "698f7306b99ae0de1db9fc220ba2f7b34e1d0c5199175b2dd01dd20c5494e889",
+  "stage1/S16-B[K-P-20+P-K-E2].json": "830be9d1fe0ecf80859d59fd47c1d61c3fdebc115349660cf1b0f66b0fcf9892",
+  "stage1/S16-B[K-P-20+P-K-E3].json": "8e79b617f3d77a0538219d62b8f523702c3c67ddf6ef9ba629ec8a652205f692",
+  "stage1/S16-B[K-P-20].json": "df0e6f85aa9db3f60d494ed7005bcbedcdd2cb2b9528255bbcd6d66f50daf0b2",
+  "stage1/S16-B[P-K-E1+P-K-E2+P-K-E3].json": "0c9544d2c8fd0085a7e56f516ba6c4e1377be269aa075190de5f9a15d77f2bd1",
+  "stage1/S16-B[P-K-E1+P-K-E2].json": "983e17a5a451766db78bc427e4b51e965f3c3fe3a75477476a79de50c0d338ce",
+  "stage1/S16-B[P-K-E1+P-K-E3].json": "efb38e75375625209b98545d0fab91b8bfb2d43128d2f2e54e9e9959f6ab69e1",
+  "stage1/S16-B[P-K-E1].json": "d240fa0f0892d5aaec0450f7b788ca89e4c55a40cdb62606834a61bd55150404",
+  "stage1/S16-B[P-K-E2+P-K-E3].json": "4a26ddb62f9ecd3f916ed97b32bae940e60234f56bea749fd651534515cc73c7",
+  "stage1/S16-B[P-K-E2].json": "786742161d92d7d93829e6cea4711810c9ce1c2ce51cd8131441d9918bbd46f9",
+  "stage1/S16-B[P-K-E3].json": "b8a6d9774b1c7ec1153ca11c0736091dce8c8ed3d41d84a997dcc1b046400af4",
+  "stage2a/structures.json": "baceaaaad0a785337b5aa7766a4e5a7221a32a327af957bd07e9e1046007a755",
+  "stage2b/scenes-0000.json": "9f999121ec8684f34809432767167998b3a130d10dcb3cc400818a9e36504c58",
+  "stage2b/scenes-0001.json": "daa06f86f1f7920bb63b7269420d32fedcc2d443f59eca2a5f3753c4a90efec7",
+  "stage2b/scenes-0002.json": "2fe23ce103cef2bc5af5df7c5c15ee233e169f181c6bc9077a85163209aca319",
+  "stage2b/scenes-0003.json": "2577cd99a3cb75678f16eee7b4d9a6c28709deaaaa46bf4c9c53fa71dd40e39c",
+  "stage2b/scenes-0004.json": "c6c28505f1c2ecb3a7188da43d70b57e19fb3c1771754997c440605ad25fea30",
+  "stage2b/scenes-0005.json": "4db42fcae964e5df132af2707867f7b0c99cfbd73bf967b8e564587eafb9757a",
+  "stage2b/scenes-0006.json": "712b2e28b481ef3dc1980ba42cd919c507b93f71d78420140a823bb42fd775bf",
+  "stage2b/scenes-0007.json": "5c4a7d47314eaf8b5ca2d0f757b04ea6f048be4eed38a87cf876b2496f27219f",
+  "stage2b/scenes-0008.json": "9c796c5077a336c9a4d132be2288bb199c1db3b68c1b9605bad91c53f389753c",
+  "stage2b/scenes-0009.json": "4bdb9d39b962cdc711f85a9c7098b9a374a9eca0753e87c44a809df3ae4f8993",
+  "stage2b/scenes-0010.json": "f9b058f1bc917c027ed7f45efa616921b3ea69b903f7d10a81884cb175d01f22",
+  "stage2b/scenes-0011.json": "5d169c5efaf7c3b1561cc82cff19ac29d1ab16b63fa1de61e228ef6366b12695",
+  "stage2b/scenes-0012.json": "b9bf201405949be72d2f90abf13702a725522412e41bf9a8920b8ad01a52af2e",
+  "stage2b/scenes-0013.json": "63777a83c557e5b407f6af6090d147c5066a672493868d0ee008165f6a98a8f7",
+  "stage2b/scenes-0014.json": "e3635e80d158d48d590a862649644b86b5152aded86e57556f50d7bb18893463",
+  "stage2b/scenes-0015.json": "51bae7456065061ff7240e196eea327cc7994d4253940d9be83c9df58d783a5e",
+  "stage2b/scenes-0016.json": "2aa22e9d39184f8adc68af7a93322e1714a24d0b2c2b3a6aa41b8dabcde3b375",
+  "stage2b/scenes-0017.json": "892ca0232b0b9db33e5cd2d8c0641d8ed7e12afe37597437da7b1f1e9c2f6cb4",
+  "stage2b/scenes-0018.json": "fda8fc70bee7cdbdb394bc4c5c86529a9e08c964ffb9e71e40ae90dd3d0622fd",
+  "stage2b/scenes-0019.json": "44d506612543652a26cf412b2788f86ebfdb5ca473969e0485f8200c2b317060",
+  "stage2b/scenes-0020.json": "42565c2ffd5fb289f4de5bd2b8fd2b4ce7b5d6848fa8fccd0973220e09267fdd",
+  "stage2b/scenes-0021.json": "be4e03612a0224336dc79d4b783cc516a3979a929dbbfbccb39c42023f343039",
+  "stage2b/scenes-0022.json": "d5c62a15c80d2af303f313801507506cc742fda8a431eef04140a2d64d5ff923",
+  "stage2b/scenes-0023.json": "d4a6e9b257147f4d508e34efe02095fe9c9b28edc44abe4e9b3eb1116541c02e",
+  "stage2b/scenes-0024.json": "8df08207fc6756e9c3cbdc7be296254bc97ea2619fe7a69fd5aac12c1c385f3e",
+  "stage2b/scenes-0025.json": "6ef956d14e69220614b7146a8c4bf9031ceef0c0b9249f81150ac4b4f893f634",
+  "stage2b/scenes-0026.json": "47729744f3a91f7bbebcbb38fa71d07e32c6a5bf34f2f237ce00238fa5afc52b",
+  "stage2b/scenes-0027.json": "6ee5c7a87cec6cc1fbc4e4bb337357838feba5d5ce53c182494b7eaeec7fdd54",
+  "stage2b/scenes-0028.json": "5a9a12a6a0a61fc5aed7ddaaa0006418e3785939c3a84d65941ad9794ce508de",
+  "stage2b/scenes-0029.json": "021b745c208c34cc20710c6fa610009d4902c9533dc40afd995bc27dd7e12a40",
+  "stage2b/scenes-0030.json": "8aef70f1d13645d0d81089553a5bd914e2aa7cd7cc5da09d196af75217f9c2b4",
+  "stage2b/scenes-0031.json": "4cc4fbcc5404021c82e72d43bd9fa6a34187bf98ad8b7035c5403bd05abeffff",
+  "stage2b/scenes-0032.json": "c4c789c92bba7a46ab265c77c32e26c15391c2a1e78a71aa724401e2486acf15",
+  "stage2b/scenes-0033.json": "5d0375d37b6e3e13e4219a6c9d0319f591e6aec4285a00d1f792507ed7ac6d74",
+  "stage2b/scenes-0034.json": "9c1c8fbe2d3b8acdc7110308cfaf04700a2e6a4011c0cb945a2f44176bea0c4c",
+  "stage2b/scenes-0035.json": "ab35a6eab0177471de91b4f45d05d59fe4f090f6c8b9251007a997eaa55cb813",
+  "stage2b/scenes-0036.json": "cb38f63fd9a8007eb3110007bac8790ab19cd9c9c7a0277c6b86d5d545a1b82a",
+  "stage2b/scenes-0037.json": "b224910ad6f23d11f248f38ee5b19a8a426eb8477c2cd267d86d1f20b8ac58d1",
+  "stage2b/scenes-0038.json": "1e5ff6ff47554d81b5910a07b1dfad9f624ed4c51ea289fdfec8d1312ca28d21",
+  "stage2b/scenes-0039.json": "beebca6d080e446c407038b6089f82427a90612b6e3d8c7b93eae6a9402e6d5d",
+  "stage2b/state.json": "4f0009ccb39d5be145e651bb15b5a3eb738e710b9cc4bf68b95b7df59cb6c558"
+ },
+ "bulk": {
+  "manifest": "bulk-manifest.json",
+  "files": 105,
+  "durable_copy": "/mnt/project-files/osc-s16b-cache/"
+ }
+}
