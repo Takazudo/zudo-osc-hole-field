@@ -33,10 +33,10 @@
      "label": "FAILS AT ZERO STRAY",
      "label_source": "S14 arm G",
      "net": "/W1/PRE_GAIN_SUM",
-     "status": "conditional on an owner decision",
+     "status": "blocks",
      "what_if": [
-      "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 50 pF: LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header); Ruling 6 output pair fails at C_lim (100 pF: K1)",
-      "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 50 pF: LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header); Ruling 6 output pair fails at C_lim (100 pF: K1)"
+      "WHAT-IF 10 pF, NOT ADOPTED: NOT EVALUATED: Ruling 6 output pair fails at C_lim 50 pF (100 pF on OUT: K1); no usable limit",
+      "WHAT-IF 10 pF, NOT ADOPTED: NOT EVALUATED: Ruling 6 output pair fails at C_lim 50 pF (100 pF on OUT: K1); no usable limit"
      ]
     },
     {
@@ -65,10 +65,10 @@
    "rows": [
     {
      "class": "C",
-     "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R2335; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+     "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
      "label_source": "S14 re-score",
      "net": "/F3/C8c344f_W_SENSE",
-     "status": "conditional on an owner decision",
+     "status": "blocks",
      "what_if": []
     },
     {
@@ -122,17 +122,17 @@
      "label": "FAILS AT ZERO STRAY",
      "label_source": "S14 arm G",
      "net": "/W1/PRE_GAIN_SUM",
-     "status": "conditional on an owner decision",
+     "status": "blocks",
      "what_if": [
-      "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 50 pF: LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header); Ruling 6 output pair fails at C_lim (100 pF: K1)",
-      "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 50 pF: LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header); Ruling 6 output pair fails at C_lim (100 pF: K1)"
+      "WHAT-IF 10 pF, NOT ADOPTED: NOT EVALUATED: Ruling 6 output pair fails at C_lim 50 pF (100 pF on OUT: K1); no usable limit",
+      "WHAT-IF 10 pF, NOT ADOPTED: NOT EVALUATED: Ruling 6 output pair fails at C_lim 50 pF (100 pF on OUT: K1); no usable limit"
      ]
     }
    ],
    "supported": false
   },
   "U5210": {
-   "conditional": true,
+   "conditional": false,
    "rows": [
     {
      "class": "B",
@@ -144,10 +144,10 @@
     },
     {
      "class": "C",
-     "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R8360; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+     "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
      "label_source": "S14 re-score",
      "net": "/M4A/C1c45d6_W_SENSE",
-     "status": "conditional on an owner decision",
+     "status": "blocks",
      "what_if": []
     },
     {
@@ -160,10 +160,10 @@
     },
     {
      "class": "C",
-     "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R8460; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+     "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
      "label_source": "S14 re-score",
      "net": "/M4B/C1c45d6_W_SENSE",
-     "status": "conditional on an owner decision",
+     "status": "blocks",
      "what_if": []
     },
     {
@@ -274,7 +274,7 @@
    "supported": false
   },
   "U8409": {
-   "conditional": true,
+   "conditional": false,
    "rows": [
     {
      "class": "B",
@@ -286,18 +286,18 @@
     },
     {
      "class": "C",
-     "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R8360; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+     "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
      "label_source": "S14 re-score",
      "net": "/M4A/C1c45d6_W_SENSE",
-     "status": "conditional on an owner decision",
+     "status": "blocks",
      "what_if": []
     },
     {
      "class": "C",
-     "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R8460; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+     "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
      "label_source": "S14 re-score",
      "net": "/M4B/C1c45d6_W_SENSE",
-     "status": "conditional on an owner decision",
+     "status": "blocks",
      "what_if": []
     },
     {
@@ -1384,7 +1384,6 @@
    "topology": "0d33f4c821081fda"
   },
   {
-   "allowance_pF": 21.05,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -1392,7 +1391,7 @@
     "ref": "U5211",
     "unit": 4
    },
-   "c_lim_pF": 32.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "F.Cu",
     "c_paper_pF": 10.95,
@@ -1973,13 +1972,15 @@
    "deciding": [
     "K7"
    ],
-   "hpwl_max_mm": 100.3,
-   "label": "PROVISIONAL 32 pF: IDENTITY OPEN: R5269; Ruling 6 output pair fails at C_lim (100 pF: K1/K2); BASELINE EXCEEDS K4 (RELATIVE FORM)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 32 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET 50 pF, BASELINE EXCEEDS K4 (RELATIVE FORM, MODEL EVIDENCE ONLY)"
    },
    "net": "/W1/C629978_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R5269"
+   ],
    "outpair": [
     {
      "c_pF": 32.0,
@@ -2025,16 +2026,13 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R5269",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "FAILS AT ZERO STRAY",
    "subclass": "D",
+   "swept_c_lim_pF_not_usable": 32.0,
    "topology": "68dcfa21ea6cfd39"
   },
   {
-   "allowance_pF": 26.18,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -2042,7 +2040,7 @@
     "ref": "U4244",
     "unit": 1
    },
-   "c_lim_pF": 40.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "F.Cu",
     "c_paper_pF": 13.82,
@@ -2474,13 +2472,15 @@
     "K6",
     "K8"
    ],
-   "hpwl_max_mm": 129.3,
-   "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R4266; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
    },
    "net": "/E2/Cd69090_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R4266"
+   ],
    "outpair": [
     {
      "c_pF": 40.0,
@@ -2534,16 +2534,13 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R4266",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "NOT EVALUATED: K5 late window overlaps the cell's RC settling tail at wiper 1.0",
    "subclass": "C",
+   "swept_c_lim_pF_not_usable": 40.0,
    "topology": "71a1a514d4788612"
   },
   {
-   "allowance_pF": 5.59,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -2551,7 +2548,7 @@
     "ref": "U4543",
     "unit": 1
    },
-   "c_lim_pF": 40.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "F.Cu",
     "c_paper_pF": 34.41,
@@ -2983,13 +2980,15 @@
     "K6",
     "K8"
    ],
-   "hpwl_max_mm": 126.0,
-   "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R4549; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
    },
    "net": "/E5/Cb80f06_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R4549"
+   ],
    "outpair": [
     {
      "c_pF": 40.0,
@@ -3043,16 +3042,13 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R4549",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "NOT EVALUATED: K5 late window overlaps the cell's RC settling tail at wiper 1.0",
    "subclass": "C",
+   "swept_c_lim_pF_not_usable": 40.0,
    "topology": "71a1a514d4788612"
   },
   {
-   "allowance_pF": 5.74,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -3060,7 +3056,7 @@
     "ref": "U4544",
     "unit": 1
    },
-   "c_lim_pF": 40.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "B.Cu",
     "c_paper_pF": 34.26,
@@ -3492,13 +3488,15 @@
     "K6",
     "K8"
    ],
-   "hpwl_max_mm": 126.0,
-   "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R4566; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
    },
    "net": "/E5/Cd69090_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R4566"
+   ],
    "outpair": [
     {
      "c_pF": 40.0,
@@ -3552,16 +3550,13 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R4566",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "NOT EVALUATED: K5 late window overlaps the cell's RC settling tail at wiper 1.0",
    "subclass": "C",
+   "swept_c_lim_pF_not_usable": 40.0,
    "topology": "71a1a514d4788612"
   },
   {
-   "allowance_pF": 28.64,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -3569,7 +3564,7 @@
     "ref": "U2311",
     "unit": 2
    },
-   "c_lim_pF": 40.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "B.Cu",
     "c_paper_pF": 11.36,
@@ -4001,13 +3996,15 @@
     "K6",
     "K8"
    ],
-   "hpwl_max_mm": 127.7,
-   "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R2335; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
    },
    "net": "/F3/C8c344f_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R2335"
+   ],
    "outpair": [
     {
      "c_pF": 40.0,
@@ -4061,16 +4058,13 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R2335",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "NOT EVALUATED: K5 late window overlaps the cell's RC settling tail at wiper 1.0",
    "subclass": "C",
+   "swept_c_lim_pF_not_usable": 40.0,
    "topology": "71a1a514d4788612"
   },
   {
-   "allowance_pF": 12.77,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -4078,7 +4072,7 @@
     "ref": "U8311",
     "unit": 4
    },
-   "c_lim_pF": 40.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "B.Cu",
     "c_paper_pF": 27.23,
@@ -4510,13 +4504,15 @@
     "K6",
     "K8"
    ],
-   "hpwl_max_mm": 126.0,
-   "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R8360; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
    },
    "net": "/M4A/C1c45d6_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R8360"
+   ],
    "outpair": [
     {
      "c_pF": 40.0,
@@ -4570,16 +4566,13 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R8360",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "NOT EVALUATED: K5 late window overlaps the cell's RC settling tail at wiper 1.0",
    "subclass": "C",
+   "swept_c_lim_pF_not_usable": 40.0,
    "topology": "71a1a514d4788612"
   },
   {
-   "allowance_pF": 31.5,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -4587,7 +4580,7 @@
     "ref": "U8411",
     "unit": 4
    },
-   "c_lim_pF": 40.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "B.Cu",
     "c_paper_pF": 8.5,
@@ -5019,13 +5012,15 @@
     "K6",
     "K8"
    ],
-   "hpwl_max_mm": 127.7,
-   "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R8460; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
    },
    "net": "/M4B/C1c45d6_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R8460"
+   ],
    "outpair": [
     {
      "c_pF": 40.0,
@@ -5079,16 +5074,13 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R8460",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "NOT EVALUATED: K5 late window overlaps the cell's RC settling tail at wiper 1.0",
    "subclass": "C",
+   "swept_c_lim_pF_not_usable": 40.0,
    "topology": "71a1a514d4788612"
   },
   {
-   "allowance_pF": 15.7,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -5096,7 +5088,7 @@
     "ref": "U5207",
     "unit": 1
    },
-   "c_lim_pF": 40.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "B.Cu",
     "c_paper_pF": 24.3,
@@ -5528,13 +5520,15 @@
     "K6",
     "K8"
    ],
-   "hpwl_max_mm": 127.7,
-   "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R5217; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
    },
    "net": "/W1/C75db46_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R5217"
+   ],
    "outpair": [
     {
      "c_pF": 40.0,
@@ -5588,12 +5582,10 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R5217",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "NOT EVALUATED: K5 late window overlaps the cell's RC settling tail at wiper 1.0",
    "subclass": "C",
+   "swept_c_lim_pF_not_usable": 40.0,
    "topology": "71a1a514d4788612"
   },
   {
@@ -13759,7 +13751,6 @@
    "topology": "72a8283a24fa7a37"
   },
   {
-   "allowance_pF": 24.33,
    "amplifier": {
     "inventory_line": "line-op-audio",
     "mpn": "OPA4196IDR",
@@ -13767,7 +13758,7 @@
     "ref": "U5207",
     "unit": 2
    },
-   "c_lim_pF": 40.0,
+   "c_lim_pF": null,
    "c_paper": {
     "amp_side": "B.Cu",
     "c_paper_pF": 15.67,
@@ -14199,13 +14190,15 @@
     "K6",
     "K8"
    ],
-   "hpwl_max_mm": 124.3,
-   "label": "PROVISIONAL 40 pF: IDENTITY OPEN: R5219; Ruling 6 output pair fails at C_lim (100 pF: K1/K2)",
+   "label": "NOT EVALUATED: Ruling 6 output pair fails at C_lim 40 pF (100 pF on OUT: K1/K2); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
    },
    "net": "/W1/C4c1698_W_SENSE",
+   "other_open_reasons": [
+    "IDENTITY OPEN: R5219"
+   ],
    "outpair": [
     {
      "c_pF": 40.0,
@@ -14259,12 +14252,10 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "IDENTITY OPEN: R5219",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1/K2)"
-   ],
+   "provisional_reasons": [],
    "s13_label": "NOT EVALUATED: K5 late window overlaps the cell's RC settling tail at wiper 1.0",
    "subclass": "C",
+   "swept_c_lim_pF_not_usable": 40.0,
    "topology": "db770f45be4774b3"
   }
  ],

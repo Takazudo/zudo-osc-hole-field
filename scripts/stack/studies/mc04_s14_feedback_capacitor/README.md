@@ -15,7 +15,7 @@ No capacitor is adopted. No board, schematic, specification, BOM, owner bundle o
 | `cells.py`, `runner.py`, `budget.py`, `guard.py` | byte copies of the S13 files, changed as listed in the report (`guard.py` unchanged) |
 | `s13_pinned.py` | the pinned S13 modules, imported read-only in a separate interpreter (replays, P4, P10, cache binding) |
 | `s14.py` | the S14 driver: Arm 0, arm R, arm W, arm G, pairs, tables, `--check` |
-| `test_s14.py` | M1 to M8, M12 (in-memory) to M21 and N1 to N16 (replaces the copied `test_s13.py`) |
+| `test_s14.py` | M1 to M8, M12 (in-memory) to M21 and N1 to N17 (replaces the copied `test_s13.py`) |
 | `results.jsonl` | one line per seed, group, deck, rescaled second deck and arm R re-score record |
 | `whatif.json` | one row per what-if set and per class G corner (arm G) |
 | `rescore.json` | one row per net of classes A, C and D, and the per-IC table (S7) |

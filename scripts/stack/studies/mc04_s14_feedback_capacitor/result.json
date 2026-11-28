@@ -862,6 +862,38 @@
   ],
   "python": "3.12.3"
  },
+ "fingerprint_last_evaluate": {
+  "/sys/fs/cgroup/cpu.max": "absent",
+  "/sys/fs/cgroup/memory.current": "absent",
+  "/sys/fs/cgroup/memory.max": "absent",
+  "MemAvailable": "15666928 kB",
+  "SwapTotal": "0 kB",
+  "affinity": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "commit": "e9fb1184a27bba21d5acf27cd7009f2d095dea9e",
+  "disk_free_GiB": 50.1,
+  "docker": "29.9.3",
+  "image": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "interpreter": "/home/user/venv312/bin/python",
+  "machine": "x86_64",
+  "nproc": 4,
+  "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+  "processes_top_rss": [
+   "RSS COMMAND",
+   "414384 claude",
+   "97776 python",
+   "95672 dockerd",
+   "51336 containerd",
+   "41896 environment-man",
+   "28688 rclone-filestor",
+   " 5968 process_api"
+  ],
+  "python": "3.12.3"
+ },
  "guards": {
   "guard-arm0-try1.json": {
    "budget_bytes": 4294967296,
@@ -903,6 +935,45 @@
    "returncode": 0,
    "samples": 71,
    "wall_s": 384.0,
+   "watchdog_fired": null
+  },
+  "guard-end-circuit-check.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "pnpm",
+    "circuit:check"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15363.6,
+   "peak_docker_container_mem_mib": 0.0,
+   "peak_tree_plus_container_mib": 1.8,
+   "peak_tree_rss_bytes": 1835008,
+   "peak_tree_rss_mib": 1.8,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 1,
+   "wall_s": 5.1,
+   "watchdog_fired": null
+  },
+  "guard-end-regen-check.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "bash",
+    "scripts/checks/regen-all.sh",
+    "--check"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 14445.4,
+   "peak_docker_container_mem_mib": 953.6,
+   "peak_tree_plus_container_mib": 995.0,
+   "peak_tree_rss_bytes": 389718016,
+   "peak_tree_rss_mib": 371.7,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 80,
+   "wall_s": 440.9,
    "watchdog_fired": null
   },
   "guard-slice-01.json": {
@@ -1044,7 +1115,7 @@
   "scripts/stack/studies/mc04_s7_r4/buffer_runs.py": "df656dc333dff510757b668278ba53ed2a078860d47dcff38c86070a1aaac9b1"
  },
  "records": 594,
- "rescore_sha256": "f28ee4957dea1904e041706bee6e34b4f66258f7c02f82491ab2cba71a34cf07",
+ "rescore_sha256": "92bc0f67ed022ceed9045495359fd89b36833c997746521c9a5fb3bc00b688c7",
  "slices": [
   {
    "kind": "start",
@@ -1102,8 +1173,8 @@
   "guard.py": "5d066228ed1efca4f4f072efa52b5e5c4432f34ca0ec77e90da5d4baa4c51651",
   "runner.py": "a11830e8e4c2579157ed666299e645a740141ec2b38f417ef13408f7a0612805",
   "s13_pinned.py": "f97fb6cba6cf579f2c216afa57185fc228ae91ca29a4e1c5b87dc7fbcab22fff",
-  "s14.py": "e87f8bcd2ffdce76a1202fb89d4a5620911d6ed7aab67903f728a4443dd8364d",
-  "test_s14.py": "fb43878bf828596dea99fd3457a9305d988f9bf13ad9f8f29ea1cdea503ca2cf"
+  "s14.py": "912b12436441e0ca803240fe19dfc3ca46a2598f764c9801195b88764a848a1b",
+  "test_s14.py": "2254964415f4f98957b2481be3259f640b18faf01f0832853dcc46b9dbb69308"
  },
- "whatif_sha256": "e3dd5559df48e21dba0ecd5e032c2dfefe350bc5a408c28dc486cef6f4ab3371"
+ "whatif_sha256": "9ba23251d346e8ec28228f128cd630e6129011210fc414efdac91401be9030e7"
 }

@@ -1,5 +1,5 @@
 """MC04-S14 tests: the S13 mutations M1 to M8 and M12 (in-memory form) to M21 carried over on the S14 copies, and
-the S14 mutations N1 to N16. Offline: no deck runs (N9 reads the S13 cache through the pinned S13 modules)."""
+the S14 mutations N1 to N17. Offline: no deck runs (N9 reads the S13 cache through the pinned S13 modules)."""
 import copy
 import gzip
 import json
@@ -365,6 +365,18 @@ class Tables(unittest.TestCase):
         lab, _, _ = s14.row_label({"c": {"status": "OK", "c_lim_pF": 50.0, "modes": {"K3": "absolute"}}}, 10.0,
                                   reasons=["IDENTITY OPEN: R5247"], whatif=False, arm_w=True)
         self.assertTrue(lab.startswith("PROVISIONAL"))
+
+    def test_n17_failing_output_pair_leaves_no_usable_limit(self):
+        lims = {"c": {"status": "OK", "c_lim_pF": 40.0, "modes": {"K3": "absolute"}}}
+        pf = s14.pair_failure([{"out_pF": 0.0, "pass": True, "failed": []},
+                               {"out_pF": 100.0, "pass": False, "failed": ["K1", "K2"]}])
+        lab, lim, _ = s14.row_label(lims, 10.0, reasons=["IDENTITY OPEN: R1"], whatif=True, arm_w=True, pair_fail=pf)
+        self.assertTrue(lab.startswith(s14.WHATIF_PREFIX + "NOT EVALUATED: Ruling 6 output pair fails"))
+        self.assertIsNone(lim)
+        self.assertEqual(s14.row_status("FAILS AT ZERO STRAY", [lab]), "blocks")
+        lab, lim, _ = s14.row_label(lims, 52.0, reasons=[], whatif=False, arm_w=False, pair_fail=pf)
+        self.assertEqual((lab, lim), ("NO HEADROOM AT PAPER", 40.0))
+        self.assertIsNone(s14.pair_failure([{"out_pF": 100.0, "pass": True, "failed": []}]))
 
     def test_m5_blocked_class_with_number_rejected_by_the_s13_copy(self):
         r = {"net": "/X/N", "class": "F", "label": "BUDGET 10 pF (MODEL EVIDENCE ONLY)", "c_lim_pF": 10.0,

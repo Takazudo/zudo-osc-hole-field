@@ -1763,8 +1763,18 @@ G_TRIM0 = "class G trim 0 corners (49.9 kOhm) NOT RUN"
 G_LADDER_NOTE = "class G ladder bounded to reltol=1e-5 and default (S6.10)"
 
 
-def row_label(lims, paper, *, reasons, whatif, arm_w):
-    """Exactly one label (brief "Outputs"); a what-if row carries the prefix."""
+PAIR_NE = "NOT EVALUATED: Ruling 6 output pair fails "
+
+
+def pair_failure(pairs):
+    """The failing Ruling 6 output-pair decks at C_lim as one string, or None (result review finding 1)."""
+    bad = [x for x in (pairs or []) if not x["pass"]]
+    return ", ".join(f"{x['out_pF']:g} pF on OUT: {'/'.join(x['failed'])}" for x in bad) or None
+
+
+def row_label(lims, paper, *, reasons, whatif, arm_w, pair_fail=None):
+    """Exactly one label (brief "Outputs"); a what-if row carries the prefix. A row whose Ruling 6 output pair fails
+    at C_lim has no usable limit (stricter reading under STOP 6, result review finding 1)."""
     pre = WHATIF_PREFIX if whatif else ""
     vals = list(lims.values())
     if not vals or any(v["status"] == "INCOMPLETE" for v in vals):
@@ -1782,6 +1792,8 @@ def row_label(lims, paper, *, reasons, whatif, arm_w):
     lim = worst["c_lim_pF"]
     if lim < paper:
         return pre + "NO HEADROOM AT PAPER", lim, worst.get("deciding")
+    if pair_fail:
+        return pre + PAIR_NE + f"at C_lim {lim:g} pF ({pair_fail}); no usable limit", None, worst.get("deciding")
     rel = sorted({k for v in vals for k, m in v["modes"].items() if m == "relative"})
     if reasons:
         extra = ["BASELINE EXCEEDS " + " AND ".join(rel) + " (RELATIVE FORM)"] if rel else []
@@ -1936,11 +1948,8 @@ def whatif_table():
             pairs = None
             if lim.get("status") == "OK" and lim.get("c_lim_pF") and 0 in ent:
                 pairs = pair_verdicts(t, s["corner"], lim["c_lim_pF"], wf, ent[0], s["class"])
-                bad = [x for x in pairs if not x["pass"]]
-                if bad:
-                    reasons.append("Ruling 6 output pair fails at C_lim (" + ", ".join(
-                        f"{x['out_pF']:g} pF: {'/'.join(x['failed'])}" for x in bad) + ")")
-            label, c_lim, deciding = row_label({cid: lim}, paper, reasons=reasons, whatif=wf, arm_w=True)
+            pf = pair_failure(pairs)
+            label, c_lim, deciding = row_label({cid: lim}, paper, reasons=reasons, whatif=wf, arm_w=True, pair_fail=pf)
             l15, c15, _ = row_label({cid: lim15}, paper, reasons=[], whatif=wf, arm_w=True)
             row = {"id": ("what-if " if wf else "arm G ") + s["id"], "whatif": wf, "class": s["class"],
                    "subclass": c["subclass"], "topology": t["key"], "nets": t["nets"], "corner": s["corner"],
@@ -1949,10 +1958,12 @@ def whatif_table():
                    if label.replace(WHATIF_PREFIX, "").startswith("PROVISIONAL") else [],
                    "corners": corner_view({cid: lim}, {cid: VALUES_W}, {cid: ent}), "bracket_check": br,
                    "outpair": pairs, "parts_on_net": parts_of(t["nets"]),
+                   **pair_fields(label, lim.get("c_lim_pF"), reasons),
                    "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node"
                    if wf else None}
             if c["subclass"] == "G":
-                row["notes"] = [G_TRIM0, G_LADDER_NOTE, "LM13700 identity limit: every class G row is PROVISIONAL"]
+                row["notes"] = [G_TRIM0, G_LADDER_NOTE,
+                                "LM13700 identity limit: no class G row can be better than PROVISIONAL"]
             if wf:
                 wz = ent.get(0, {}).get("closed") if ent.get(0) and not ent[0].get("ne") else None
                 row["vs_specification_20kHz"] = cost_row(s, wz, spec_zero(s))
@@ -1984,19 +1995,16 @@ def rescore_table():
             r13 = s13[net]
             paper = r13["c_paper"]["c_paper_pF"]
             reasons = common_reasons(c, [net])
-            if pairs:
-                bad = [x for x in pairs if not x["pass"]]
-                if bad:
-                    reasons.append("Ruling 6 output pair fails at C_lim (" + ", ".join(
-                        f"{x['out_pF']:g} pF: {'/'.join(x['failed'])}" for x in bad) + ")")
-            label, lim, deciding = row_label(lims, paper, reasons=reasons, whatif=False, arm_w=False)
+            label, lim, deciding = row_label(lims, paper, reasons=reasons, whatif=False, arm_w=False,
+                                             pair_fail=pair_failure(pairs))
             l15, c15, _ = row_label(lims15, paper, reasons=[], whatif=False, arm_w=False)
             row = {"net": net, "class": c["class"], "subclass": c["subclass"], "topology": t["key"],
                    "amplifier": r13["amplifier"], "parts_on_net": r13["parts_on_net"], "c_paper": r13["c_paper"],
                    "s13_label": r13["label"], "label": label, "c_lim_pF": lim, "deciding": deciding,
                    "limit_k1_to_k5_only": {"label": l15, "c_lim_pF": c15},
                    "provisional_reasons": reasons if label.startswith("PROVISIONAL") else [],
-                   "corners": corner_view(lims, tested, ents), "outpair": pairs}
+                   "corners": corner_view(lims, tested, ents), "outpair": pairs,
+                   **pair_fields(label, d[1]["c_lim_pF"] if d else None, reasons)}
             if lim is not None and label.startswith(("BUDGET", "PROVISIONAL")):
                 row["allowance_pF"] = round(lim - paper, 2)
                 row["hpwl_max_mm"] = budget.hpwl_max(lim, r13["c_paper"]["n_via"], r13["c_paper"]["n_pad"])
@@ -2005,9 +2013,17 @@ def rescore_table():
     return rows
 
 
+def pair_fields(label, swept, reasons):
+    """On a row without a usable limit because its output pair fails: the swept limit and the open reasons."""
+    if PAIR_NE not in label:
+        return {}
+    return {"swept_c_lim_pF_not_usable": swept, "other_open_reasons": reasons}
+
+
 def ic_table(wrows, rrows):
     """S7 (DS-178): an IC is supported only when every row of its blocker route and on its own pins has a plain
-    limit above paper. What-if, relative-form and PROVISIONAL rows are conditional on an owner decision."""
+    limit above paper. What-if, relative-form and PROVISIONAL rows are conditional on an owner decision; a row whose
+    output pair fails (NOT EVALUATED) blocks."""
     s13 = s13_rows()
     r_by_net = {r["net"]: r for r in rrows}
     w_by_net = {}
@@ -2085,6 +2101,8 @@ def write_result():
     sl = [json.loads(x) for x in SLICES.read_text().splitlines() if x.strip()] if SLICES.exists() else []
     guards = {p.name: json.loads(p.read_text()) for p in sorted(CK.glob("guard-*.json"))}
     arm0 = json.loads((CK / "arm0.json").read_text()) if (CK / "arm0.json").exists() else None
+    # the run's fingerprint is the one taken by the first evaluation after the sweep; later evaluations keep it
+    run_fp = json.loads(RESULT.read_text()).get("fingerprint") if RESULT.exists() else None
     by_kind = {}
     for x in led:
         by_kind[x["kind"]] = by_kind.get(x["kind"], 0) + 1
@@ -2094,7 +2112,8 @@ def write_result():
     out = {"status": STATUS, "brief_sha256": sha_file(BRIEF), "pinned_inputs": pins14(), "models": budget.MODEL_PINS,
            "study_files": {f: sha_file(f"scripts/stack/studies/mc04_s14_feedback_capacitor/{f}") for f in
                            ("cells.py", "runner.py", "budget.py", "guard.py", "s13_pinned.py", "s14.py", "test_s14.py")},
-           "fingerprint": budget.fingerprint(), "arm0": arm0, "slices": sl, "guards": guards,
+           "fingerprint": run_fp or budget.fingerprint(), "fingerprint_last_evaluate": budget.fingerprint(),
+           "arm0": arm0, "slices": sl, "guards": guards,
            "invocations": {"total": len(led), "by_kind": by_kind, **b.counts(led),
                            "unrecorded_in_results": sum(1 for x in led if x["key"] not in recorded and
                                                         x["kind"] not in ("seed", "control"))},

@@ -3010,7 +3010,7 @@
    "notes": [
     "class G trim 0 corners (49.9 kOhm) NOT RUN",
     "class G ladder bounded to reltol=1e-5 and default (S6.10)",
-    "LM13700 identity limit: every class G row is PROVISIONAL"
+    "LM13700 identity limit: no class G row can be better than PROVISIONAL"
    ],
    "outpair": null,
    "part": null,
@@ -3055,7 +3055,7 @@
   },
   {
    "bracket_check": null,
-   "c_lim_pF": 50.0,
+   "c_lim_pF": null,
    "c_paper": {
     "/W1/PRE_GAIN_SUM": {
      "amp_side": "B.Cu",
@@ -3240,7 +3240,7 @@
    ],
    "deciding": null,
    "id": "what-if G:2f451c39:{\"iabc\": \"low\", \"trim\": 1.0}",
-   "label": "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 50 pF: LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header); Ruling 6 output pair fails at C_lim (100 pF: K1)",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: NOT EVALUATED: Ruling 6 output pair fails at C_lim 50 pF (100 pF on OUT: K1); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
@@ -3251,7 +3251,10 @@
    "notes": [
     "class G trim 0 corners (49.9 kOhm) NOT RUN",
     "class G ladder bounded to reltol=1e-5 and default (S6.10)",
-    "LM13700 identity limit: every class G row is PROVISIONAL"
+    "LM13700 identity limit: no class G row can be better than PROVISIONAL"
+   ],
+   "other_open_reasons": [
+    "LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header)"
    ],
    "outpair": [
     {
@@ -3306,11 +3309,9 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header)",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1)"
-   ],
+   "provisional_reasons": [],
    "subclass": "G",
+   "swept_c_lim_pF_not_usable": 50.0,
    "topology": "2f451c39c23b1f70",
    "vs_specification_20kHz": {
     "f_3dB_Hz": {
@@ -3599,7 +3600,7 @@
    "notes": [
     "class G trim 0 corners (49.9 kOhm) NOT RUN",
     "class G ladder bounded to reltol=1e-5 and default (S6.10)",
-    "LM13700 identity limit: every class G row is PROVISIONAL"
+    "LM13700 identity limit: no class G row can be better than PROVISIONAL"
    ],
    "outpair": null,
    "part": null,
@@ -3644,7 +3645,7 @@
   },
   {
    "bracket_check": null,
-   "c_lim_pF": 50.0,
+   "c_lim_pF": null,
    "c_paper": {
     "/W1/PRE_GAIN_SUM": {
      "amp_side": "B.Cu",
@@ -3829,7 +3830,7 @@
    ],
    "deciding": null,
    "id": "what-if G:2f451c39:{\"iabc\": \"high\", \"trim\": 1.0}",
-   "label": "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 50 pF: LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header); Ruling 6 output pair fails at C_lim (100 pF: K1)",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: NOT EVALUATED: Ruling 6 output pair fails at C_lim 50 pF (100 pF on OUT: K1); no usable limit",
    "limit_k1_to_k5_only": {
     "c_lim_pF": 50.0,
     "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
@@ -3840,7 +3841,10 @@
    "notes": [
     "class G trim 0 corners (49.9 kOhm) NOT RUN",
     "class G ladder bounded to reltol=1e-5 and default (S6.10)",
-    "LM13700 identity limit: every class G row is PROVISIONAL"
+    "LM13700 identity limit: no class G row can be better than PROVISIONAL"
+   ],
+   "other_open_reasons": [
+    "LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header)"
    ],
    "outpair": [
     {
@@ -3895,11 +3899,9 @@
      "value": "OPA4196IDR"
     }
    ],
-   "provisional_reasons": [
-    "LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header)",
-    "Ruling 6 output pair fails at C_lim (100 pF: K1)"
-   ],
+   "provisional_reasons": [],
    "subclass": "G",
+   "swept_c_lim_pF_not_usable": 50.0,
    "topology": "2f451c39c23b1f70",
    "vs_specification_20kHz": {
     "f_3dB_Hz": {
