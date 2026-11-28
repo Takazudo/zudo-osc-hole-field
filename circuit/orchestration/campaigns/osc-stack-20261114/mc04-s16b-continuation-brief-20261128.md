@@ -393,9 +393,45 @@ Not asked for by the review, and changed with these: 5 minutes of ceiling move f
 the second K1 (sum unchanged at 270 min); K7 records the lite status of the 24 scenes as a reading; reviewer check
 7 is reworded to match finding 4.
 
+## Erratum 1 (2026-11-28, after the first run's STOP 1 at K3)
+
+Not a revision: no ruling, figure, cap, ceiling or expected vector of Revision 2 changes. The first recorded run
+(commit `6d5e435f`) ended at STOP 1 on K3 after 13.3 min, before any replay. Its stop record is
+`101c5ce0e7d251017e3c0ac02a967f8abcfd0417f5953437314fb36c39019cfb`.
+
+- **E1, K3 acceptance.** The stop was a defect in the pinned study code, not a detachment failure. `k3_control`
+  asked for a wrapper return code of 137. It calls `timeout -s KILL` through `subprocess.run` with no shell, and
+  Python reports a process ended by SIGKILL as −9; S16's C13 read 137 because a shell reported it. Both values
+  mean the same event. K3 passes when all of these hold: the wrapper return code is 137 or −9; the wrapper ran at
+  least 119 s (so the kill at the 120 s limit ended it, and nothing earlier did); at least 150 heartbeat lines
+  come after the wrapper's end; the guard finished; the child's return code is 0; at least one guard sample comes
+  after the wrapper's end. The last four clauses are unchanged. The first run's K3 record meets all six (−9,
+  120.0 s, 180 lines, finished, 0, 36 samples).
+- **E2, mutation N15.** The acceptance is a function of the K3 detail record, tested in `test_s16b.py`. It passes
+  the first run's recorded detail and the same detail with 137. It fails with a return code of 0, 124 or −15,
+  with a wrapper time of 60 s, with 149 lines after the wrapper's end, with the guard not finished, with a child
+  return code of 1, and with no guard sample after the wrapper's end. Not a vector.
+- **E3, one real K3 before pins.** The defect was not seen in development because the dry runs stubbed K3. Before
+  the new pins, K3 runs once for real in the scratchpad (about 5 min), disclosed with its time. Nothing from it is
+  used.
+- **E4, the note on N2.** The Source cell of N2 says "not a vector, since R4 fails first". That is wrong.
+  Measured by the pinned test: without Ruling P8, R2 fails first (class distance); with P8, R2 and R4 pass and R5
+  fails. N2's stated result stands: R5 fails with six class S parts and no class N. N2 stays "not a vector".
+- **E5, how the run reopens (Ruling Q5).** A fresh pinned run, not a resume. Only the K3 acceptance, N15 and the
+  README may change in the study code. New pins are written and cover this brief as it now stands. The first run's
+  `checkpoints/` folder is moved unchanged to `stopped-run-1/` in the study directory and stays tracked; its
+  durable stop copy is not removed. The new `checkpoints/` holds `ruling.json`, written by the manager, before the
+  driver starts. Every control and stage runs again; nothing is taken from the first run. The ceilings, the
+  cumulative clock and the count of resumes start again at zero. The first run's 13.3 min are disclosed in the
+  report and are not charged.
+- **E6, a second STOP.** The start test compares one hash with every stop record. After a second STOP it would
+  hold two, and no single `ruling.json` could match. That is left as it is. A second STOP returns to the design
+  authority.
+
 ## Revision history
 
 | Revision | Date | Change |
 | --- | --- | --- |
 | 1 | 2026-11-28 | First draft after the owner's choice of DS-213 option 1 |
 | 2 | 2026-11-28 | Review `ec802347…e529d656` applied: 7 required findings, advisories 8, 9 and 11 accepted, advisory 10 not accepted (R7 stays on the E1 block). See "Revision 2 changes" |
+| 2, erratum 1 | 2026-11-28 | After STOP 1 at K3 of the first run: K3 acceptance, N15, the N2 note, and the terms of the fresh run. No ruling or figure changed |
