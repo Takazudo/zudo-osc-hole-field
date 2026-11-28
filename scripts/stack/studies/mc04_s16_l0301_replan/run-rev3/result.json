@@ -1,0 +1,337 @@
+{
+ "status": "ROWS-LEVEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT",
+ "brief": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md",
+ "brief_sha256": "b0ccdea8f191bde72f89253fdc92aa5d83008cd5923b9e210286492a3460c415",
+ "pins": {
+  "written": "2026-11-28T15:56:40Z",
+  "files": {
+   "scripts/stack/studies/mc04_s16_l0301_replan/replan.py": "78b48da434f2dba97941eeb41f9edb52a03efb4d103296ee674045009e837714",
+   "scripts/stack/studies/mc04_s16_l0301_replan/c13_heartbeat.py": "317d5686c29fadf361f36750079aaac75b1dee684e1e2eb11986d092e136ec71",
+   "scripts/stack/studies/mc04_s16_l0301_replan/test_s16.py": "d2985d706b8d81a98b61c6a75f99885f13c62f9895e56cb5df7faa6237e64f00",
+   "scripts/stack/studies/mc04_s12_five_ic_joint/s12.py": "b1e993583c541dc28c3574dfe7b789804937697466e2404b09d5a1a64c7aadcd",
+   "scripts/stack/studies/mc04_s12_five_ic_joint/joint_search.py": "97697c009b3282807191dad7180ca77c0810fc81f33a165b3d505defe60b6d28",
+   "scripts/stack/studies/mc04_s15_no_growth_moves/guard15.py": "5c563ec149b739ced4792130f6d2ca6d76b573200ca1fcaac609c69a1c479172",
+   "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md": "b0ccdea8f191bde72f89253fdc92aa5d83008cd5923b9e210286492a3460c415"
+  },
+  "commit": "08d66e21466b13ec20ff4e7df431a4e8b551cb0b"
+ },
+ "run": {
+  "clock_s": 82.92476153373718,
+  "steps": {
+   "arm0": 82.92127203941345
+  },
+  "segments": [
+   {
+    "start": 1795881400.897792,
+    "pid": 1476,
+    "end": 1795881483.8225536
+   }
+  ],
+  "resumes": [],
+  "executor_timed": {
+   "start-circuit-check": 5.0,
+   "start-regen-all": 395.5,
+   "discarded-try1-start-circuit-check": 5.0,
+   "discarded-try1-start-regen-all": 5.0,
+   "c13-detachment-test": 300.5
+  },
+  "started": "2026-11-28T15:56:40Z",
+  "commit": "08d66e21466b13ec20ff4e7df431a4e8b551cb0b",
+  "stop": "STOP 3: computed mutation vectors differ from the brief: M1: PPPPF–––– ––––––, expected PPPPPPPPP FPPPPP; M9: PF––––––– ––––––, expected PPPPPF––– ––––––; M10: PF––––––– ––––––, expected PPPPPPF–– ––––––; M12: PF––––––– ––––––, expected PPPPPPPPF ––––––",
+  "not_run": [
+   "C2",
+   "C6",
+   "C7",
+   "C8",
+   "C8b",
+   "C9",
+   "C10",
+   "C11",
+   "C15",
+   "C16",
+   "stage1",
+   "stage2a",
+   "stage2b (C12)",
+   "stage3",
+   "stage4"
+  ],
+  "ended": "2026-11-28T15:58:03Z"
+ },
+ "stop": "STOP 3: computed mutation vectors differ from the brief: M1: PPPPF–––– ––––––, expected PPPPPPPPP FPPPPP; M9: PF––––––– ––––––, expected PPPPPF––– ––––––; M10: PF––––––– ––––––, expected PPPPPPF–– ––––––; M12: PF––––––– ––––––, expected PPPPPPPPF ––––––",
+ "not_run": [
+  "C2",
+  "C6",
+  "C7",
+  "C8",
+  "C8b",
+  "C9",
+  "C10",
+  "C11",
+  "C15",
+  "C16",
+  "stage1",
+  "stage2a",
+  "stage2b (C12)",
+  "stage3",
+  "stage4"
+ ],
+ "controls": {
+  "C1": true,
+  "C13": true,
+  "C14": true,
+  "C3": true,
+  "C3b": true,
+  "C4": true,
+  "C5": true
+ },
+ "mutations": {
+  "M1": {
+   "vector": "PPPPF–––– ––––––",
+   "expected": "PPPPPPPPP FPPPPP"
+  },
+  "M2": {
+   "vector": "––––––––– PPPPPP",
+   "expected": "––––––––– PPPPPP"
+  },
+  "M3": {
+   "vector": "F–––––––– ––––––",
+   "expected": "F–––––––– ––––––"
+  },
+  "M4": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PF––––––– ––––––"
+  },
+  "M5": {
+   "vector": "PPF–––––– ––––––",
+   "expected": "PPF–––––– ––––––"
+  },
+  "M6": {
+   "vector": "PPF–––––– ––––––",
+   "expected": "PPF–––––– ––––––"
+  },
+  "M7": {
+   "vector": "PPPF––––– ––––––",
+   "expected": "PPPF––––– ––––––"
+  },
+  "M8": {
+   "vector": "PPPPF–––– ––––––",
+   "expected": "PPPPF–––– ––––––"
+  },
+  "M11": {
+   "vector": "PPPPPPPF– ––––––",
+   "expected": "PPPPPPPF– ––––––"
+  },
+  "M9": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PPPPPF––– ––––––"
+  },
+  "M10": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PPPPPPF–– ––––––"
+  },
+  "M12": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PPPPPPPPF ––––––"
+  },
+  "M13": {
+   "vector": "––––––––– FPFPPP",
+   "expected": "––––––––– FPFPPP"
+  },
+  "M14": {
+   "vector": "––––––––– FPPFPP",
+   "expected": "––––––––– FPPFPP"
+  },
+  "M15": {
+   "vector": "––––––––– FPPPFP",
+   "expected": "––––––––– FPPPFP"
+  },
+  "M16": {
+   "vector": "––––––––– FPPPPF",
+   "expected": "––––––––– FPPPPF"
+  },
+  "M17_strict": {
+   "vector": "PPPPPPPF– ––––––"
+  },
+  "M17_default": {
+   "vector": "PPPPPPPF– ––––––"
+  },
+  "M18": {
+   "strict": {
+    "R5": "F",
+    "class_N": [],
+    "class_S": [
+     "C7205",
+     "C8405",
+     "R8420",
+     "R8444",
+     "U8409",
+     "U8411"
+    ],
+    "bad": [
+     [
+      "C7205",
+      "S"
+     ],
+     [
+      "C8405",
+      "S"
+     ],
+     [
+      "R8420",
+      "S"
+     ],
+     [
+      "R8444",
+      "S"
+     ],
+     [
+      "U8409",
+      "S"
+     ],
+     [
+      "U8411",
+      "S"
+     ]
+    ]
+   },
+   "default": {
+    "R5": "P",
+    "class_N": [],
+    "class_S": [
+     "C7205",
+     "C8405",
+     "R8420",
+     "R8444",
+     "U8409",
+     "U8411"
+    ],
+    "bad": []
+   }
+  },
+  "M22": {
+   "vector": "––––––––– FFFPPP",
+   "expected": "––––––––– FFFPPP"
+  },
+  "M23": {
+   "vector": "PPF–––––– ––––––",
+   "expected": "PPF–––––– ––––––"
+  },
+  "M24": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PF––––––– ––––––"
+  },
+  "M25": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PF––––––– ––––––"
+  },
+  "M26": {
+   "ride": [
+    "P-K-P-L03.02.01",
+    34.6434
+   ],
+   "ride_capped": [
+    "P-K-P-L05.01.01",
+    38.103
+   ]
+  },
+  "M27a": {
+   "vector": "PPF–––––– ––––––",
+   "expected": "PPF–––––– ––––––"
+  },
+  "M27b": {
+   "S3": "P",
+   "legal_orders": 2,
+   "orders": 6,
+   "first_order": [
+    "K-P-20",
+    "P-K-E2",
+    "K-P-16"
+   ],
+   "K-P-16": [
+    [
+     "P-K-P-L01.01.02",
+     54.376
+    ],
+    [
+     "P-K-P-L01.01.02",
+     54.376
+    ]
+   ]
+  }
+ },
+ "mutation_problems": [
+  "M1: PPPPF–––– ––––––, expected PPPPPPPPP FPPPPP",
+  "M9: PF––––––– ––––––, expected PPPPPF––– ––––––",
+  "M10: PF––––––– ––––––, expected PPPPPPF–– ––––––",
+  "M12: PF––––––– ––––––, expected PPPPPPPPF ––––––"
+ ],
+ "guards": {
+  "discarded-try1-start-circuit-check": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 5.0,
+   "peak_tree_rss_mib": 0.1,
+   "min_mem_available_mib": 15487.2,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "discarded-try1-start-regen-all": {
+   "returncode": 1,
+   "finished": true,
+   "wall_s": 5.0,
+   "peak_tree_rss_mib": 2.2,
+   "min_mem_available_mib": 15504.4,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "run-1": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 85.1,
+   "peak_tree_rss_mib": 309.1,
+   "min_mem_available_mib": 15110.2,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "start-circuit-check": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 5.0,
+   "peak_tree_rss_mib": 1.7,
+   "min_mem_available_mib": 15418.8,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "start-regen-all": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 395.5,
+   "peak_tree_rss_mib": 369.8,
+   "min_mem_available_mib": 14420.6,
+   "peak_docker_container_mem_mib": 879.1,
+   "watchdog_fired": null
+  }
+ },
+ "verdict": null,
+ "digests": {
+  "arm0/c4-census.json": "595715c666a5d3a3806c6d2fe88052f60cc7a58bc7b1d1d3023f292a9ed846c0",
+  "arm0/c5-census.json": "c3a2047afe969e0ac42dfdcad3a6d67fcd73c35ec233dd2a56c186e28d9a6abb",
+  "checkpoints/arm0/C1.json": "79ad71a45672184fdda05b27efe4b20c19e591b19e2d25284689ef7b11b5934d",
+  "checkpoints/arm0/C13.json": "81acebbb3d499faeeaad6c317b7bed05175b949a2275fc66fbd95d552a1ad2e6",
+  "checkpoints/arm0/C14.json": "b2ccb9f5c189f81d7d8c94d016a822bb3d1086ffdb27ea62ee2d72f210a73b69",
+  "checkpoints/arm0/C3.json": "2b1d2224def6d2ee8f881de74d8a9bebd576b7c5ec8b251335b4924a38597cc3",
+  "checkpoints/arm0/C3b.json": "f03c0c363f773b47262f0fd823849f22772da77d415032577fc8796af94f3fab",
+  "checkpoints/arm0/C4.json": "d54be141432a24b517b2fba6b7fa39380e203a4f43c494acf61097d0ff29ef04",
+  "checkpoints/arm0/C5.json": "5e3f694e08e5739c1a33381711a9d225e097f859f25986d648f54477d7bde956",
+  "checkpoints/arm0/mutation-control.json": "546a83a819c22b2f4dab1ba27d09dfd1aaf849b09adffc4a617ad58415752815",
+  "checkpoints/arm0/mutations.json": "af9acb6b0afde606b961d940bda0cd48c9826ed00b72ae6c17d0ed05121de3b6",
+  "checkpoints/durable-copy.json": "2f76ef21e0a6ce5e05f9a7632818b971c19e4b88e47c16c94ccdea70396969f8",
+  "checkpoints/mutation-slots.json": "01a81bed566b7e6dee3d62761e6d324cd9f8fd47cc03fabd63002908647c95d3"
+ },
+ "bulk_intermediates": {
+  "cache": ".circuit-cache/mc04-s16",
+  "manifest": "bulk-manifest.json",
+  "files": 2,
+  "durable_copy": "/mnt/project-files/osc-s16-cache/"
+ }
+}

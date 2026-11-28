@@ -7,24 +7,24 @@
  "sources": {
   "S-PART": {
    "path": "design/partition/partition.json",
-   "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
+   "sha256": "09a5ae28137297458a9c36a306673b457abd4e80e4952f32914323513dc732d4"
   },
   "S-P35": {
    "path": "scripts/checks/partition35.py",
-   "sha256": "0e3014d283177cf1d9a94b0e36f397950f6a59ff84081cb01ec6d9187686f938",
-   "locator": "build(), lines 236 and 241-249"
+   "sha256": "ddd50c69747ae9badcc9b16803b7516e08f933ad5bce92128eceb421285d082f",
+   "locator": "build(), lines 247 and 252-260"
   },
   "S-SUPPLY": {
    "path": "design/power/supply-architecture.json",
-   "sha256": "11de349b0c5ab2762dad8ac4d841a0705c70c7c0816dc110175bd55c739989ff"
+   "sha256": "db3aa8a6b91aca6eb107d42c0bc5f0fbfa83c28373c4d17488a3c6a204b8f8e9"
   },
   "S-SUPPLY-PAGE": {
    "path": "doc/src/content/docs/decisions/osc-supply-architecture.mdx",
-   "sha256": "8f43883f16aee29c98f48e8f9e411614029bee8c701cd1812f363dcc929b48b9"
+   "sha256": "dae3d14086ab9bdc692062fa97a7541c6896d93740ef7d02867cbe579cd21d58"
   },
   "S-PLAN": {
    "path": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx",
-   "sha256": "18eb6e60d81c45df0a594f464e5fb6fb6faac900e589934086af7947cc968ff4"
+   "sha256": "5df53b2e8c9dd4b255021a10d3f6477fdb1d456ac2b7a6db1267b6df257a1c1d"
   },
   "S-CU": {
    "path": "design/partition/ground-material-evidence.json",
@@ -37,8 +37,8 @@
   },
   "S-GEOM": {
    "path": "design/stack/geometry/stack-candidate.json",
-   "sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
-   "note": "first planning heights; XY, counts and nets only; re-pinned in attempt a2 (ST-02 a3 changed the file; the power-post XY here are this record's own)"
+   "sha256": "22e817eae2af189119ff0a751a8f08099edd735b690954f7c3fbe6e66ff4004d",
+   "note": "first planning heights; XY, counts and nets only; re-pinned in attempt a2 (ST-02 a3 changed the file; the power-post XY here are this record's own); re-pinned 2026-11-27 (MC04-S7 rev 13 adds JL-K-26/27 and JR-K-28..30: AGND positions JL 54->58, JR 54->60)"
   },
   "S-MECH": {
    "path": "design/stack/mechanics/stackups.json",
@@ -166,7 +166,7 @@
    "tolerance": null,
    "unit": "V",
    "status": "SOURCED",
-   "source": "S-SUPPLY max_distribution_drop_V; S-P35 line 237 error threshold 20 mV"
+   "source": "S-SUPPLY max_distribution_drop_V; S-P35 line 248 error threshold 20 mV"
   },
   "present_drop_mV": {
    "value": {
@@ -182,20 +182,20 @@
   "present_gh_bounds": {
    "value": {
     "JL": {
-     "return_contact_count": 100,
+     "return_contact_count": 108,
      "minimum_single_path_ohm": 0.007433189,
      "maximum_other_path_ohm": 0.11445000000000001,
      "dedicated_ground_wire_count": 3,
      "dedicated_ground_wire_max_ohm": 0.00163,
-     "worst_single_contact_A": 0.4817939293140001
+     "worst_single_contact_A": 0.4771714782527333
     },
     "JR": {
-     "return_contact_count": 106,
+     "return_contact_count": 118,
      "minimum_single_path_ohm": 0.007433189,
      "maximum_other_path_ohm": 0.11445000000000001,
      "dedicated_ground_wire_count": 3,
      "dedicated_ground_wire_max_ohm": 0.00163,
-     "worst_single_contact_A": 0.4783060843904125
+     "worst_single_contact_A": 0.4716974600126289
     },
     "P": {
      "return_contact_count": 123,
@@ -216,7 +216,7 @@
    "tolerance": null,
    "unit": "A",
    "status": "SOURCED",
-   "source": "S-P35 line 248 (GH return derating 0.5 A); S-PLAN rules table: must be re-derived for header contacts"
+   "source": "S-P35 line 259 (GH return derating 0.5 A); S-PLAN rules table: must be re-derived for header contacts"
   },
   "budget_limit_V": {
    "value": 0.2,
@@ -390,8 +390,8 @@
   },
   "header_agnd_positions": {
    "value": {
-    "JL": 54,
-    "JR": 54,
+    "JL": 58,
+    "JR": 60,
     "P": 147,
     "O1": 3,
     "O3": 3,
@@ -400,7 +400,7 @@
    "tolerance": null,
    "unit": "count",
    "status": "SOURCED",
-   "source": "S-GEOM pairs[].pin_map, AGND positions per K pair family (264 on K)"
+   "source": "S-GEOM pairs[].pin_map, AGND positions per K pair family (274 on K)"
   },
   "el_agnd_positions": {
    "value": 12,
@@ -1042,5 +1042,17 @@
    179
   ]
  },
- "launch_commit_a2": "21d1cd9"
+ "launch_commit_a2": "21d1cd9",
+ "source_refreshes": [
+  {
+   "date": "2026-11-27",
+   "base": "80569b5375087df519b79ead67d1bf56c16301e6",
+   "reason": "Inherited stale pins after MC04-S5/S7. Every SOURCED term citing S-PART, S-P35, S-SUPPLY, S-SUPPLY-PAGE or S-GEOM was re-read from the current file.",
+   "changed_terms": {
+    "present_gh_bounds": "JL 100->108 return contacts (0.4817939293140001->0.4771714782527333 A), JR 106->118 (0.4783060843904125->0.4716974600126289 A); partition reproduction target",
+    "header_agnd_positions": "JL 54->58, JR 54->60 from stack-candidate pairs[].pin_map (same counting rule reproduces 54/54 at c9d5761c)"
+   },
+   "unchanged_terms": "All other S-PART/S-SUPPLY terms equal their current source values; S-P35 cited formula unchanged, moved 11 lines by the MC04-S7 rev 9 refdes block; S-SUPPLY-PAGE and supply-architecture changes (MC04-S5 OPA4197IPWR swap ledger, 1.6->1.7 A required continuous on one inlet row) do not touch the cited terms. S-PLAN re-pinned after the plan heat row followed the 2026-11-27 thermal refresh; the cited rules-table rows are unchanged."
+  }
+ ]
 }

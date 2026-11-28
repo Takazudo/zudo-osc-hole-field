@@ -21,8 +21,8 @@ Same formula as `scripts/checks/partition35.py`: drop = I_rail × (R_wire + 1 m�
 | -12V | 2.0 | 15.058 | 15.058 |
 | +5V | 0.5 | 11.113 | 11.113 |
 | Wire term (hot wire plus terminations) | | 1.63 mΩ | 1.630 mΩ |
-| GH worst single contact, JL | | 0.482 A | 0.482 A |
-| GH worst single contact, JR | | 0.478 A | 0.478 A |
+| GH worst single contact, JL | | 0.477 A | 0.477 A |
+| GH worst single contact, JR | | 0.472 A | 0.472 A |
 | GH worst single contact, P | | 0.479 A | 0.479 A |
 | Rail-plus-return budget, +12V | | 0.194 V | 0.194 V |
 | Rail-plus-return budget, -12V | | 0.192 V | 0.192 V |
@@ -67,8 +67,8 @@ The bound keeps the partition's method: 4.6 A, no equal-sharing credit. The cand
 <!-- calc:share -->
 | Branch | AGND header positions | Minimum contact path, mΩ | Maximum other path, mΩ | All alternatives, mΩ | Worst single contact, A | Against 0.5 A (GH) | Against 1.0 A (working) | Against 1.6 A (proposal) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| JL | 54 | 4.36 | 33.02 | 0.611 | 0.565 | exceeds | meets | meets |
-| JR | 54 | 4.36 | 33.02 | 0.611 | 0.565 | exceeds | meets | meets |
+| JL | 58 | 4.36 | 33.02 | 0.609 | 0.564 | exceeds | meets | meets |
+| JR | 60 | 4.36 | 33.02 | 0.609 | 0.563 | exceeds | meets | meets |
 | P | 147 | 4.36 | 32.03 | 0.582 | 0.542 | exceeds | meets | meets |
 <!-- /calc:share -->
 
@@ -266,8 +266,8 @@ This uses the DA-02 E2 front-side rule: a P pair counts against P-to-K fixings o
 <!-- calc:faults -->
 | Branch | 3 AGND posts, A | 2 posts (one loose or missing), A | 1 post, A | 0 posts (all open), A | Working limit, A | Proposal (ASSUMED transfer), A |
 | --- | --- | --- | --- | --- | --- | --- |
-| JL | 0.565 | 0.599 | 0.671 | 0.942 | 1.0 | 1.6 |
-| JR | 0.565 | 0.599 | 0.671 | 0.942 | 1.0 | 1.6 |
+| JL | 0.564 | 0.597 | 0.666 | 0.913 | 1.0 | 1.6 |
+| JR | 0.563 | 0.596 | 0.663 | 0.899 | 1.0 | 1.6 |
 | P | 0.542 | 0.560 | 0.590 | 0.652 | 1.0 | 1.6 |
 <!-- /calc:faults -->
 

@@ -1,0 +1,37 @@
+{
+ "status": "MODEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT",
+ "models": [
+  {
+   "part": "OPA4196IDR (line-op-audio)",
+   "subckt": "OPAx196",
+   "file": ".circuit-cache/sources/opa196-model/OPAx196.LIB",
+   "header": "Part: OPAx196; Date: 29AUG2022; Model Type: Generic; Model Version: Final 1.5",
+   "zip_sha256": "9c264813a36536f743c166b6a101904b76ed08f049f2eeb127a438cc6e8ccdf5",
+   "lib_sha256": "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430",
+   "source": "Takazudo/circuit-dev-resources commit 54c00fc8120e98fb0df02617587818f00609e8f3 (branch claude/project-thread-iw3gai) texas-instruments/opa4196/opa4196-pspice-model-sbomaf9e.zip, read-only gh api"
+  },
+  {
+   "part": "OPA4197IPWR / OPA4197IDR (line-op-precision, line-op-precision-d)",
+   "subckt": "OPAx197",
+   "file": ".circuit-cache/sources/opa197-model/OPAx197.LIB",
+   "header": "Final 1.3 (23JUN2022), SBOMA34D",
+   "zip_sha256": "9e55fcaa23d54cee025dda3fa9872b11c41c531f82e0802c2b93d51e943666e5",
+   "lib_sha256": "fc5b020e63346e511bd808bf41c856b0150b000bcf8a41fe00eeececb1f422a5",
+   "source": "retained source rows src-op-precision-vendor-model and src-op-precision-d-vendor-model"
+  },
+  {
+   "part": "LM13700M/NOPB (line-ota)",
+   "subckt": "LM13700/NS",
+   "file": "design/spec/modules/spice/filter-model/LM13700.MOD",
+   "lib_sha256": "666df501773da5e65f7fd3b3c806b2c1ae7770784685dd8191a9df33b382f390",
+   "limit": "header warns AC bandwidth and phase margin are overstated by more than twofold"
+  }
+ ],
+ "missing": {
+  "BAS16GW-QX": "BLOCKS class F",
+  "BCM847BS,115": "BLOCKS class I",
+  "BAT54S,215": "bracketed behind 10 kOhm on an output (Ruling 6)",
+  "TMUX6112PWR": "output-capacitance pair 0 / 100 pF on REF9 (Ruling 6)",
+  "LM393BIDR": "bracketed behind 100 kOhm on the REF9 output (Ruling 6; interpretation)"
+ }
+}

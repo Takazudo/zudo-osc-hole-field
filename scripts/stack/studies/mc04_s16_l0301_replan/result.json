@@ -1,0 +1,5619 @@
+{
+ "status": "ROWS-LEVEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT",
+ "brief": "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md",
+ "brief_sha256": "a638d4b8d6d20def85c63ed51e236153d889da790dee7e7cc0bebe657d36e7b4",
+ "pins": {
+  "written": "2026-11-28T16:37:59Z",
+  "files": {
+   "scripts/stack/studies/mc04_s16_l0301_replan/replan.py": "64636f64884e98d99e8c0a0d6997bee057272f4e3496f286d1aadc41afedaf0a",
+   "scripts/stack/studies/mc04_s16_l0301_replan/c13_heartbeat.py": "317d5686c29fadf361f36750079aaac75b1dee684e1e2eb11986d092e136ec71",
+   "scripts/stack/studies/mc04_s16_l0301_replan/test_s16.py": "fd3144f4f63dea08cb47c62088a46f6d2426ac9b4ddf57851321a2b0589aa90b",
+   "scripts/stack/studies/mc04_s12_five_ic_joint/s12.py": "b1e993583c541dc28c3574dfe7b789804937697466e2404b09d5a1a64c7aadcd",
+   "scripts/stack/studies/mc04_s12_five_ic_joint/joint_search.py": "97697c009b3282807191dad7180ca77c0810fc81f33a165b3d505defe60b6d28",
+   "scripts/stack/studies/mc04_s15_no_growth_moves/guard15.py": "5c563ec149b739ced4792130f6d2ca6d76b573200ca1fcaac609c69a1c479172",
+   "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16-l0301-replan-brief-20261128.md": "a638d4b8d6d20def85c63ed51e236153d889da790dee7e7cc0bebe657d36e7b4"
+  },
+  "commit": "d313db18036eb7f01d6c61a3686407842d5a835e"
+ },
+ "run": {
+  "clock_s": 3525.904228925705,
+  "steps": {
+   "arm0": 390.1833281517029,
+   "stage1": 465.19877457618713,
+   "stage2a": 0.16490983963012695,
+   "stage2b": 2593.5827252864838,
+   "stage3": 76.58204340934753,
+   "stage4": 0.1875934600830078
+  },
+  "segments": [
+   {
+    "start": 1795883879.571261,
+    "pid": 4968,
+    "end": 1795887202.6473293
+   },
+   {
+    "start": 1795887278.104952,
+    "pid": 537,
+    "end": 1795887480.9331126
+   }
+  ],
+  "resumes": [
+   {
+    "at": "2026-11-28T17:34:38Z",
+    "reason": "container restart at about 17:33Z during stage 2b (structures 121 to 123 in flight; the driver and its guard were killed)"
+   }
+  ],
+  "executor_timed": {
+   "start-circuit-check": 5.0,
+   "start-discarded-rev4-run1": 145.2,
+   "start-regen-all": 443.4,
+   "c13-detachment-test": 300.4
+  },
+  "started": "2026-11-28T16:37:59Z",
+  "commit": "d313db18036eb7f01d6c61a3686407842d5a835e",
+  "stop": null,
+  "verdict": "NO RE-PLAN FOUND (BOUNDED)",
+  "bounds": [
+   "pool of 20 spots per block",
+   "1200 rows-only replays in stage 2b",
+   "411 live structures not searched",
+   "5 kept scenes",
+   "10 overlay block searches"
+  ],
+  "finished": "2026-11-28T17:38:00Z",
+  "ended": "2026-11-28T17:38:00Z"
+ },
+ "stop": null,
+ "verdict": "NO RE-PLAN FOUND (BOUNDED)",
+ "bounds": [
+  "pool of 20 spots per block",
+  "1200 rows-only replays in stage 2b",
+  "411 live structures not searched",
+  "5 kept scenes",
+  "10 overlay block searches",
+  "12 rows-only replays per structure, reached in 93 structures",
+  "structure 122 cut at 2 kept replays by the 1200 cap (10 computed replays discarded; the worker reached 12 with no pass)",
+  "one scene judged per passing structure (first pass)",
+  "pool: cheapest survivor per spot; the 20-spot limit binds on 15 of the 45 blocks with survivors"
+ ],
+ "controls": {
+  "C1": true,
+  "C10": true,
+  "C11": true,
+  "C12": true,
+  "C13": true,
+  "C14": true,
+  "C15": true,
+  "C16": true,
+  "C2": true,
+  "C3": true,
+  "C3b": true,
+  "C4": true,
+  "C5": true,
+  "C6": true,
+  "C7": true,
+  "C8": true,
+  "C8b": true,
+  "C9": true
+ },
+ "mutations": {
+  "M1": "PPPPPPPPP FPPPPP",
+  "M28": "PF––––––– ––––––",
+  "M2": "––––––––– PPPPPP",
+  "M3": "F–––––––– ––––––",
+  "M4": "PF––––––– ––––––",
+  "M5": "PPF–––––– ––––––",
+  "M6": "PPF–––––– ––––––",
+  "M7": "PPPF––––– ––––––",
+  "M8": "PPPPF–––– ––––––",
+  "M11": "PPPPPPPF– ––––––",
+  "M9": "PPPPPF––– ––––––",
+  "M10": "PPPPPPF–– ––––––",
+  "M12": "PPPPPPPPF ––––––",
+  "M13": "––––––––– FPFPPP",
+  "M14": "––––––––– FPPFPP",
+  "M15": "––––––––– FPPPFP",
+  "M16": "––––––––– FPPPPF",
+  "M17_strict": "PPPPPPPF– ––––––",
+  "M17_default": "PPPPPPPF– ––––––",
+  "M18": "not a vector",
+  "M22": "––––––––– FFFPPP",
+  "M23": "PPF–––––– ––––––",
+  "M24": "PF––––––– ––––––",
+  "M25": "PF––––––– ––––––",
+  "M26": "not a vector",
+  "M27a": "PPF–––––– ––––––",
+  "M27b": "not a vector"
+ },
+ "mutation_problems": [],
+ "stage1": {
+  "S16-B[K-P-16]": {
+   "size": 8,
+   "centre": [
+    235.5,
+    192.0
+   ],
+   "legal_R1": 13035,
+   "after": {
+    "R2": 13035,
+    "R3": 13035,
+    "R4": 11727,
+    "R5": 1508,
+    "R6": 1508
+   },
+   "distinct_survivors": 1177,
+   "distinct_by_ring": {
+    "≤ 24 mm": 638,
+    "24–35 mm": 539
+   },
+   "class_s_deferred": 555
+  },
+  "S16-B[K-P-18]": {
+   "size": 8,
+   "centre": [
+    218.5,
+    192.0
+   ],
+   "legal_R1": 11766,
+   "after": {
+    "R2": 11415,
+    "R3": 11415,
+    "R4": 10051,
+    "R5": 1068,
+    "R6": 1068
+   },
+   "distinct_survivors": 831,
+   "distinct_by_ring": {
+    "≤ 24 mm": 609,
+    "24–35 mm": 222
+   },
+   "class_s_deferred": 556
+  },
+  "S16-B[K-P-20]": {
+   "size": 8,
+   "centre": [
+    235.5,
+    206.0
+   ],
+   "legal_R1": 12571,
+   "after": {
+    "R2": 12571,
+    "R3": 12571,
+    "R4": 11548,
+    "R5": 1417,
+    "R6": 1417
+   },
+   "distinct_survivors": 1110,
+   "distinct_by_ring": {
+    "≤ 24 mm": 599,
+    "24–35 mm": 511
+   },
+   "class_s_deferred": 555
+  },
+  "S16-B[P-K-E1]": {
+   "size": 8,
+   "centre": [
+    218.5,
+    172.0
+   ],
+   "legal_R1": 9355,
+   "after": {
+    "R2": 9355,
+    "R3": 9355,
+    "R4": 7991,
+    "R5": 783,
+    "R6": 783
+   },
+   "distinct_survivors": 613,
+   "distinct_by_ring": {
+    "≤ 24 mm": 456,
+    "24–35 mm": 157
+   },
+   "class_s_deferred": 556
+  },
+  "S16-B[P-K-E2]": {
+   "size": 8,
+   "centre": [
+    235.5,
+    172.0
+   ],
+   "legal_R1": 7993,
+   "after": {
+    "R2": 7987,
+    "R3": 7987,
+    "R4": 7264,
+    "R5": 1157,
+    "R6": 1157
+   },
+   "distinct_survivors": 908,
+   "distinct_by_ring": {
+    "≤ 24 mm": 161,
+    "24–35 mm": 747
+   },
+   "class_s_deferred": 555
+  },
+  "S16-B[P-K-E3]": {
+   "size": 8,
+   "centre": [
+    252.5,
+    172.0
+   ],
+   "legal_R1": 5078,
+   "after": {
+    "R2": 5053,
+    "R3": 5053,
+    "R4": 5053,
+    "R5": 894,
+    "R6": 894
+   },
+   "distinct_survivors": 702,
+   "distinct_by_ring": {
+    "≤ 24 mm": 497,
+    "24–35 mm": 205
+   },
+   "class_s_deferred": 7
+  },
+  "S16-B[K-P-16+K-P-18]": {
+   "size": 8,
+   "centre": [
+    227.0,
+    192.0
+   ],
+   "legal_R1": 11943,
+   "after": {
+    "R2": 11421,
+    "R3": 11421,
+    "R4": 10054,
+    "R5": 1060,
+    "R6": 1060
+   },
+   "distinct_survivors": 831,
+   "distinct_by_ring": {
+    "≤ 24 mm": 629,
+    "24–35 mm": 202
+   },
+   "class_s_deferred": 552
+  },
+  "S16-B[K-P-16+K-P-20]": {
+   "size": 8,
+   "centre": [
+    235.5,
+    199.0
+   ],
+   "legal_R1": 13267,
+   "after": {
+    "R2": 13267,
+    "R3": 13267,
+    "R4": 11999,
+    "R5": 1438,
+    "R6": 1438
+   },
+   "distinct_survivors": 1126,
+   "distinct_by_ring": {
+    "≤ 24 mm": 599,
+    "24–35 mm": 527
+   },
+   "class_s_deferred": 553
+  },
+  "S16-B[K-P-16+P-K-E1]": {
+   "size": 8,
+   "centre": [
+    227.0,
+    182.0
+   ],
+   "legal_R1": 11409,
+   "after": {
+    "R2": 9981,
+    "R3": 9981,
+    "R4": 8614,
+    "R5": 808,
+    "R6": 808
+   },
+   "distinct_survivors": 635,
+   "distinct_by_ring": {
+    "≤ 24 mm": 608,
+    "24–35 mm": 27
+   },
+   "class_s_deferred": 552
+  },
+  "S16-B[K-P-16+P-K-E2]": {
+   "size": 8,
+   "centre": [
+    235.5,
+    182.0
+   ],
+   "legal_R1": 11037,
+   "after": {
+    "R2": 9107,
+    "R3": 9107,
+    "R4": 8106,
+    "R5": 1230,
+    "R6": 1230
+   },
+   "distinct_survivors": 966,
+   "distinct_by_ring": {
+    "≤ 24 mm": 545,
+    "24–35 mm": 421
+   },
+   "class_s_deferred": 555
+  },
+  "S16-B[K-P-16+P-K-E3]": {
+   "size": 8,
+   "centre": [
+    244.0,
+    182.0
+   ],
+   "legal_R1": 10362,
+   "after": {
+    "R2": 6132,
+    "R3": 6132,
+    "R4": 6132,
+    "R5": 870,
+    "R6": 870
+   },
+   "distinct_survivors": 684,
+   "distinct_by_ring": {
+    "≤ 24 mm": 423,
+    "24–35 mm": 261
+   },
+   "class_s_deferred": 16
+  },
+  "S16-B[K-P-18+K-P-20]": {
+   "size": 8,
+   "centre": [
+    227.0,
+    199.0
+   ],
+   "legal_R1": 11913,
+   "after": {
+    "R2": 11471,
+    "R3": 11471,
+    "R4": 10090,
+    "R5": 1061,
+    "R6": 1061
+   },
+   "distinct_survivors": 831,
+   "distinct_by_ring": {
+    "≤ 24 mm": 785,
+    "24–35 mm": 46
+   },
+   "class_s_deferred": 551
+  },
+  "S16-B[K-P-18+P-K-E1]": {
+   "size": 14,
+   "centre": [
+    218.5,
+    182.0
+   ],
+   "legal_R1": 4958,
+   "after": {
+    "R2": 4096,
+    "R3": 4096,
+    "R4": 3694,
+    "R5": 237,
+    "R6": 237
+   },
+   "distinct_survivors": 186,
+   "distinct_by_ring": {
+    "≤ 24 mm": 168,
+    "24–35 mm": 18
+   },
+   "class_s_deferred": 186
+  },
+  "S16-B[K-P-18+P-K-E2]": {
+   "size": 14,
+   "centre": [
+    227.0,
+    182.0
+   ],
+   "legal_R1": 4940,
+   "after": {
+    "R2": 3595,
+    "R3": 3595,
+    "R4": 3193,
+    "R5": 239,
+    "R6": 239
+   },
+   "distinct_survivors": 186,
+   "distinct_by_ring": {
+    "≤ 24 mm": 186,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 188
+  },
+  "S16-B[K-P-18+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    235.5,
+    182.0
+   ],
+   "legal_R1": 4793,
+   "after": {
+    "R2": 1204,
+    "R3": 1204,
+    "R4": 1204,
+    "R5": 51,
+    "R6": 51
+   },
+   "distinct_survivors": 42,
+   "distinct_by_ring": {
+    "≤ 24 mm": 42,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-20+P-K-E1]": {
+   "size": 8,
+   "centre": [
+    227.0,
+    189.0
+   ],
+   "legal_R1": 11860,
+   "after": {
+    "R2": 10052,
+    "R3": 10052,
+    "R4": 8671,
+    "R5": 810,
+    "R6": 810
+   },
+   "distinct_survivors": 635,
+   "distinct_by_ring": {
+    "≤ 24 mm": 611,
+    "24–35 mm": 24
+   },
+   "class_s_deferred": 551
+  },
+  "S16-B[K-P-20+P-K-E2]": {
+   "size": 8,
+   "centre": [
+    235.5,
+    189.0
+   ],
+   "legal_R1": 12775,
+   "after": {
+    "R2": 9036,
+    "R3": 9036,
+    "R4": 8010,
+    "R5": 1192,
+    "R6": 1192
+   },
+   "distinct_survivors": 937,
+   "distinct_by_ring": {
+    "≤ 24 mm": 634,
+    "24–35 mm": 303
+   },
+   "class_s_deferred": 553
+  },
+  "S16-B[K-P-20+P-K-E3]": {
+   "size": 8,
+   "centre": [
+    244.0,
+    189.0
+   ],
+   "legal_R1": 12265,
+   "after": {
+    "R2": 6167,
+    "R3": 6167,
+    "R4": 6167,
+    "R5": 877,
+    "R6": 877
+   },
+   "distinct_survivors": 689,
+   "distinct_by_ring": {
+    "≤ 24 mm": 392,
+    "24–35 mm": 297
+   },
+   "class_s_deferred": 16
+  },
+  "S16-B[P-K-E1+P-K-E2]": {
+   "size": 14,
+   "centre": [
+    227.0,
+    172.0
+   ],
+   "legal_R1": 3850,
+   "after": {
+    "R2": 3595,
+    "R3": 3595,
+    "R4": 3193,
+    "R5": 239,
+    "R6": 239
+   },
+   "distinct_survivors": 186,
+   "distinct_by_ring": {
+    "≤ 24 mm": 109,
+    "24–35 mm": 77
+   },
+   "class_s_deferred": 188
+  },
+  "S16-B[P-K-E1+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    235.5,
+    172.0
+   ],
+   "legal_R1": 3366,
+   "after": {
+    "R2": 1204,
+    "R3": 1204,
+    "R4": 1204,
+    "R5": 51,
+    "R6": 51
+   },
+   "distinct_survivors": 42,
+   "distinct_by_ring": {
+    "≤ 24 mm": 14,
+    "24–35 mm": 28
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[P-K-E2+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    244.0,
+    172.0
+   ],
+   "legal_R1": 2688,
+   "after": {
+    "R2": 1438,
+    "R3": 1438,
+    "R4": 1438,
+    "R5": 128,
+    "R6": 128
+   },
+   "distinct_survivors": 105,
+   "distinct_by_ring": {
+    "≤ 24 mm": 14,
+    "24–35 mm": 91
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20]": {
+   "size": 14,
+   "centre": [
+    229.8333,
+    196.6667
+   ],
+   "legal_R1": 4648,
+   "after": {
+    "R2": 4648,
+    "R3": 4648,
+    "R4": 4276,
+    "R5": 179,
+    "R6": 179
+   },
+   "distinct_survivors": 144,
+   "distinct_by_ring": {
+    "≤ 24 mm": 144,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 143
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E1]": {
+   "size": 14,
+   "centre": [
+    224.1667,
+    185.3333
+   ],
+   "legal_R1": 4674,
+   "after": {
+    "R2": 3835,
+    "R3": 3835,
+    "R4": 3463,
+    "R5": 199,
+    "R6": 199
+   },
+   "distinct_survivors": 158,
+   "distinct_by_ring": {
+    "≤ 24 mm": 158,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 153
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E2]": {
+   "size": 14,
+   "centre": [
+    229.8333,
+    185.3333
+   ],
+   "legal_R1": 4696,
+   "after": {
+    "R2": 3390,
+    "R3": 3390,
+    "R4": 3021,
+    "R5": 197,
+    "R6": 197
+   },
+   "distinct_survivors": 158,
+   "distinct_by_ring": {
+    "≤ 24 mm": 158,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 151
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    235.5,
+    185.3333
+   ],
+   "legal_R1": 5052,
+   "after": {
+    "R2": 1187,
+    "R3": 1187,
+    "R4": 1187,
+    "R5": 52,
+    "R6": 52
+   },
+   "distinct_survivors": 42,
+   "distinct_by_ring": {
+    "≤ 24 mm": 42,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E1]": {
+   "size": 14,
+   "centre": [
+    229.8333,
+    190.0
+   ],
+   "legal_R1": 4831,
+   "after": {
+    "R2": 3999,
+    "R3": 3999,
+    "R4": 3615,
+    "R5": 222,
+    "R6": 222
+   },
+   "distinct_survivors": 177,
+   "distinct_by_ring": {
+    "≤ 24 mm": 177,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 177
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E2]": {
+   "size": 14,
+   "centre": [
+    235.5,
+    190.0
+   ],
+   "legal_R1": 5374,
+   "after": {
+    "R2": 3665,
+    "R3": 3665,
+    "R4": 3263,
+    "R5": 286,
+    "R6": 286
+   },
+   "distinct_survivors": 226,
+   "distinct_by_ring": {
+    "≤ 24 mm": 186,
+    "24–35 mm": 40
+   },
+   "class_s_deferred": 185
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    241.1667,
+    190.0
+   ],
+   "legal_R1": 5420,
+   "after": {
+    "R2": 1812,
+    "R3": 1812,
+    "R4": 1812,
+    "R5": 138,
+    "R6": 138
+   },
+   "distinct_survivors": 108,
+   "distinct_by_ring": {
+    "≤ 24 mm": 36,
+    "24–35 mm": 72
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+P-K-E1+P-K-E2]": {
+   "size": 14,
+   "centre": [
+    229.8333,
+    178.6667
+   ],
+   "legal_R1": 4193,
+   "after": {
+    "R2": 3375,
+    "R3": 3375,
+    "R4": 3003,
+    "R5": 179,
+    "R6": 179
+   },
+   "distinct_survivors": 144,
+   "distinct_by_ring": {
+    "≤ 24 mm": 144,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 143
+  },
+  "S16-B[K-P-16+P-K-E1+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    235.5,
+    178.6667
+   ],
+   "legal_R1": 4193,
+   "after": {
+    "R2": 1164,
+    "R3": 1164,
+    "R4": 1164,
+    "R5": 41,
+    "R6": 41
+   },
+   "distinct_survivors": 35,
+   "distinct_by_ring": {
+    "≤ 24 mm": 35,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+P-K-E2+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    241.1667,
+    178.6667
+   ],
+   "legal_R1": 3786,
+   "after": {
+    "R2": 1313,
+    "R3": 1313,
+    "R4": 1313,
+    "R5": 97,
+    "R6": 97
+   },
+   "distinct_survivors": 78,
+   "distinct_by_ring": {
+    "≤ 24 mm": 30,
+    "24–35 mm": 48
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E1]": {
+   "size": 14,
+   "centre": [
+    224.1667,
+    190.0
+   ],
+   "legal_R1": 4816,
+   "after": {
+    "R2": 3966,
+    "R3": 3966,
+    "R4": 3573,
+    "R5": 223,
+    "R6": 223
+   },
+   "distinct_survivors": 176,
+   "distinct_by_ring": {
+    "≤ 24 mm": 176,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 178
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E2]": {
+   "size": 14,
+   "centre": [
+    229.8333,
+    190.0
+   ],
+   "legal_R1": 4831,
+   "after": {
+    "R2": 3497,
+    "R3": 3497,
+    "R4": 3113,
+    "R5": 222,
+    "R6": 222
+   },
+   "distinct_survivors": 177,
+   "distinct_by_ring": {
+    "≤ 24 mm": 177,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 177
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    235.5,
+    190.0
+   ],
+   "legal_R1": 5374,
+   "after": {
+    "R2": 1204,
+    "R3": 1204,
+    "R4": 1204,
+    "R5": 51,
+    "R6": 51
+   },
+   "distinct_survivors": 42,
+   "distinct_by_ring": {
+    "≤ 24 mm": 42,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-18+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "centre": [
+    224.1667,
+    178.6667
+   ],
+   "legal_R1": 763,
+   "after": {
+    "R2": 555,
+    "R3": 555,
+    "R4": 363,
+    "R5": 9,
+    "R6": 9
+   },
+   "distinct_survivors": 6,
+   "distinct_by_ring": {
+    "≤ 24 mm": 6,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 9
+  },
+  "S16-B[K-P-18+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    229.8333,
+    178.6667
+   ],
+   "legal_R1": 681,
+   "after": {
+    "R2": 167,
+    "R3": 167,
+    "R4": 167,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-18+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    178.6667
+   ],
+   "legal_R1": 703,
+   "after": {
+    "R2": 192,
+    "R3": 192,
+    "R4": 192,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-20+P-K-E1+P-K-E2]": {
+   "size": 14,
+   "centre": [
+    229.8333,
+    183.3333
+   ],
+   "legal_R1": 4665,
+   "after": {
+    "R2": 3390,
+    "R3": 3390,
+    "R4": 3021,
+    "R5": 197,
+    "R6": 197
+   },
+   "distinct_survivors": 158,
+   "distinct_by_ring": {
+    "≤ 24 mm": 158,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 151
+  },
+  "S16-B[K-P-20+P-K-E1+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    235.5,
+    183.3333
+   ],
+   "legal_R1": 4828,
+   "after": {
+    "R2": 1187,
+    "R3": 1187,
+    "R4": 1187,
+    "R5": 52,
+    "R6": 52
+   },
+   "distinct_survivors": 42,
+   "distinct_by_ring": {
+    "≤ 24 mm": 42,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-20+P-K-E2+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    241.1667,
+    183.3333
+   ],
+   "legal_R1": 4435,
+   "after": {
+    "R2": 1328,
+    "R3": 1328,
+    "R4": 1328,
+    "R5": 106,
+    "R6": 106
+   },
+   "distinct_survivors": 84,
+   "distinct_by_ring": {
+    "≤ 24 mm": 36,
+    "24–35 mm": 48
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    172.0
+   ],
+   "legal_R1": 599,
+   "after": {
+    "R2": 212,
+    "R3": 212,
+    "R4": 212,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E1]": {
+   "size": 14,
+   "centre": [
+    227.0,
+    190.5
+   ],
+   "legal_R1": 4937,
+   "after": {
+    "R2": 4091,
+    "R3": 4091,
+    "R4": 3689,
+    "R5": 240,
+    "R6": 240
+   },
+   "distinct_survivors": 186,
+   "distinct_by_ring": {
+    "≤ 24 mm": 186,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 188
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E2]": {
+   "size": 14,
+   "centre": [
+    231.25,
+    190.5
+   ],
+   "legal_R1": 4917,
+   "after": {
+    "R2": 3556,
+    "R3": 3556,
+    "R4": 3157,
+    "R5": 238,
+    "R6": 238
+   },
+   "distinct_survivors": 186,
+   "distinct_by_ring": {
+    "≤ 24 mm": 186,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 183
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E3]": {
+   "size": 14,
+   "centre": [
+    235.5,
+    190.5
+   ],
+   "legal_R1": 5358,
+   "after": {
+    "R2": 1202,
+    "R3": 1202,
+    "R4": 1202,
+    "R5": 52,
+    "R6": 52
+   },
+   "distinct_survivors": 42,
+   "distinct_by_ring": {
+    "≤ 24 mm": 42,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "centre": [
+    227.0,
+    182.0
+   ],
+   "legal_R1": 919,
+   "after": {
+    "R2": 634,
+    "R3": 634,
+    "R4": 430,
+    "R5": 14,
+    "R6": 14
+   },
+   "distinct_survivors": 12,
+   "distinct_by_ring": {
+    "≤ 24 mm": 12,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 14
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    231.25,
+    182.0
+   ],
+   "legal_R1": 917,
+   "after": {
+    "R2": 216,
+    "R3": 216,
+    "R4": 216,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    182.0
+   ],
+   "legal_R1": 839,
+   "after": {
+    "R2": 212,
+    "R3": 212,
+    "R4": 212,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "centre": [
+    231.25,
+    185.5
+   ],
+   "legal_R1": 952,
+   "after": {
+    "R2": 649,
+    "R3": 649,
+    "R4": 439,
+    "R5": 14,
+    "R6": 14
+   },
+   "distinct_survivors": 12,
+   "distinct_by_ring": {
+    "≤ 24 mm": 12,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 14
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    185.5
+   ],
+   "legal_R1": 919,
+   "after": {
+    "R2": 208,
+    "R3": 208,
+    "R4": 208,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    239.75,
+    185.5
+   ],
+   "legal_R1": 845,
+   "after": {
+    "R2": 212,
+    "R3": 212,
+    "R4": 212,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    177.0
+   ],
+   "legal_R1": 725,
+   "after": {
+    "R2": 213,
+    "R3": 213,
+    "R4": 213,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "centre": [
+    227.0,
+    185.5
+   ],
+   "legal_R1": 933,
+   "after": {
+    "R2": 636,
+    "R3": 636,
+    "R4": 432,
+    "R5": 14,
+    "R6": 14
+   },
+   "distinct_survivors": 12,
+   "distinct_by_ring": {
+    "≤ 24 mm": 12,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 14
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    231.25,
+    185.5
+   ],
+   "legal_R1": 952,
+   "after": {
+    "R2": 212,
+    "R3": 212,
+    "R4": 212,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    185.5
+   ],
+   "legal_R1": 919,
+   "after": {
+    "R2": 208,
+    "R3": 208,
+    "R4": 208,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-18+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    231.25,
+    177.0
+   ],
+   "legal_R1": 804,
+   "after": {
+    "R2": 217,
+    "R3": 217,
+    "R4": 217,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-20+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    180.5
+   ],
+   "legal_R1": 796,
+   "after": {
+    "R2": 212,
+    "R3": 212,
+    "R4": 212,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2]": {
+   "size": 26,
+   "centre": [
+    228.7,
+    186.8
+   ],
+   "legal_R1": 887,
+   "after": {
+    "R2": 611,
+    "R3": 611,
+    "R4": 403,
+    "R5": 13,
+    "R6": 13
+   },
+   "distinct_survivors": 9,
+   "distinct_by_ring": {
+    "≤ 24 mm": 9,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 13
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    232.1,
+    186.8
+   ],
+   "legal_R1": 820,
+   "after": {
+    "R2": 184,
+    "R3": 184,
+    "R4": 184,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    186.8
+   ],
+   "legal_R1": 874,
+   "after": {
+    "R2": 193,
+    "R3": 193,
+    "R4": 193,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-18+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    232.1,
+    180.0
+   ],
+   "legal_R1": 785,
+   "after": {
+    "R2": 198,
+    "R3": 198,
+    "R4": 198,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-20+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    235.5,
+    182.8
+   ],
+   "legal_R1": 797,
+   "after": {
+    "R2": 193,
+    "R3": 193,
+    "R4": 193,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    232.1,
+    182.8
+   ],
+   "legal_R1": 792,
+   "after": {
+    "R2": 184,
+    "R3": 184,
+    "R4": 184,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  },
+  "S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3]": {
+   "size": 26,
+   "centre": [
+    232.6667,
+    184.3333
+   ],
+   "legal_R1": 813,
+   "after": {
+    "R2": 183,
+    "R3": 183,
+    "R4": 183,
+    "R5": 0,
+    "R6": 0
+   },
+   "distinct_survivors": 0,
+   "distinct_by_ring": {
+    "≤ 24 mm": 0,
+    "24–35 mm": 0
+   },
+   "class_s_deferred": 0
+  }
+ },
+ "stage2a": {
+  "structures": 876,
+  "live": 534,
+  "dead_at": {
+   "S1": 0,
+   "S2": 0,
+   "S3": 254,
+   "census": 88
+  },
+  "by_class": {
+   "0 links, 6 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 1,
+    "census": 0,
+    "live": 0,
+    "searched": 0,
+    "passing": 0
+   },
+   "1 links, 1 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 1,
+    "census": 4,
+    "live": 1,
+    "searched": 1,
+    "passing": 0
+   },
+   "1 links, 2 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 6,
+    "census": 6,
+    "live": 3,
+    "searched": 3,
+    "passing": 0
+   },
+   "1 links, 3 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 15,
+    "census": 2,
+    "live": 3,
+    "searched": 3,
+    "passing": 2
+   },
+   "1 links, 4 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 15,
+    "census": 0,
+    "live": 0,
+    "searched": 0,
+    "passing": 0
+   },
+   "1 links, 5 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 6,
+    "census": 0,
+    "live": 0,
+    "searched": 0,
+    "passing": 0
+   },
+   "2 links, 0 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 0,
+    "census": 17,
+    "live": 14,
+    "searched": 9,
+    "passing": 0
+   },
+   "2 links, 1 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 15,
+    "census": 23,
+    "live": 52,
+    "searched": 40,
+    "passing": 4
+   },
+   "2 links, 2 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 42,
+    "census": 7,
+    "live": 56,
+    "searched": 52,
+    "passing": 14
+   },
+   "2 links, 3 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 45,
+    "census": 0,
+    "live": 15,
+    "searched": 15,
+    "passing": 4
+   },
+   "2 links, 4 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 15,
+    "census": 0,
+    "live": 0,
+    "searched": 0,
+    "passing": 0
+   },
+   "3 links, 0 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 0,
+    "census": 18,
+    "live": 72,
+    "searched": 0,
+    "passing": 0
+   },
+   "3 links, 1 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 25,
+    "census": 8,
+    "live": 117,
+    "searched": 0,
+    "passing": 0
+   },
+   "3 links, 2 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 36,
+    "census": 0,
+    "live": 54,
+    "searched": 0,
+    "passing": 0
+   },
+   "3 links, 3 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 15,
+    "census": 0,
+    "live": 5,
+    "searched": 0,
+    "passing": 0
+   },
+   "4 links, 0 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 0,
+    "census": 3,
+    "live": 62,
+    "searched": 0,
+    "passing": 0
+   },
+   "4 links, 1 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 10,
+    "census": 0,
+    "live": 50,
+    "searched": 0,
+    "passing": 0
+   },
+   "4 links, 2 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 6,
+    "census": 0,
+    "live": 9,
+    "searched": 0,
+    "passing": 0
+   },
+   "5 links, 0 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 0,
+    "census": 0,
+    "live": 15,
+    "searched": 0,
+    "passing": 0
+   },
+   "5 links, 1 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 1,
+    "census": 0,
+    "live": 5,
+    "searched": 0,
+    "passing": 0
+   },
+   "6 links, 0 ride sites": {
+    "S1": 0,
+    "S2": 0,
+    "S3": 0,
+    "census": 0,
+    "live": 1,
+    "searched": 0,
+    "passing": 0
+   }
+  },
+  "outcomes": [
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1|K-P-20+P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1+P-K-E2|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1+P-K-E2+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1+P-K-E3|K-P-20+P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E2|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E2+P-K-E3|K-P-20+P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E3|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1|K-P-18+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1+P-K-E2|K-P-18+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1+P-K-E2+P-K-E3|K-P-18",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1+P-K-E3|K-P-18+P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E2|K-P-18+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E2+P-K-E3|K-P-18+P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E3|K-P-18+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+K-P-20+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E2|K-P-18+K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E2+P-K-E3|K-P-18+K-P-20",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E3|K-P-18+K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+K-P-20+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2+P-K-E3|K-P-18+K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1|K-P-20+P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1+P-K-E2|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1+P-K-E2+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1+P-K-E3|K-P-20+P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E2|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E2+P-K-E3|K-P-20+P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E3|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1|K-P-20|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1|K-P-20+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1|K-P-20+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1+P-K-E2|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1+P-K-E3|K-P-20|P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E2|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E2|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E2|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E2+P-K-E3|K-P-20|P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E3|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E3|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E3|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E1+P-K-E3|P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E2+P-K-E3|P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1|K-P-18|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1|K-P-18+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1|K-P-18+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1+P-K-E2|K-P-18|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1+P-K-E3|K-P-18|P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E2|K-P-18|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E2|K-P-18+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E2|K-P-18+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E2+P-K-E3|K-P-18|P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E3|K-P-18|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E3|K-P-18+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E3|K-P-18+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18|K-P-20+P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+K-P-20|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+K-P-20+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+K-P-20+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+P-K-E2|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+P-K-E2+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+P-K-E3|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E2|K-P-18|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E2|K-P-18+K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E2|K-P-18+P-K-E3|K-P-20",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E2+P-K-E3|K-P-18|K-P-20",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E3|K-P-18|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E3|K-P-18+K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E3|K-P-18+P-K-E2|K-P-20",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+P-K-E1|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+P-K-E1+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+P-K-E3|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2+P-K-E3|K-P-18|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2+P-K-E3|K-P-18+K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2+P-K-E3|K-P-18+P-K-E1|K-P-20",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+P-K-E1|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+P-K-E1+P-K-E2|K-P-20",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+P-K-E2|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1|K-P-20|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1|K-P-20+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1|K-P-20+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1+P-K-E2|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1+P-K-E3|K-P-20|P-K-E2",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E2|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E2|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E2|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E2+P-K-E3|K-P-20|P-K-E1",
+    "census"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E3|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E3|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E3|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E1|K-P-20|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E2|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18+P-K-E3|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E1|K-P-18|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E2|K-P-18|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20+P-K-E3|K-P-18|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18|K-P-20|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18|K-P-20+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18|K-P-20+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+K-P-20|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+P-K-E2|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18+P-K-E3|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E2|K-P-18|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1+P-K-E3|K-P-18|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+P-K-E1|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18+P-K-E3|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2+P-K-E3|K-P-18|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+P-K-E1|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18+P-K-E2|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E1|K-P-20|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E2|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18+P-K-E3|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-18|K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+K-P-20|K-P-18|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E1|K-P-18|K-P-20|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E2|K-P-18|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[]|K-P-16+P-K-E3|K-P-18|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[]|K-P-16|K-P-18|K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1|K-P-20+P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1+P-K-E2|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1+P-K-E2+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1+P-K-E3|K-P-20+P-K-E2",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E2|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E2+P-K-E3|K-P-20+P-K-E1",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E3|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "census"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "census"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1|K-P-20+P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1+P-K-E2|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1+P-K-E2+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1+P-K-E3|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E2|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E2+P-K-E3|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E3|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E1+P-K-E3|P-K-E2",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E2+P-K-E3|P-K-E1",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1|K-P-18+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1+P-K-E2|K-P-18+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1+P-K-E2+P-K-E3|K-P-18",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1+P-K-E3|K-P-18+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E2|K-P-18+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E2+P-K-E3|K-P-18+P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E3|K-P-18+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18|K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+P-K-E2|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+P-K-E2+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+P-K-E3|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20|K-P-18+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20+P-K-E2|K-P-18+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20+P-K-E2+P-K-E3|K-P-18",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20+P-K-E3|K-P-18+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E2|K-P-18+K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E2+P-K-E3|K-P-18+K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E3|K-P-18+K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+K-P-20+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+P-K-E1|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+P-K-E1+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+P-K-E3|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20|K-P-18+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20+P-K-E1|K-P-18+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20+P-K-E1+P-K-E3|K-P-18",
+    "census"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20+P-K-E3|K-P-18+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E1|K-P-18+K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E1+P-K-E3|K-P-18+K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E3|K-P-18+K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+P-K-E1|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+P-K-E1+P-K-E2|K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+P-K-E2|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20|K-P-18+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20+P-K-E1|K-P-18+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20+P-K-E1+P-K-E2|K-P-18",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20+P-K-E2|K-P-18+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E1|K-P-18+K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E1+P-K-E2|K-P-18+K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E2|K-P-18+K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1|K-P-20|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1|K-P-20+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1|K-P-20+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1+P-K-E2|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1+P-K-E3|K-P-20|P-K-E2",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E2|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E2|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E2|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E2+P-K-E3|K-P-20|P-K-E1",
+    "census"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E3|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E3|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E3|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1|K-P-20|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1|K-P-20+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1|K-P-20+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1+P-K-E2|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1+P-K-E3|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E2|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E2|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E2|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E2+P-K-E3|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E3|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E3|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E3|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E1+P-K-E3|P-K-E2",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E2+P-K-E3|P-K-E1",
+    "census"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1|K-P-18|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1|K-P-18+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1|K-P-18+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1+P-K-E2|K-P-18|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1+P-K-E3|K-P-18|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E2|K-P-18|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E2|K-P-18+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E2|K-P-18+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E2+P-K-E3|K-P-18|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E3|K-P-18|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E3|K-P-18+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E3|K-P-18+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18|K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+P-K-E2|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+P-K-E2+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+P-K-E3|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18|K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18|K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18|K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+P-K-E2|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18+P-K-E3|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20|K-P-18|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20|K-P-18+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20|K-P-18+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20+P-K-E2|K-P-18|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20+P-K-E3|K-P-18|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E2|K-P-18|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E2|K-P-18+K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E2|K-P-18+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E2+P-K-E3|K-P-18|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E3|K-P-18|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E3|K-P-18+K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E3|K-P-18+P-K-E2|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+P-K-E1|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+P-K-E1+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+P-K-E3|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+P-K-E1|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18+P-K-E3|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20|K-P-18|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20|K-P-18+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20|K-P-18+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20+P-K-E1|K-P-18|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20+P-K-E3|K-P-18|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E1|K-P-18|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E1|K-P-18+K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E1|K-P-18+P-K-E3|K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E1+P-K-E3|K-P-18|K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E3|K-P-18|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E3|K-P-18+K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E3|K-P-18+P-K-E1|K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+P-K-E1|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+P-K-E1+P-K-E2|K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+P-K-E2|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+P-K-E1|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18+P-K-E2|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20|K-P-18|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20|K-P-18+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20|K-P-18+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20+P-K-E1|K-P-18|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20+P-K-E2|K-P-18|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E1|K-P-18|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E1|K-P-18+K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E1|K-P-18+P-K-E2|K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E1+P-K-E2|K-P-18|K-P-20",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E2|K-P-18|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E2|K-P-18+K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E2|K-P-18+P-K-E1|K-P-20",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E1|K-P-20|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E2|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18+P-K-E3|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E1|K-P-20|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E2|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16+P-K-E3|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+K-P-18|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E1|K-P-18|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E2|K-P-18|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16+P-K-E3|K-P-18|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18|K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18|K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18|K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+P-K-E2|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18+P-K-E3|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-18|K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+K-P-20|K-P-18|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E2|K-P-18|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1]|K-P-16+P-K-E3|K-P-18|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+P-K-E1|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18+P-K-E3|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-18|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+K-P-20|K-P-18|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E1|K-P-18|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E2]|K-P-16+P-K-E3|K-P-18|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+P-K-E1|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18+P-K-E2|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-18|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+K-P-20|K-P-18|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E1|K-P-18|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16+P-K-E2|K-P-18|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16]|K-P-18|K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18]|K-P-16|K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20]|K-P-16|K-P-18|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E1]|K-P-16|K-P-18|K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E2]|K-P-16|K-P-18|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[P-K-E3]|K-P-16|K-P-18|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+K-P-20+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+K-P-20+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+K-P-18+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+K-P-18+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+K-P-18+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+K-P-18+K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+K-P-18+K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+K-P-18+K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E2+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E1+P-K-E3|P-K-E2",
+    "census"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E2+P-K-E3|P-K-E1",
+    "census"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18|K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+P-K-E2|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+P-K-E2+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+P-K-E3|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+P-K-E1|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+P-K-E1+P-K-E3|K-P-20",
+    "census"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+P-K-E3|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+P-K-E1|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+P-K-E1+P-K-E2|K-P-20",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+P-K-E2|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E2|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E2+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E3|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16|K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+P-K-E2|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+P-K-E2+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+P-K-E3|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+P-K-E1|K-P-20+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+P-K-E1+P-K-E3|K-P-20",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+P-K-E3|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+P-K-E1|K-P-20+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+P-K-E1+P-K-E2|K-P-20",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+P-K-E2|K-P-20+P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16|K-P-18+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+K-P-18|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+K-P-18+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+K-P-18+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+P-K-E2|K-P-18+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+P-K-E2+P-K-E3|K-P-18",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+P-K-E3|K-P-18+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16|K-P-18+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+K-P-18|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+K-P-18+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+K-P-18+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+P-K-E1|K-P-18+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+P-K-E1+P-K-E3|K-P-18",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+P-K-E3|K-P-18+P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16|K-P-18+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+K-P-18|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+K-P-18+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+K-P-18+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+P-K-E1|K-P-18+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+P-K-E1+P-K-E2|K-P-18",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+P-K-E2|K-P-18+P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16|K-P-18+K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+K-P-18|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+K-P-18+K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+K-P-18+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+K-P-20|K-P-18+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+K-P-20+P-K-E3|K-P-18",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+P-K-E3|K-P-18+K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16|K-P-18+K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+K-P-18|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+K-P-18+K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+K-P-18+P-K-E2|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+K-P-20|K-P-18+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+K-P-20+P-K-E2|K-P-18",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+P-K-E2|K-P-18+K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16|K-P-18+K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+K-P-18|K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+K-P-18+K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+K-P-18+P-K-E1|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+K-P-20|K-P-18+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+K-P-20+P-K-E1|K-P-18",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+P-K-E1|K-P-18+K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18|K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18|K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18|K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+P-K-E2|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18+P-K-E3|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+P-K-E1|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18+P-K-E3|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+P-K-E1|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18+P-K-E2|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E2|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16+P-K-E3|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16|K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16|K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16|K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+P-K-E2|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16+P-K-E3|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+P-K-E1|K-P-20|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16+P-K-E3|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+P-K-E1|K-P-20|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16+P-K-E2|K-P-20|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16|K-P-18|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16|K-P-18+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16|K-P-18+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+K-P-18|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+P-K-E2|K-P-18|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16+P-K-E3|K-P-18|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16|K-P-18|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16|K-P-18+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16|K-P-18+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+K-P-18|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+P-K-E1|K-P-18|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16+P-K-E3|K-P-18|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16|K-P-18|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16|K-P-18+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16|K-P-18+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+K-P-18|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+P-K-E1|K-P-18|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16+P-K-E2|K-P-18|P-K-E1",
+    "live"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16|K-P-18|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16|K-P-18+K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16|K-P-18+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+K-P-18|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+K-P-20|K-P-18|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16+P-K-E3|K-P-18|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16|K-P-18|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16|K-P-18+K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16|K-P-18+P-K-E2|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+K-P-18|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+K-P-20|K-P-18|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16+P-K-E2|K-P-18|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16|K-P-18|K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16|K-P-18+K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16|K-P-18+P-K-E1|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+K-P-18|K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+K-P-20|K-P-18|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16+P-K-E1|K-P-18|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18]|K-P-20|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20]|K-P-18|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E1]|K-P-18|K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2]|K-P-18|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E3]|K-P-18|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-18,K-P-20]|K-P-16|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E1]|K-P-16|K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2]|K-P-16|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-18,P-K-E3]|K-P-16|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E1]|K-P-16|K-P-18|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2]|K-P-16|K-P-18|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-20,P-K-E3]|K-P-16|K-P-18|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[P-K-E1,P-K-E2]|K-P-16|K-P-18|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E3]|K-P-16|K-P-18|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[P-K-E2,P-K-E3]|K-P-16|K-P-18|K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20]|P-K-E1+P-K-E2+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1]|K-P-20+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E2]|K-P-20+P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E3]|K-P-20+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1]|K-P-18+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E2]|K-P-18+P-K-E1+P-K-E3",
+    "census"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E3]|K-P-18+P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E2]|K-P-18+K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E3]|K-P-18+K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2,P-K-E3]|K-P-18+K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1]|K-P-16+P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E2]|K-P-16+P-K-E1+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E3]|K-P-16+P-K-E1+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E2]|K-P-16+K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E3]|K-P-16+K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2,P-K-E3]|K-P-16+K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E2]|K-P-16+K-P-18+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E3]|K-P-16+K-P-18+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2,P-K-E3]|K-P-16+K-P-18+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2,P-K-E3]|K-P-16+K-P-18+K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20]|P-K-E1|P-K-E2+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20]|P-K-E1+P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20]|P-K-E1+P-K-E3|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1]|K-P-20|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1]|K-P-20+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1]|K-P-20+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E2]|K-P-20|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E2]|K-P-20+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E2]|K-P-20+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E3]|K-P-20|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E3]|K-P-20+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E3]|K-P-20+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1]|K-P-18|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1]|K-P-18+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1]|K-P-18+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E2]|K-P-18|P-K-E1+P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E2]|K-P-18+P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E2]|K-P-18+P-K-E3|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E3]|K-P-18|P-K-E1+P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E3]|K-P-18+P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E3]|K-P-18+P-K-E2|P-K-E1",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E2]|K-P-18|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E2]|K-P-18+K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E2]|K-P-18+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E3]|K-P-18|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E3]|K-P-18+K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E3]|K-P-18+P-K-E2|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2,P-K-E3]|K-P-18|K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2,P-K-E3]|K-P-18+K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2,P-K-E3]|K-P-18+P-K-E1|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1]|K-P-16|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1]|K-P-16+P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1]|K-P-16+P-K-E3|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E2]|K-P-16|P-K-E1+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E2]|K-P-16+P-K-E1|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E2]|K-P-16+P-K-E3|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E3]|K-P-16|P-K-E1+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E3]|K-P-16+P-K-E1|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E3]|K-P-16+P-K-E2|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E2]|K-P-16|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E2]|K-P-16+K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E2]|K-P-16+P-K-E3|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E3]|K-P-16|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E3]|K-P-16+K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E3]|K-P-16+P-K-E2|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2,P-K-E3]|K-P-16|K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2,P-K-E3]|K-P-16+K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2,P-K-E3]|K-P-16+P-K-E1|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E2]|K-P-16|K-P-18+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E2]|K-P-16+K-P-18|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E2]|K-P-16+P-K-E3|K-P-18",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E3]|K-P-16|K-P-18+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E3]|K-P-16+K-P-18|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E3]|K-P-16+P-K-E2|K-P-18",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2,P-K-E3]|K-P-16|K-P-18+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2,P-K-E3]|K-P-16+K-P-18|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2,P-K-E3]|K-P-16+P-K-E1|K-P-18",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2,P-K-E3]|K-P-16|K-P-18+K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2,P-K-E3]|K-P-16+K-P-18|K-P-20",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2,P-K-E3]|K-P-16+K-P-20|K-P-18",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20]|P-K-E1|P-K-E2|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1]|K-P-20|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E2]|K-P-20|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E3]|K-P-20|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1]|K-P-18|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E2]|K-P-18|P-K-E1|P-K-E3",
+    "live"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E3]|K-P-18|P-K-E1|P-K-E2",
+    "live"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E2]|K-P-18|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E3]|K-P-18|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E2,P-K-E3]|K-P-18|K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1]|K-P-16|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E2]|K-P-16|P-K-E1|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E3]|K-P-16|P-K-E1|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E2]|K-P-16|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E3]|K-P-16|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E2,P-K-E3]|K-P-16|K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E2]|K-P-16|K-P-18|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E3]|K-P-16|K-P-18|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E2,P-K-E3]|K-P-16|K-P-18|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[P-K-E1,P-K-E2,P-K-E3]|K-P-16|K-P-18|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E1]|P-K-E2+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E2]|P-K-E1+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E3]|P-K-E1+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1,P-K-E2]|K-P-20+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1,P-K-E3]|K-P-20+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E2,P-K-E3]|K-P-20+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1,P-K-E2]|K-P-18+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1,P-K-E3]|K-P-18+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E2,P-K-E3]|K-P-18+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E2,P-K-E3]|K-P-18+K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1,P-K-E2]|K-P-16+P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1,P-K-E3]|K-P-16+P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E2,P-K-E3]|K-P-16+P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E2,P-K-E3]|K-P-16+K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E2,P-K-E3]|K-P-16+K-P-18",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E1]|P-K-E2|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E2]|P-K-E1|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E3]|P-K-E1|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1,P-K-E2]|K-P-20|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1,P-K-E3]|K-P-20|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E2,P-K-E3]|K-P-20|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1,P-K-E2]|K-P-18|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1,P-K-E3]|K-P-18|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E2,P-K-E3]|K-P-18|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,P-K-E1,P-K-E2,P-K-E3]|K-P-18|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1,P-K-E2]|K-P-16|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1,P-K-E3]|K-P-16|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E2,P-K-E3]|K-P-16|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-18,P-K-E1,P-K-E2,P-K-E3]|K-P-16|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-20,P-K-E1,P-K-E2,P-K-E3]|K-P-16|K-P-18",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E1,P-K-E2]|P-K-E3",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E1,P-K-E3]|P-K-E2",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E2,P-K-E3]|P-K-E1",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,P-K-E1,P-K-E2,P-K-E3]|K-P-20",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-20,P-K-E1,P-K-E2,P-K-E3]|K-P-18",
+    "S3"
+   ],
+   [
+    "R[K-P-18,K-P-20,P-K-E1,P-K-E2,P-K-E3]|K-P-16",
+    "S3"
+   ],
+   [
+    "R[K-P-16,K-P-18,K-P-20,P-K-E1,P-K-E2,P-K-E3]|",
+    "S3"
+   ]
+  ]
+ },
+ "stage2b": {
+  "live": 534,
+  "searched": 123,
+  "not_searched": 411,
+  "replays": 1200,
+  "bound": "1200 rows-only replays in stage 2b",
+  "discarded": {
+   "structures_in_flight_at_stop": 3
+  },
+  "C12": {
+   "scenes": 12,
+   "pass": true,
+   "differences": []
+  }
+ },
+ "stage3": {
+  "passing_stage2b": 24,
+  "kept_cap_reached": true,
+  "overlay_searches": 12,
+  "overlay_cap_reached": true,
+  "judged": [
+   {
+    "structure": "R[K-P-16,K-P-18,P-K-E2]|K-P-20+P-K-E1+P-K-E3",
+    "rank": [
+     1,
+     12,
+     1,
+     2,
+     15.818689,
+     "R[K-P-16,K-P-18,P-K-E2]|K-P-20+P-K-E1+P-K-E3"
+    ],
+    "A0": true,
+    "passes": {
+     "A1": true,
+     "A2": true,
+     "A3": true,
+     "A4": true,
+     "A5": true,
+     "A6": true,
+     "A7": true,
+     "A8": false,
+     "A9": false,
+     "A10": false,
+     "A11": true
+    },
+    "pass": false,
+    "overlay_searches": 3
+   },
+   {
+    "structure": "R[K-P-16,K-P-18,P-K-E3]|K-P-20+P-K-E1+P-K-E2",
+    "rank": [
+     1,
+     12,
+     1,
+     2,
+     16.788471,
+     "R[K-P-16,K-P-18,P-K-E3]|K-P-20+P-K-E1+P-K-E2"
+    ],
+    "A0": true,
+    "passes": {
+     "A1": true,
+     "A2": true,
+     "A3": true,
+     "A4": true,
+     "A5": true,
+     "A6": true,
+     "A7": true,
+     "A8": false,
+     "A9": false,
+     "A10": false,
+     "A11": true
+    },
+    "pass": false,
+    "overlay_searches": 3
+   },
+   {
+    "structure": "R[P-K-E2]|K-P-16+P-K-E1+P-K-E3|K-P-18+K-P-20",
+    "rank": [
+     2,
+     13,
+     2,
+     2,
+     22.628874,
+     "R[P-K-E2]|K-P-16+P-K-E1+P-K-E3|K-P-18+K-P-20"
+    ],
+    "A0": true,
+    "passes": {
+     "A1": true,
+     "A2": true,
+     "A3": true,
+     "A4": true,
+     "A5": true,
+     "A6": true,
+     "A7": true,
+     "A8": false,
+     "A9": false,
+     "A10": false,
+     "A11": true
+    },
+    "pass": false,
+    "overlay_searches": 6
+   },
+   {
+    "structure": "R[K-P-18,P-K-E2]|K-P-16+P-K-E1+P-K-E3|K-P-20",
+    "rank": [
+     2,
+     13,
+     2,
+     2,
+     22.808,
+     "R[K-P-18,P-K-E2]|K-P-16+P-K-E1+P-K-E3|K-P-20"
+    ],
+    "A0": true,
+    "passes": {
+     "A1": true,
+     "A2": true,
+     "A3": true,
+     "A4": true,
+     "A5": true,
+     "A6": true,
+     "A7": true,
+     "A8": false,
+     "A9": false,
+     "A10": true,
+     "A11": true
+    },
+    "pass": false,
+    "overlay_searches": 0
+   },
+   {
+    "structure": "R[P-K-E3]|K-P-16+P-K-E1+P-K-E2|K-P-18+K-P-20",
+    "rank": [
+     2,
+     13,
+     2,
+     2,
+     23.277464,
+     "R[P-K-E3]|K-P-16+P-K-E1+P-K-E2|K-P-18+K-P-20"
+    ],
+    "A0": true,
+    "passes": {
+     "A1": true,
+     "A2": true,
+     "A3": true,
+     "A4": true,
+     "A5": true,
+     "A6": true,
+     "A7": true,
+     "A8": false,
+     "A9": false,
+     "A10": true,
+     "A11": true
+    },
+    "pass": false,
+    "overlay_searches": 0
+   }
+  ],
+  "kept": 0
+ },
+ "stage4": {
+  "survivors": 23,
+  "scenes": [],
+  "replays": 0
+ },
+ "candidates": [],
+ "guards": {
+  "restart-repeat-circuit-check": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 5.0,
+   "peak_tree_rss_mib": 0.1,
+   "min_mem_available_mib": 15414.9,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "restart-repeat-regen-all": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 420.3,
+   "peak_tree_rss_mib": 371.9,
+   "min_mem_available_mib": 14561.1,
+   "peak_docker_container_mem_mib": 831.4,
+   "watchdog_fired": null
+  },
+  "run-2": {
+   "returncode": null,
+   "finished": false,
+   "wall_s": 3320.6,
+   "peak_tree_rss_mib": 2187.4,
+   "min_mem_available_mib": 13120.9,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "run-3-resume-1": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 205.3,
+   "peak_tree_rss_mib": 1074.1,
+   "min_mem_available_mib": 14749.7,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "start-circuit-check": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 5.0,
+   "peak_tree_rss_mib": 0.0,
+   "min_mem_available_mib": 15313.3,
+   "peak_docker_container_mem_mib": 0.0,
+   "watchdog_fired": null
+  },
+  "start-discarded-rev4-run1": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 145.2,
+   "peak_tree_rss_mib": null,
+   "min_mem_available_mib": null,
+   "peak_docker_container_mem_mib": null,
+   "watchdog_fired": null
+  },
+  "start-regen-all": {
+   "returncode": 0,
+   "finished": true,
+   "wall_s": 443.4,
+   "peak_tree_rss_mib": 397.0,
+   "min_mem_available_mib": 14037.6,
+   "peak_docker_container_mem_mib": 756.6,
+   "watchdog_fired": null
+  }
+ },
+ "digests": {
+  "arm0/c4-census.json": "595715c666a5d3a3806c6d2fe88052f60cc7a58bc7b1d1d3023f292a9ed846c0",
+  "arm0/c5-census.json": "c3a2047afe969e0ac42dfdcad3a6d67fcd73c35ec233dd2a56c186e28d9a6abb",
+  "checkpoints/arm0/C1.json": "98ee8406b74dc74913129b5fa8cd01ff0c05276482fae297165f1a5fc551c156",
+  "checkpoints/arm0/C10.json": "207961af93a91f8625508970dda05df700b468bb8a3b820bac2c6fea6b24b0d0",
+  "checkpoints/arm0/C11.json": "768bf4bd271d61ecef94661b6242416002584433f2b3eccf957aaeb0e7f3b711",
+  "checkpoints/arm0/C12.json": "c83911d7ab502c0c957d65b6c9b815e24923072d8335eadaf08518c457dfa941",
+  "checkpoints/arm0/C13.json": "7060023fff3895ee29daa15e148b53e400afdaa101f91e5286fcc218866c6613",
+  "checkpoints/arm0/C14.json": "b2ccb9f5c189f81d7d8c94d016a822bb3d1086ffdb27ea62ee2d72f210a73b69",
+  "checkpoints/arm0/C15.json": "7c66353f16941436709f91c41685562075f55f845ef7981c097f7316dc36751f",
+  "checkpoints/arm0/C16.json": "19cb43e4c699f4d5fa5a0ea10598a074f6c4cac6bee89f99f39883bced1d9619",
+  "checkpoints/arm0/C2.json": "3e2f87e002e7a1d9a5020071f0c049881299baa65b4798a3a88f32b1425890f5",
+  "checkpoints/arm0/C3.json": "39b977dd3d842428600708684b23eeb512280b2cef58a2d497c519d7cf0c7b0a",
+  "checkpoints/arm0/C3b.json": "f03c0c363f773b47262f0fd823849f22772da77d415032577fc8796af94f3fab",
+  "checkpoints/arm0/C4.json": "82932f03b988353ddbf336038e28a4a5c1a8c831a6de585d97037ff72a8c6a03",
+  "checkpoints/arm0/C5.json": "0a1a30fc21c9dfe06dff1e6db766da74c0710a482db29ebc6923718852a04daf",
+  "checkpoints/arm0/C6.json": "356947e9b422d2c9c1858ad1c1eebfbac8d7de1d467985d2e21dc224bf3b0ba5",
+  "checkpoints/arm0/C7.json": "22e24a046923971fb6b1ce9a14cf5635cf021f31561f062e1019412335459bdd",
+  "checkpoints/arm0/C8.json": "b6f6e1f372d4b2c0384785e372bdd3f0eabce60d126c29cafc0a0b4c341513d8",
+  "checkpoints/arm0/C8b.json": "9d636d9b0bf44a126bac25dc73959f8351f5cad74ca82456e3e04aec706d8e5f",
+  "checkpoints/arm0/C9.json": "77e41c80d2e723f76fe000bfa259382d52e36eab5ec30e066a6134abef15ad50",
+  "checkpoints/arm0/mutation-control.json": "3186693881e4d4545054b668f54ded955eb77b4321a5fdc3e92f500fca600da0",
+  "checkpoints/arm0/mutations.json": "33f07c178c39ff1e0ee4e65fba9053c54da8c3d9403efdb0bb42c8faa6989e51",
+  "checkpoints/mutation-slots.json": "01a81bed566b7e6dee3d62761e6d324cd9f8fd47cc03fabd63002908647c95d3",
+  "checkpoints/stage1/summary.json": "7d9776ff706764398d4b0052e763ad25ef2d9fb0919f23563da45095dbe2a583",
+  "checkpoints/stage2b/summary.json": "07334f6619cefc2d98855133977ce133d8ad8e55dabc89e5e752c95ebee6e7b8",
+  "checkpoints/stage3/0.json": "229709ff19f600af06ce2817b81d0a3b721b51ce5bf78a688529795efe4ab41c",
+  "checkpoints/stage3/1.json": "5390073a5fd8acb938051ccaecd776ed427634a8bbb7ab4458bee977493d1c6a",
+  "checkpoints/stage3/16.json": "9f869abaae64e99cc17322daade6abf5b57d8fe31b173a1c948dfd3e46d1d8af",
+  "checkpoints/stage3/33.json": "78b6f5716e0cebd27431d2919c644f86cff1af72966246b84a12daa915b17aac",
+  "checkpoints/stage3/36.json": "6e455a955cf06c61ec2a3e78e08efb1941a4a84b5339da7770c3c2c37c47a059",
+  "checkpoints/stage3/summary.json": "bc784d3fcf9848e3c89d3594ce4175c53e8ff3d803600bf5b8d5573a00617a79",
+  "checkpoints/stage4/summary.json": "3e7913438daf93995cde35093770553c09a4d1805f12dfc95b5dd0c049f1bff8",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3].json": "1d3c52f942c13a37c005d1b642dd48e919e2e93d694f39c3f73667971fb14d0e",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E2].json": "fe40e0618c771855561a35fa2db700aaa0ff1c6ff9f02c87796f14f02aff048a",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E1+P-K-E3].json": "a2928406e7d882e54295814c25b5f6617cb55227e6c64c67ad7193449b3fc85c",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E1].json": "a264fe6476b503f2343e8cdc1af17b897f3eeb81cc29f8e9985414a7bdbda15c",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E2+P-K-E3].json": "0fbc06f45f3d0f804eb6018c3d42dba463ee5c7371db3174be36130defb24b60",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E2].json": "f1a0486814435a466a805885d115e55d94217034599bbe48e5d04fc6ed095113",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20+P-K-E3].json": "25bfd30cfa8f16d88fd96aaa24a3c9a2122751159d7dca0e07b3219beb86727a",
+  "stage1/S16-B[K-P-16+K-P-18+K-P-20].json": "cb6e5f94ef39f2cfa334c8325caecdf7bc713d6868c304057c5c6892475e239b",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E1+P-K-E2+P-K-E3].json": "54f92b6b4e9112f9b097a692cb1a4751b05994356671ae72e3a2d319761206aa",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E1+P-K-E2].json": "328fbd5e36fa24cdf01fba35acbeaf486c8a22f97db3a6ce76a91a1b82f74fd1",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E1+P-K-E3].json": "dee29e0aeacff99e359ee009ed7eee7677ec5df67121f0a8ffdfb70429dea46e",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E1].json": "6864b7fba318b20f0d108d1ef94c891087babe9f608edd6342e6551421897f4a",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E2+P-K-E3].json": "281bcdad59c47a2a97328abadbcf705fd4270ab4194797f32b5b6bbfe3a3fde0",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E2].json": "246797df18a36a6aa9a61703f37f1f99886c495bec5c2ec46de8ac52da048332",
+  "stage1/S16-B[K-P-16+K-P-18+P-K-E3].json": "045a2caa57bbe7811759e19b08e06c3c4b7964aa5a471bd61950a79ad664ac6d",
+  "stage1/S16-B[K-P-16+K-P-18].json": "2ad5e2ca4cfd7736de937c09e2e652341d1cf58e39b70ce0cb9a1ede3a895622",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E1+P-K-E2+P-K-E3].json": "36537d7e5e47fffa0a7797bc96592d82f03ba333417dde45e98e7f40707331d0",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E1+P-K-E2].json": "ad7b3323d271fd94c1a146e390cb90bedf4caf4982a429284b7a5827d93e0c7f",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E1+P-K-E3].json": "db31e41d8303b6a4f9aeec3f3b67273b31ff65d89a6fc2e76fca9b292f1d73bd",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E1].json": "2d4556e4da6939261a039bae5e2c3f05973aec0a3e5e7fab2c35b0ca9ce150e3",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E2+P-K-E3].json": "0835a6dd1103abd209e76f7a3f56a530834f2b18c907ba43bd5e00e5d54a25a2",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E2].json": "38c20f607c6fce90f3b96afaf6ff105a7c1962880107fcfa242c148af5852e37",
+  "stage1/S16-B[K-P-16+K-P-20+P-K-E3].json": "2b1942cd8e1fcfef44a4cee533b116269d1957b5adb74f0a3cbb21ab9761f076",
+  "stage1/S16-B[K-P-16+K-P-20].json": "28085266f9eca5a5dcfb18365370a82cff04964e5022a794275e0ee19ce69836",
+  "stage1/S16-B[K-P-16+P-K-E1+P-K-E2+P-K-E3].json": "b407a616073f7011e5e5f1e5ccb7e56f9e67863e742222643cf4e18b81f74dd7",
+  "stage1/S16-B[K-P-16+P-K-E1+P-K-E2].json": "81514e9dfb25da5d556de010337295cb8d5b59e9b897af2fec01fdf31d5467d1",
+  "stage1/S16-B[K-P-16+P-K-E1+P-K-E3].json": "dd84824fbbcf595c8c019ab46bbdc805193e4b005a72d95ff20bab0110fbd38d",
+  "stage1/S16-B[K-P-16+P-K-E1].json": "5bf451234fc5ef86a6e17c4e6201f013d4d851b742a95b793b78a7dae8dabc28",
+  "stage1/S16-B[K-P-16+P-K-E2+P-K-E3].json": "af7278a8a3723f93c983761c5fdbcf50b3f8aa90b3a8ced632ddbcfed7057972",
+  "stage1/S16-B[K-P-16+P-K-E2].json": "e6495f1f32dd0fefd7d2a3b60b82b1bf1a89f894e4d4a0c0e803815b9770dafd",
+  "stage1/S16-B[K-P-16+P-K-E3].json": "3e973e70ca585da941d03fe4e51ba12799f057d4b222ea50e079faf3fa8df9e8",
+  "stage1/S16-B[K-P-16].json": "5b7b8eed596f1809b0cfc2ffb09f4592e3bc123ad57ef5c9b7966022bfb31f22",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E1+P-K-E2+P-K-E3].json": "d66b636632a4fff614e4411b7da99d105084406c72dfaf08d88e46b7e3af43f4",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E1+P-K-E2].json": "56c77219f173f6e2d3c9436d68d8e60fdac50f9c591b105d5796e1f2228efa0f",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E1+P-K-E3].json": "bdcebb47e78e7c04df960e7f8f36395d60191496ed70df450a4700ea4a2606fb",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E1].json": "e1586b0f20333d2958902ae14828124fc0d27b9d273fb38afc94b0ecdc9053ca",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E2+P-K-E3].json": "0548ddd81d56924b5097457b9f9a67eac33a9fb0cfb3963a5a2e760eb138d427",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E2].json": "a73300850edd7a19cdc6f6057435d80a8f42454c6415764dcb3e7e92dd61b625",
+  "stage1/S16-B[K-P-18+K-P-20+P-K-E3].json": "7af026583b9821dd342ae93eb9527350d48a36a8675ac79645b8719825d24406",
+  "stage1/S16-B[K-P-18+K-P-20].json": "824c0e9818f92ae8e0681009209f7d51fc162b13a94bb4ca44a2da2ead0bfe6b",
+  "stage1/S16-B[K-P-18+P-K-E1+P-K-E2+P-K-E3].json": "98e1b199e29c934e9689b7a1f183565fbedefcba20f9bbbe2324df938f86dc6c",
+  "stage1/S16-B[K-P-18+P-K-E1+P-K-E2].json": "320d4448c15a5d132ad90c73323eea3ec404a9d798e9598ee79381b8d3f799d2",
+  "stage1/S16-B[K-P-18+P-K-E1+P-K-E3].json": "ff3b024b2dc279fc20fa0fff6ea3a655e7fa8387625a101b720a0f80b69af81d",
+  "stage1/S16-B[K-P-18+P-K-E1].json": "bd38766666e9a86a6f8bbd8f1f3093048369702c70d4fcf43f8e957b2ad1fba9",
+  "stage1/S16-B[K-P-18+P-K-E2+P-K-E3].json": "64434303402ff9ae5e25fb6a54dbdae3b625489387f06228b677d021eb7cd94b",
+  "stage1/S16-B[K-P-18+P-K-E2].json": "91e8d3b38beecd4718326915c5d1b9daab9fc6a6727f9582fb6b3424d67409d4",
+  "stage1/S16-B[K-P-18+P-K-E3].json": "2596ca6a15f8bc25356cb81ae84791299d5c0f6dd8e1287e2996a8d7a0988e40",
+  "stage1/S16-B[K-P-18].json": "4bb851ae5077f17d491b1f3aa928047524e95353e2f8b9989909eb591956694d",
+  "stage1/S16-B[K-P-20+P-K-E1+P-K-E2+P-K-E3].json": "3372f072b1d1dc4327b88379cda264963efba74624c274dd07e77c0fe61af5c8",
+  "stage1/S16-B[K-P-20+P-K-E1+P-K-E2].json": "b6f56a6ca3a131648e865227e5077f0353e3cd0acbc5a73e09d106d9735658c7",
+  "stage1/S16-B[K-P-20+P-K-E1+P-K-E3].json": "32935622814e0c093ef40f8c323f31fa432f8a72aadd6c051fcf8c79a51f343a",
+  "stage1/S16-B[K-P-20+P-K-E1].json": "bf6380d01e03b6ed717ad2072a502169543f32208d4ad6f8c87fbef3b858fc48",
+  "stage1/S16-B[K-P-20+P-K-E2+P-K-E3].json": "cac836f6b8cefaca58731e57ff393e0861d1ca2a0049bc3f99a2b388c03732be",
+  "stage1/S16-B[K-P-20+P-K-E2].json": "db6463e67a3b7b3af4589bb0efc4769a82cca89b33e92fb076ba90800dca67eb",
+  "stage1/S16-B[K-P-20+P-K-E3].json": "845b909741587526f7c78423ff1dd0c77ea3cb6f5dcc7745f5b377be71dc9329",
+  "stage1/S16-B[K-P-20].json": "66dce3a3fed6e182a3334d197a7708c4bc5c6791d2ed3076a6eb70cee364ac72",
+  "stage1/S16-B[P-K-E1+P-K-E2+P-K-E3].json": "1585690570f30b6ff831655d40b38a317baa71c3369310f1bdbbeffff1fb0909",
+  "stage1/S16-B[P-K-E1+P-K-E2].json": "aea0dada418dc7a1e495197c68b815f61e39199ac47c21f8b829ab525bcda5a7",
+  "stage1/S16-B[P-K-E1+P-K-E3].json": "66d9a131c0c14c29844651ed40fadcb6ef700ade66dfe64c6581bd5153953a06",
+  "stage1/S16-B[P-K-E1].json": "e2909a82e523f0431c58b938660d618d238b8d3ad1330a14a3256e43fe01dc99",
+  "stage1/S16-B[P-K-E2+P-K-E3].json": "bed797bd9a202d21f1bbc3d521eb5fdc1b1e14252591ef4ed4f52b1a7068f65e",
+  "stage1/S16-B[P-K-E2].json": "2eddc87e25e1f92f9ea0d9a8f5699b7739c57f55a2e6a90a3ed5a38c8b56496d",
+  "stage1/S16-B[P-K-E3].json": "3d59847588a7a4db5b0c94f4969cf96562e3c326955aa64fc03f2cb6e8ec69e3",
+  "stage2a/structures.json": "f6f4d1cae8cffb269f9134b688b134de73f131b176151a72a1ed7af23f96beb1",
+  "stage2b/0000.json": "f34f2c44411bcaad4137379154daaf5296228300788dbc2beb9ddb381fdd7615",
+  "stage2b/0001.json": "122a41db58153a563a5ff208249b779724a06a2b39a2f6902810bd7031fce0da",
+  "stage2b/0002.json": "727a6bd91b2b4aab2dca0b5e1ee26a32cb46167f7ba2dc3b06f1f301239edc17",
+  "stage2b/0003.json": "7b0aa928f6ded1bc0a60543fcbc00899336be9526a729f6f570fdddabcfc65da",
+  "stage2b/0004.json": "ccabebb682a5d2038c021c23731b978d3d96cf29fce5b96d460fe3d8563f2ea6",
+  "stage2b/0005.json": "55e8ab51b8656f2c5af7e329fb580932ef2b4afc4bbeb3f148b198e0ee3f5ec9",
+  "stage2b/0006.json": "2c3097fb1e3b453bcab40f74177daf5bc7e5ceed47c50d9fa838e612d30c1232",
+  "stage2b/0007.json": "b2b038d1783a78d3a28499a64e70b244a1fb9fd476632cc9e93a16f40c3db983",
+  "stage2b/0008.json": "03c059e1ad6bae739508b17a74a5693895792575d772df2bc724dc1816898226",
+  "stage2b/0009.json": "2ddc1f54949c051ead7ae853cafecd0525bde62d4533d7e75c10746c508d07ef",
+  "stage2b/0010.json": "cfec32eece0ed4aefe78cd97c9fe289b076643cc9696834d021724f01eb78ea4",
+  "stage2b/0011.json": "8c16290cee8e8771a177f600f982fda7053dbad3576ca14b135be5d96de11f96",
+  "stage2b/0012.json": "1c461f6c41335ce67dc7c9217167b7cb8010196af6b197f29fd86b136d0adcf9",
+  "stage2b/0013.json": "ed23842ca53f75ea6ce8003a4e7e477321b40dd49a36d1f2bac6a7c24d7adb38",
+  "stage2b/0014.json": "d71575eb842cf0bde9e5835857fad781cad86286747f2095dac419d7a8839f31",
+  "stage2b/0015.json": "69fb200b5b899c4fc98d7bccb3f38eb67dde6ac98bd29bd07b97a313ffd36835",
+  "stage2b/0016.json": "99581649582d9dd27fadd91144616788505b0837b1d9085f993dd9c1cb9cb586",
+  "stage2b/0017.json": "93c319379f65b3825914be932b2988694efa070957f8d0a8febf7ccf9dc380e7",
+  "stage2b/0018.json": "8feb6f7c48aa70d5e771d594c76e1b9eff17947d6c9b0de75e62399167f0b53b",
+  "stage2b/0019.json": "da4de623cfea148a4dfca3a51002ba913462aa6753b83f41faafc6b08cb2cba6",
+  "stage2b/0020.json": "2f6a7c63b58cbca2df77d3d2d670b526e66f4fc729e310f6d22f560aa3e30dcb",
+  "stage2b/0021.json": "4c4d23d6d57a2947a0af8bf21ca3589848838500af93408542c4a9bd0c350c0d",
+  "stage2b/0022.json": "2fc80629710c1f960fe50f8a3a608610e29353dac47dec1ffde94ef033bd483a",
+  "stage2b/0023.json": "795acb287eacf288beb54e8c31d5e8243a20a66a840702dbcc4c046da580d1c6",
+  "stage2b/0024.json": "62a226b4238500042597992ddd17064bf62c2a89cba6a6d5d7c1cc3bb0244f2f",
+  "stage2b/0025.json": "200c96b98991d41f515f661a03360f943191301b9a1fb379de04f3684de178d5",
+  "stage2b/0026.json": "87f501e768f2acf55d54748c87465fc0636d2c12568b7da345a8b265bdb11c1e",
+  "stage2b/0027.json": "594df0c463c258f0dd324e4764ea7cdbe1b0abecaa8e99e17198e681c77c3cea",
+  "stage2b/0028.json": "957a7f5c2658208b0d27235dc8fa8c61c9b6d983301617b7dbccb535e3f87955",
+  "stage2b/0029.json": "b474263fe106a74a6a8da3f74de454937cce93873835616763cabbcc2e5190ca",
+  "stage2b/0030.json": "1758b3a567b8ef21bb8bc70879a87c9dce3690f2eb7a4d89e3c8f56823de4943",
+  "stage2b/0031.json": "51fa6a842c869dc620a7fa4a264ec8382c35ca7ca8802059a98b07e4a0642f9a",
+  "stage2b/0032.json": "73a3d8c288185d4803df4493f55ce85544bb9266cab351d3d162ffd89b003448",
+  "stage2b/0033.json": "94f04d89870787dd294fc762ab2a137d137fec237cb4cb1e8d61bb6eaed22a09",
+  "stage2b/0034.json": "af1c0eded08b578f414feddaf7f80ee59b89382004121f51f32540ddb2eca3be",
+  "stage2b/0035.json": "9f76564377950d1de168254c928a852150143121b5149d4bd11071e7ed817f37",
+  "stage2b/0036.json": "d64073e44e86c3b10db69045d3dd31f5f7a9be4e8834265628add5f486055a2d",
+  "stage2b/0037.json": "03a8dd5fe730b0dcfb7f41fd49b0038d29fdebf6e495c932eb765a92fe7a7c2f",
+  "stage2b/0038.json": "0149ec6a915e743be37821f3110ad2a3b597310c57099ad60b72b5e37e045885",
+  "stage2b/0039.json": "a3aca4f31f6e3e161abd3f2c6b0a82bfad7d8d415db5031c6850f937802c9fa4",
+  "stage2b/0040.json": "ed6fd3beb458fdf5b8ba68166a3fd6cee35c0177423dee9787b29193bc0e5ea7",
+  "stage2b/0041.json": "710ec808d5cfd4c036cb9bff41b09a9324666524c10c467bd9460fae9b2e6d04",
+  "stage2b/0042.json": "7e7b8eb3360f3c0933a48adeb595f1c2463f4fbb0733319b97db8c07f7923e43",
+  "stage2b/0043.json": "a2220a3838ca6474f34a8c942753a76f1902c44e319ad67009a5685230cc21b1",
+  "stage2b/0044.json": "980af13ed276043789f042d17ac49f131d1b1adb251027889388b7dc77b234e8",
+  "stage2b/0045.json": "5a66cd0ade089b2d7f7d545902960fa85e7c4384c69d81c3853d16fee65aa7a1",
+  "stage2b/0046.json": "cfaf630f96d23100c5883b5f6b022d865dbe4c6b0ef8ad13e12d9599233c2cf1",
+  "stage2b/0047.json": "96292c08423eb6e6172180ea467a5925b3264b648ac183eb05699f7bb78ffe7c",
+  "stage2b/0048.json": "1e7e2d745ec946202a0cb022ea991ed7fcd521f36c5ccb86d39c7cbf646321d6",
+  "stage2b/0049.json": "0171b6d23fced96897d271a3f79c8fd0d043091f23d531323cd4162a4e268305",
+  "stage2b/0050.json": "10a0e9ecf34e3e10d28a5ba45f623e159aa0126c8ca06e5077f41df943171845",
+  "stage2b/0051.json": "bfb3cf416ec31bea9929ed04e2d4d872ed1fa6f5130361d4c4d1ca5e17744e2d",
+  "stage2b/0052.json": "978bde9023a732f5707c946a49204e4749cf3b2c7cf945fc17205c84ec806900",
+  "stage2b/0053.json": "3dfdc85089bb4d2f23794f5e823bbbf0d99c921844cf6b1c2efe142c06c310dd",
+  "stage2b/0054.json": "214d60b9952ba7a55b4dc7a34ad82cfbb8426c232b8d8de3acb4bd8f1d6de44b",
+  "stage2b/0055.json": "65e7e042913cbf67f2a64f7190fc5aecd8d283961ed6e2bbf32df113817c815f",
+  "stage2b/0056.json": "c4977cc94112b077751c8ac05b02163e19a0b691f35fcc1d2687c5f457c570f9",
+  "stage2b/0057.json": "4bcc7d783423f21fb817e7c20d06684a66d89032a0a3a419615ed30b40e1ee08",
+  "stage2b/0058.json": "549b7e0a66364441efd91a84beb8a368d6eb81f405a2ff7015684e77d9b7263b",
+  "stage2b/0059.json": "4022ed5e5aa70787212e3cd3826520069b0250f417a8999cb526e45afcecc1ed",
+  "stage2b/0060.json": "5942a04c36d37de39521613e98d3020e66e8d2dd52e3cb45c6da36b726b32353",
+  "stage2b/0061.json": "48e7448f7bfcf5cf910e7b5a7fa25e9a02fc01bb5eaada02bb70852060afcb43",
+  "stage2b/0062.json": "2fc1c0c191bd3bba1a58c4cbc82994b897bc0c5ed30a44a4898c18bac34eef6c",
+  "stage2b/0063.json": "a383ada28c6af5aca2adcfb4df32c980cad8fd4626d7a1aa98eb472bca59452e",
+  "stage2b/0064.json": "8d1c5c2c7f0cfdc567e9466718d704fdde4cf4696a7f79ec2d5afe108ad9218d",
+  "stage2b/0065.json": "3b21d8c4154bfc35118f1195e46f35401be97ba116afb0b29c66e038dbdf6c3b",
+  "stage2b/0066.json": "8c09b48e3259ebece0faf8805daf65be014007b9b091c7bb5b87c8a117da8c10",
+  "stage2b/0067.json": "ce39fe04e648df30a87cf4dc81deaca3c08af9e182e0336224d8d5cbec9724e0",
+  "stage2b/0068.json": "08cd111de423e5c3e02e117b0a578d1248d8bf362cd9b1219ca9a04309f1fd7c",
+  "stage2b/0069.json": "de197bcbc6b12034bf3316097d619d1facfb0cb0a91f467a47826c828d366e0a",
+  "stage2b/0070.json": "cd1166d9206cba5c48d1b670c05a5859500b4356e8687a3cd35e7db2390988b5",
+  "stage2b/0071.json": "a84a2f04fc983c164e1c3c03541b0d72071fefc2de2305d550887a1f974713ab",
+  "stage2b/0072.json": "8bad16ca9655f7e0108dfe791f6c0a66cfa97ad3a4673a5df2b9337f37bb696f",
+  "stage2b/0073.json": "95b7b172663daf7097dc8182e3909d989a8f495ba576529b0df1b4564ed1cc0d",
+  "stage2b/0074.json": "77c47c2e27595e82dc7cbbe7c70cdd29bc9407372102c265c5553793b9a9e058",
+  "stage2b/0075.json": "a459e7890feb7c881f5cb3258c1d83542f8cf8e941abaec3b370c34809f86f4d",
+  "stage2b/0076.json": "763fc3e10b46d8e6e78e49ceab12db2aa6d3d3ebea84f2037901eb65255e421a",
+  "stage2b/0077.json": "dd888542e91d82d66c9a9796425bd9583bdab2fa63406517e7139289f22a8a28",
+  "stage2b/0078.json": "8e0d0e39b99dc6bdba363b60a5f52335b32f91ebf62cfc904d701812a8a155cf",
+  "stage2b/0079.json": "00fc9683beaed6d528b4cde3036ff02f298aaa9c615da71f6fb72b19304b9267",
+  "stage2b/0080.json": "344c8dab293af59c8fc494cd2007e9935275a643f4409d5afc7e8f2a833555d9",
+  "stage2b/0081.json": "5e65da469bd5857e9cd5a53106df80dff7bf9ce57a21375c85ba19dec9346648",
+  "stage2b/0082.json": "b642d50f9bae61cfb2bf474b02fceb183b75eab5f5b1fabceb2d5538d6c755e0",
+  "stage2b/0083.json": "8a3ca46f2a6e4219c7b5786893ef9ee37e01aa6e7e845390a836f6e855c739b8",
+  "stage2b/0084.json": "7d9ed720c32a1bdad2bcf7963ebe4d65bc15982dec5eaad22a5505d232a67b09",
+  "stage2b/0085.json": "32596144798d175eda2699f06225a51e39c1337242c278ca5cfcea05a2acef1e",
+  "stage2b/0086.json": "f3e9d20cc3c890a1e5b2bf7ca77634ab7c1871ad038c2a42f9378e46aa989372",
+  "stage2b/0087.json": "ac5ce5797e4f8e60f4b7c2170a983ba2be3ef0741871883f5588c51c296369ad",
+  "stage2b/0088.json": "eadd6d2d6c3bee0bf3880e844905d3ad6d38338239869d02e922836538a13dbc",
+  "stage2b/0089.json": "732ab31ae50e81123eb2af8b299575f2b49b41b6311cc2f7e28d54321f319c30",
+  "stage2b/0090.json": "ae31639299814f12db8321340e611e860925de373ac0d23fc4de14ae90feac44",
+  "stage2b/0091.json": "9f9561802216140c2215ccfb33a3c1d99a97d79d70e7d34155a8e654c3d3ee1d",
+  "stage2b/0092.json": "97b40d212b2c2cb9ea654274c8395c0476eaca90a7625018bbb75b1a61cced99",
+  "stage2b/0093.json": "ebda9f72ecb3a76e830c7fdef6c4b3a1680fd60fb1c2c07cf437b722f1f8dc7e",
+  "stage2b/0094.json": "20dc8f9cb2fde7df486d506125ca6e37102831c8f517981dd192dde036a6e3f2",
+  "stage2b/0095.json": "3b64c7b4f96d635902133956c5555a1ada720f49e44ee85f26035d12ea9d946d",
+  "stage2b/0096.json": "e5a696063f11e88e46a595dedebd222cefa26aa8e722a93bd24530729873a633",
+  "stage2b/0097.json": "e8ee74fcb0686016fe358d3b0abf19c3edbff9c9e29af51dd8a699ecfc650c0b",
+  "stage2b/0098.json": "8da291fac281a27d0245770a30bfa06d0e137bd3e375c4401c29201f9b456dec",
+  "stage2b/0099.json": "c9abe501b86ad0231afe75dd68a703bc596a3a95439a3898027a298642114f09",
+  "stage2b/0100.json": "9dcd50f0b20a0b754d1ba5f1e0ed4c3fbbf50c47bbc71dd87a08c1ad040b15ef",
+  "stage2b/0101.json": "8fb82f818a60c5c80b0e936ee38b13a85f88ec1dbf450faba38b60fd83004a64",
+  "stage2b/0102.json": "2383e50862733c83db0aea579481669cd77baedc2ac6a6d66c977168a31d7c81",
+  "stage2b/0103.json": "01326851c87bc71d572adb84ecea5cd5a35c131019989656d30480065d0b1622",
+  "stage2b/0104.json": "c1422a0a7cfa9c5f9e559e75a292fe37e1daf9b68c1dd2c76e7ee47ea0924bc7",
+  "stage2b/0105.json": "0a40bd5a162b49f05f76e77ee848741ab8613a6b78d9f0f8b03d4be6173ef1ad",
+  "stage2b/0106.json": "f53efe72120ffbaaa36c1f30e74c355902d90af5dc4d262d66a908d95ccd2f84",
+  "stage2b/0107.json": "7cc4d367e5fbded580b285f39a4952f8f31b96dc6f043748ca69bdc4734c1e33",
+  "stage2b/0108.json": "3299f89783941a49a367eeb364abb0c3f6494b9c5ace913577b500ac830a1158",
+  "stage2b/0109.json": "196c683c35a112175ff2cb87ade249d29ecd9c660a029fdb047731b36e407e24",
+  "stage2b/0110.json": "3b39ceccc5b364eb76145c5bb43618110c15ffc0bd0999f97e4e7958d0dd9ab4",
+  "stage2b/0111.json": "2cfb68a0e0074004cf1ec4bbdf6a05597796c4ab9a8d55976d8da084d949c127",
+  "stage2b/0112.json": "370ee6977edffa8ae1413a84e95a6e02c3f9b71f5ba272fca835f4ac065c1dba",
+  "stage2b/0113.json": "b5e020e39a34491b81e9c58f5c2fd8a714d4c83e8bc1c26cfa311e450df8f8c5",
+  "stage2b/0114.json": "927a618cae470d77bedc5e636a6c784fa1a128e56f11c0c86d840c2678b96078",
+  "stage2b/0115.json": "95819a2795b5be63102694c39fa6768953bb50ca18ecec5baf508095d5b61c58",
+  "stage2b/0116.json": "1dc183cb28b9dcf4a274429539f5720674d7dd36449809e76579ef8c907d8300",
+  "stage2b/0117.json": "a97006e8a8feccdb7089ca3fc26371a9a73879f735675296eb37f69796d72e00",
+  "stage2b/0118.json": "0003e59eba67e45a93a227427f69cf556165ec80c9ebe6d552aeb6b3f78c63e1",
+  "stage2b/0119.json": "b778eb3e00eed936efeedce5baa7b40609a383e4116e621417f72955d0ddfccf",
+  "stage2b/0120.json": "5601fa42a37d8a383b19d04341ab11da5d0b39725e88715678b5c1fba38e9915",
+  "stage2b/0121.json": "945bcfd08815b2a80e00fa32a06ea60129e608c2788a92e02449109db4764be2",
+  "stage2b/0122.json": "dbc4c6c539b28993d74516ab40b961299362af60fdb3bba79dbaa010e5ae0715"
+ },
+ "bulk_intermediates": {
+  "cache": ".circuit-cache/mc04-s16",
+  "manifest": "bulk-manifest.json",
+  "files": 189,
+  "durable_copy": "/mnt/project-files/osc-s16-cache/"
+ },
+ "bounds_note": "The last four bounds were added on 2026-11-28 under finding 1 of reviews/mc04-s16-result-review-20261128.md, after the run, by corrections_20261128.py output (checkpoints/review-corrections-20261128.json); replan.py --finish did not write them and would drop them if re-run. The first five are as the run wrote them; \"5 kept scenes\" there means the 5 scenes judged in stage 3, of which none passes. checkpoints/run.json keeps the run's original list unchanged."
+}

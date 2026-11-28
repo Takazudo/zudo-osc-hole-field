@@ -1,0 +1,20 @@
+{
+ "command": [
+  "bash",
+  "scripts/checks/regen-all.sh",
+  "--check"
+ ],
+ "returncode": 0,
+ "wall_s": 396.7,
+ "peak_tree_rss_bytes": 386863104,
+ "peak_tree_rss_mib": 368.9,
+ "peak_docker_container_mem_mib": 877.7,
+ "peak_tree_plus_container_mib": 918.7,
+ "min_mem_available_mib": 14416.9,
+ "samples": 72,
+ "watchdog_fired": null,
+ "budget_bytes": 4294967296,
+ "mem_available_floor_bytes": 8589934592,
+ "pinned_containers_after": [],
+ "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop"
+}

@@ -1,0 +1,3102 @@
+{
+ "control": "C12",
+ "pass": true,
+ "detail": {
+  "new_protected_rows": [
+   "R5249",
+   "R5256",
+   "R8221",
+   "R8331",
+   "R8356"
+  ],
+  "shifted_protected_rows": [
+   "C8405",
+   "R5148",
+   "R5253",
+   "R8431"
+  ],
+  "ng": {
+   "vector": "FFFFPPP",
+   "pass": false,
+   "first_failure": "NG1",
+   "moved": [
+    "K C2339",
+    "K C2340",
+    "K C301",
+    "K C4239",
+    "K C4244",
+    "K C5201",
+    "K C5209",
+    "K C5212",
+    "K C5213",
+    "K C5230",
+    "K C5234",
+    "K C5236",
+    "K C8405",
+    "K C8435",
+    "K C8438",
+    "K C8440",
+    "K D2323",
+    "K D5209",
+    "K D5213",
+    "K Q4503",
+    "K R2368",
+    "K R2369",
+    "K R4540",
+    "K R4562",
+    "K R5148",
+    "K R5226",
+    "K R5228",
+    "K R5230",
+    "K R5247",
+    "K R5249",
+    "K R5250",
+    "K R5251",
+    "K R5253",
+    "K R5256",
+    "K R5258",
+    "K R5260",
+    "K R5261",
+    "K R5263",
+    "K R5266",
+    "K R8221",
+    "K R8331",
+    "K R8356",
+    "K R8431",
+    "K R8468",
+    "K RV2310",
+    "K RV4503",
+    "K RV8407",
+    "K TP303",
+    "K U4222",
+    "K U4227",
+    "K U4537",
+    "K U5207"
+   ],
+   "links_changed": [
+    "P-K-P-L13.01.01.01",
+    "P-K-P-L13.01.01.02",
+    "P-K-P-L13.01.02.01"
+   ],
+   "failing_nets": [
+    "/E5/REF1_RAW",
+    "/E5/RISE_EXPO_REF",
+    "/F3/C8c344f_W",
+    "/F3/Ca72ec0_W",
+    "/F3/REF5",
+    "/F3/REFN5",
+    "/M4A/1_REMOTE",
+    "/M4A/2_REMOTE",
+    "/M4A/C24ce01_W_SENSE",
+    "/M4A/C38051c_W",
+    "/M4B/1_REMOTE",
+    "/M4B/C38051c_W_SENSE",
+    "/M4B/Cfaa69a_DRIVE",
+    "/M4B/Cfaa69a_FB",
+    "/M5B/1_REMOTE",
+    "/M5B/2_REMOTE",
+    "/M5B/Ca92eeb_W_SENSE",
+    "/W1/AC_NODE",
+    "/W1/C4c1698_W_SENSE",
+    "/W1/CONTROL_SUM",
+    "/W1/Cb36f8a_SUM",
+    "/W1/Cb36f8a_W_SENSE",
+    "/W1/F1_SUM",
+    "/W1/F2_CLIP",
+    "/W1/F2_OUT",
+    "/W1/F3_CLIP",
+    "/W1/F3_OUT",
+    "/W1/F3_SUM",
+    "/W1/F4_CLIP",
+    "/W1/F4_OUT",
+    "/W1/FOLDER_DRIVE",
+    "/W1/FOLDER_SUM",
+    "/W1/FOLD_BUFFER",
+    "/W1/FOLD_DEPTH",
+    "/W1/PRE_AC",
+    "/W2/BIAS_BUFFER",
+    "/W2/FOLDER_SUM"
+   ],
+   "tallies": {
+    "stricter_limit_alone": false,
+    "inherited_excess_alone": false,
+    "link_end_alone": false,
+    "large_net_alone": false
+   },
+   "fails": {
+    "NG1": [
+     "/E5/REF1_RAW on K",
+     "/E5/RISE_EXPO_REF on K",
+     "/F3/C8c344f_W on K",
+     "/F3/C8c344f_W on P",
+     "/F3/Ca72ec0_W on K",
+     "/F3/REF5 on K",
+     "/F3/REFN5 on K",
+     "/M4A/1_REMOTE on P",
+     "/M4A/2_REMOTE on P",
+     "/M4A/C24ce01_W_SENSE on K",
+     "/M4A/C38051c_W on K",
+     "/M4B/1_REMOTE on K"
+    ],
+    "NG2": [
+     "/E5/REF1_RAW on K",
+     "/E5/RISE_EXPO_REF on K",
+     "/F3/C8c344f_W on K",
+     "/F3/C8c344f_W on P",
+     "/F3/Ca72ec0_W on K",
+     "/F3/REF5 on K",
+     "/F3/REFN5 on K",
+     "/M4A/1_REMOTE on P",
+     "/M4A/2_REMOTE on P",
+     "/M4A/C24ce01_W_SENSE on K",
+     "/M4A/C38051c_W on K",
+     "/M4B/C38051c_W_SENSE on K"
+    ],
+    "NG3": [
+     "/F3/REF5 on K",
+     "/F3/REFN5 on K",
+     "/M4A/C24ce01_W_SENSE on K",
+     "/M4B/C38051c_W_SENSE on K",
+     "/M4B/Cfaa69a_DRIVE on K",
+     "/M4B/Cfaa69a_FB on K",
+     "/M5B/Ca92eeb_W_SENSE on K",
+     "/W1/AC_NODE on K",
+     "/W1/CONTROL_SUM on K",
+     "/W1/Cb36f8a_SUM on K",
+     "/W1/Cb36f8a_W_SENSE on K",
+     "/W1/F1_SUM on K"
+    ],
+    "NG4": [
+     "K C5209: face B -> F",
+     "K R4540: face B -> F",
+     "K R5148: face F -> B",
+     "K R5249: face B -> F",
+     "K R5251: face F -> B",
+     "K R5253: face F -> B",
+     "K R5258: face F -> B",
+     "K R5260: face F -> B",
+     "K R5263: face F -> B",
+     "K R5266: face B -> F",
+     "K U5207: face F -> B"
+    ]
+   },
+   "evaluated": {
+    "/E5/REF1_RAW": {
+     "class": "Other",
+     "movers": [
+      "K R4540"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 36.04249999999999,
+        "tree": 36.04249999999999,
+        "pairs": 2,
+        "max_pin_distance": 30.36967741432232,
+        "computable": true
+       },
+       "base": {
+        "extent": 36.04249999999999,
+        "tree": 36.04249999999999,
+        "pairs": 2,
+        "max_pin_distance": 30.36967741432232,
+        "computable": true
+       },
+       "scene": {
+        "extent": 38.124799999999965,
+        "tree": 40.29809999999995,
+        "pairs": 2,
+        "max_pin_distance": 29.730326373082406,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      }
+     }
+    },
+    "/E5/RISE_EXPO_REF": {
+     "class": "Other",
+     "movers": [
+      "K RV4503"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 30.52000000000001,
+        "tree": 32.400000000000006,
+        "pairs": 3,
+        "max_pin_distance": 26.653759701963253,
+        "computable": true
+       },
+       "base": {
+        "extent": 30.52000000000001,
+        "tree": 32.400000000000006,
+        "pairs": 3,
+        "max_pin_distance": 26.653759701963253,
+        "computable": true
+       },
+       "scene": {
+        "extent": 33.55529999999999,
+        "tree": 38.96059999999997,
+        "pairs": 3,
+        "max_pin_distance": 24.536774441641672,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      }
+     }
+    },
+    "/F2/C2b474d_W": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.02.01"
+     ],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 2,
+       "paper": {
+        "extent": 96.50000000000001,
+        "tree": 96.50000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 96.50000000000001,
+        "tree": 96.50000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 91.00000000000001,
+        "tree": 91.00000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 54.55000000000001,
+        "tree": 54.55000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 54.55000000000001,
+        "tree": 54.55000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 54.05000000000001,
+        "tree": 54.05000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/F3/C8c344f_W": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.02.01"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 2,
+       "paper": {
+        "extent": 37.92999999999998,
+        "tree": 37.92999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 37.92999999999998,
+        "tree": 37.92999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 43.42999999999998,
+        "tree": 43.42999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 27.44999999999999,
+        "tree": 27.44999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 27.44999999999999,
+        "tree": 27.44999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 27.94999999999999,
+        "tree": 27.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      }
+     }
+    },
+    "/F3/Ca72ec0_W": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.02.01"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 2,
+       "paper": {
+        "extent": 29.17999999999998,
+        "tree": 29.17999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 29.17999999999998,
+        "tree": 29.17999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 34.67999999999998,
+        "tree": 34.67999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 65.55000000000001,
+        "tree": 65.55000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 65.55000000000001,
+        "tree": 65.55000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 65.05000000000001,
+        "tree": 65.05000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/F3/REF5": {
+     "class": "Other",
+     "movers": [
+      "K RV2310"
+     ],
+     "links_changed": [
+      "P-K-P-L13.01.01.02"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 15,
+       "paper": {
+        "extent": 92.65000000000002,
+        "tree": 153.49750000000003,
+        "pairs": 28,
+        "max_pin_distance": 45.68192777236968,
+        "computable": true
+       },
+       "base": {
+        "extent": 92.65000000000002,
+        "tree": 148.9925,
+        "pairs": 28,
+        "max_pin_distance": 45.68192777236968,
+        "computable": true
+       },
+       "scene": {
+        "extent": 101.15000000000002,
+        "tree": 158.1557,
+        "pairs": 28,
+        "max_pin_distance": 56.49835329458727,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      },
+      "P": {
+       "points": 4,
+       "paper": {
+        "extent": 99.94999999999999,
+        "tree": 99.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 99.94999999999999,
+        "tree": 99.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 96.0,
+        "tree": 97.69999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/F3/REFN5": {
+     "class": "Other",
+     "movers": [
+      "K RV2310"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 7,
+       "paper": {
+        "extent": 64.94999999999999,
+        "tree": 84.77499999999999,
+        "pairs": 6,
+        "max_pin_distance": 32.80687313658526,
+        "computable": true
+       },
+       "base": {
+        "extent": 54.94999999999999,
+        "tree": 73.54499999999997,
+        "pairs": 6,
+        "max_pin_distance": 28.63044926297873,
+        "computable": true
+       },
+       "scene": {
+        "extent": 66.4382,
+        "tree": 80.70910000000002,
+        "pairs": 6,
+        "max_pin_distance": 37.19256306104755,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/F3/RES_REMOTE": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.01.02"
+     ],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 42.650000000000006,
+        "tree": 42.650000000000006,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 42.650000000000006,
+        "tree": 42.650000000000006,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 37.92999999999998,
+        "tree": 38.17999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 85.94999999999999,
+        "tree": 85.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 85.94999999999999,
+        "tree": 85.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 66.30000000000001,
+        "tree": 66.30000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M4A/1_REMOTE": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.01.01"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 74.72,
+        "tree": 74.72,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 74.72,
+        "tree": 74.72,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 61.47,
+        "tree": 61.47,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 14.616600000000005,
+        "tree": 14.616600000000005,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 14.616600000000005,
+        "tree": 14.616600000000005,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 26.19999999999999,
+        "tree": 26.19999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      }
+     }
+    },
+    "/M4A/2_REMOTE": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.01.01"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 72.97,
+        "tree": 72.97,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 72.97,
+        "tree": 72.97,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 59.72,
+        "tree": 59.72,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 28.616600000000005,
+        "tree": 28.616600000000005,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 28.616600000000005,
+        "tree": 28.616600000000005,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 40.19999999999999,
+        "tree": 40.19999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      }
+     }
+    },
+    "/M4A/C24ce01_W": {
+     "class": "P-moved",
+     "movers": [
+      "K R8356"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 2,
+       "paper": {
+        "extent": 54.22,
+        "tree": 54.22,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 54.22,
+        "tree": 54.22,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 44.67399999999998,
+        "tree": 44.67399999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 24.94999999999999,
+        "tree": 24.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 24.94999999999999,
+        "tree": 24.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 24.94999999999999,
+        "tree": 24.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M4A/C24ce01_W_SENSE": {
+     "class": "P-moved",
+     "movers": [
+      "K R8356"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 84.39499999999998,
+        "tree": 84.39499999999998,
+        "pairs": 2,
+        "max_pin_distance": 60.1714926273231,
+        "computable": true
+       },
+       "base": {
+        "extent": 84.39499999999998,
+        "tree": 84.39499999999998,
+        "pairs": 2,
+        "max_pin_distance": 60.1714926273231,
+        "computable": true
+       },
+       "scene": {
+        "extent": 93.941,
+        "tree": 93.941,
+        "pairs": 2,
+        "max_pin_distance": 66.87156535479038,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/M4A/C38051c_W": {
+     "class": "P-moved",
+     "movers": [
+      "K R8331"
+     ],
+     "links_changed": [
+      "P-K-P-L13.01.02.01"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 2,
+       "paper": {
+        "extent": 11.030000000000001,
+        "tree": 11.030000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 11.030000000000001,
+        "tree": 11.030000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 18.848700000000008,
+        "tree": 18.848700000000008,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 37.55000000000001,
+        "tree": 37.55000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 37.55000000000001,
+        "tree": 37.55000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 37.05000000000001,
+        "tree": 37.05000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M4A/C38051c_W_SENSE": {
+     "class": "P-moved",
+     "movers": [
+      "K R8331"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 84.495,
+        "tree": 84.495,
+        "pairs": 2,
+        "max_pin_distance": 64.3146066224462,
+        "computable": true
+       },
+       "base": {
+        "extent": 84.495,
+        "tree": 84.495,
+        "pairs": 2,
+        "max_pin_distance": 64.3146066224462,
+        "computable": true
+       },
+       "scene": {
+        "extent": 71.1763,
+        "tree": 71.1763,
+        "pairs": 2,
+        "max_pin_distance": 56.799709934910766,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M4B/1_REMOTE": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.01.02"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 45.94999999999999,
+        "tree": 46.42999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 45.94999999999999,
+        "tree": 46.42999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 45.99999999999997,
+        "tree": 45.99999999999997,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1"
+       ],
+       "fails_with_max_limit": [
+        "NG1"
+       ]
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 48.94999999999999,
+        "tree": 48.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 48.94999999999999,
+        "tree": 48.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 43.69999999999999,
+        "tree": 43.69999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M4B/2_REMOTE": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.01.02"
+     ],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 53.72,
+        "tree": 54.47,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 56.095,
+        "tree": 60.95860000000002,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 44.98859999999999,
+        "tree": 44.98859999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 62.94999999999999,
+        "tree": 62.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 62.94999999999999,
+        "tree": 62.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 29.69999999999999,
+        "tree": 29.69999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M4B/C38051c_W": {
+     "class": "P-moved",
+     "movers": [
+      "K R8431"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 2,
+       "paper": {
+        "extent": 68.07000000000002,
+        "tree": 68.07000000000002,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 74.57000000000002,
+        "tree": 74.57000000000002,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 61.82000000000002,
+        "tree": 61.82000000000002,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 89.19999999999999,
+        "tree": 89.19999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 89.19999999999999,
+        "tree": 89.19999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 89.19999999999999,
+        "tree": 89.19999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M4B/C38051c_W_SENSE": {
+     "class": "P-moved",
+     "movers": [
+      "K R8431"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 48.764999999999986,
+        "tree": 48.764999999999986,
+        "pairs": 2,
+        "max_pin_distance": 37.77223351881643,
+        "computable": true
+       },
+       "base": {
+        "extent": 45.514999999999986,
+        "tree": 48.764999999999986,
+        "pairs": 2,
+        "max_pin_distance": 33.33817818957718,
+        "computable": true
+       },
+       "scene": {
+        "extent": 55.014999999999986,
+        "tree": 55.014999999999986,
+        "pairs": 2,
+        "max_pin_distance": 43.66768398942174,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/M4B/Cfaa69a_DRIVE": {
+     "class": "P-moved",
+     "movers": [
+      "K C8405"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 9.655000000000001,
+        "tree": 11.254999999999995,
+        "pairs": 2,
+        "max_pin_distance": 5.754000782064599,
+        "computable": true
+       },
+       "base": {
+        "extent": 6.204999999999984,
+        "tree": 6.254999999999967,
+        "pairs": 2,
+        "max_pin_distance": 4.8278385432820805,
+        "computable": true
+       },
+       "scene": {
+        "extent": 10.281299999999987,
+        "tree": 12.69010000000003,
+        "pairs": 2,
+        "max_pin_distance": 6.115282996722198,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/M4B/Cfaa69a_FB": {
+     "class": "P-moved",
+     "movers": [
+      "K C8405"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 10.724999999999994,
+        "tree": 10.724999999999994,
+        "pairs": 2,
+        "max_pin_distance": 7.637959478813692,
+        "computable": true
+       },
+       "base": {
+        "extent": 14.608599999999996,
+        "tree": 14.828599999999994,
+        "pairs": 2,
+        "max_pin_distance": 6.243705547189101,
+        "computable": true
+       },
+       "scene": {
+        "extent": 16.60609999999997,
+        "tree": 16.60609999999997,
+        "pairs": 2,
+        "max_pin_distance": 6.243705547189101,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      }
+     }
+    },
+    "/M4B/REF25": {
+     "class": "Other",
+     "movers": [
+      "K R8468"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 44.5,
+        "tree": 44.5,
+        "pairs": 2,
+        "max_pin_distance": 27.687860607132517,
+        "computable": true
+       },
+       "base": {
+        "extent": 43.310400000000016,
+        "tree": 43.310400000000016,
+        "pairs": 2,
+        "max_pin_distance": 27.687860607132517,
+        "computable": true
+       },
+       "scene": {
+        "extent": 32.136300000000034,
+        "tree": 32.93860000000004,
+        "pairs": 2,
+        "max_pin_distance": 27.687860607132517,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M5B/1_REMOTE": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.02.01"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 73.25000000000001,
+        "tree": 73.25000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 73.25000000000001,
+        "tree": 73.25000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 67.75000000000001,
+        "tree": 67.75000000000001,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 26.94999999999999,
+        "tree": 26.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 26.94999999999999,
+        "tree": 26.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 27.44999999999999,
+        "tree": 27.44999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      }
+     }
+    },
+    "/M5B/2_REMOTE": {
+     "class": "Other",
+     "movers": [],
+     "links_changed": [
+      "P-K-P-L13.01.02.01"
+     ],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 74.50000000000003,
+        "tree": 76.00000000000003,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 74.50000000000003,
+        "tree": 76.00000000000003,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 69.00000000000003,
+        "tree": 70.50000000000003,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 12.949999999999989,
+        "tree": 12.949999999999989,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 12.949999999999989,
+        "tree": 12.949999999999989,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 13.449999999999989,
+        "tree": 13.449999999999989,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2"
+       ]
+      }
+     }
+    },
+    "/M5B/Ca92eeb_W": {
+     "class": "P-moved",
+     "movers": [
+      "K R8221"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 2,
+       "paper": {
+        "extent": 72.65,
+        "tree": 72.65,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 72.65,
+        "tree": 72.65,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 72.65,
+        "tree": 72.65,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "P": {
+       "points": 2,
+       "paper": {
+        "extent": 27.94999999999999,
+        "tree": 27.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 27.94999999999999,
+        "tree": 27.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 27.94999999999999,
+        "tree": 27.94999999999999,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/M5B/Ca92eeb_W_SENSE": {
+     "class": "P-moved",
+     "movers": [
+      "K R8221"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 80.39499999999998,
+        "tree": 82.03999999999998,
+        "pairs": 2,
+        "max_pin_distance": 53.08275543903121,
+        "computable": true
+       },
+       "base": {
+        "extent": 80.39499999999998,
+        "tree": 82.03999999999998,
+        "pairs": 2,
+        "max_pin_distance": 53.08275543903121,
+        "computable": true
+       },
+       "scene": {
+        "extent": 80.39499999999998,
+        "tree": 82.03999999999998,
+        "pairs": 2,
+        "max_pin_distance": 54.176424576378224,
+        "computable": true
+       },
+       "fails": [
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W1/AC_NODE": {
+     "class": "Other",
+     "movers": [
+      "K C5209",
+      "K C5212",
+      "K C5213",
+      "K R5266"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 12,
+       "paper": {
+        "extent": 78.61000000000001,
+        "tree": 131.97500000000002,
+        "pairs": 11,
+        "max_pin_distance": 38.09349977358343,
+        "computable": true
+       },
+       "base": {
+        "extent": 80.82750000000001,
+        "tree": 146.23040000000003,
+        "pairs": 11,
+        "max_pin_distance": 38.09349977358343,
+        "computable": true
+       },
+       "scene": {
+        "extent": 78.61000000000001,
+        "tree": 135.92200000000003,
+        "pairs": 11,
+        "max_pin_distance": 38.81185031662367,
+        "computable": true
+       },
+       "fails": [
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W1/BIAS_MANUAL": {
+     "class": "P-moved",
+     "movers": [
+      "K R5247",
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 11.205000000000013,
+        "tree": 11.205000000000013,
+        "pairs": 4,
+        "max_pin_distance": 8.54746307391849,
+        "computable": true
+       },
+       "base": {
+        "extent": 25.585499999999968,
+        "tree": 25.585499999999968,
+        "pairs": 4,
+        "max_pin_distance": 23.20850848826783,
+        "computable": true
+       },
+       "scene": {
+        "extent": 11.205000000000013,
+        "tree": 11.205000000000013,
+        "pairs": 4,
+        "max_pin_distance": 8.54746307391849,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/C4c1698_W_SENSE": {
+     "class": "P-moved",
+     "movers": [
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG2"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 43.23999999999998,
+        "tree": 51.02499999999998,
+        "pairs": 3,
+        "max_pin_distance": 25.242862852695602,
+        "computable": true
+       },
+       "base": {
+        "extent": 47.58749999999998,
+        "tree": 47.58749999999998,
+        "pairs": 3,
+        "max_pin_distance": 37.61956198907689,
+        "computable": true
+       },
+       "scene": {
+        "extent": 43.23999999999998,
+        "tree": 51.02499999999998,
+        "pairs": 3,
+        "max_pin_distance": 25.242862852695602,
+        "computable": true
+       },
+       "fails": [
+        "NG2"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/C75db46_W_SENSE": {
+     "class": "P-moved",
+     "movers": [
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 75.34499999999997,
+        "tree": 78.31499999999997,
+        "pairs": 3,
+        "max_pin_distance": 63.18810350849278,
+        "computable": true
+       },
+       "base": {
+        "extent": 95.38799999999998,
+        "tree": 95.52749999999995,
+        "pairs": 3,
+        "max_pin_distance": 83.42741008955029,
+        "computable": true
+       },
+       "scene": {
+        "extent": 75.34499999999997,
+        "tree": 78.31499999999997,
+        "pairs": 3,
+        "max_pin_distance": 63.18810350849278,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/C9cfd7a_DRIVE": {
+     "class": "P-moved",
+     "movers": [
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 17.019999999999982,
+        "tree": 20.984999999999985,
+        "pairs": 2,
+        "max_pin_distance": 9.672648292996069,
+        "computable": true
+       },
+       "base": {
+        "extent": 29.128500000000003,
+        "tree": 29.128500000000003,
+        "pairs": 2,
+        "max_pin_distance": 24.547985339941857,
+        "computable": true
+       },
+       "scene": {
+        "extent": 17.019999999999982,
+        "tree": 20.984999999999985,
+        "pairs": 2,
+        "max_pin_distance": 9.672648292996069,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/C9cfd7a_FB": {
+     "class": "P-moved",
+     "movers": [
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 10.384999999999991,
+        "tree": 10.384999999999991,
+        "pairs": 2,
+        "max_pin_distance": 7.41115544297918,
+        "computable": true
+       },
+       "base": {
+        "extent": 22.85850000000002,
+        "tree": 22.85850000000002,
+        "pairs": 2,
+        "max_pin_distance": 18.82867930179917,
+        "computable": true
+       },
+       "scene": {
+        "extent": 10.384999999999991,
+        "tree": 10.384999999999991,
+        "pairs": 2,
+        "max_pin_distance": 7.41115544297918,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/CONTROL_INV": {
+     "class": "Other",
+     "movers": [
+      "K R5230"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 23.15500000000003,
+        "tree": 24.65500000000003,
+        "pairs": 2,
+        "max_pin_distance": 17.856106098475117,
+        "computable": true
+       },
+       "base": {
+        "extent": 29.275600000000026,
+        "tree": 30.62560000000005,
+        "pairs": 2,
+        "max_pin_distance": 24.987778616355637,
+        "computable": true
+       },
+       "scene": {
+        "extent": 23.15500000000003,
+        "tree": 24.65500000000003,
+        "pairs": 2,
+        "max_pin_distance": 17.856106098475117,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/CONTROL_NEG": {
+     "class": "Other",
+     "movers": [
+      "K R5230"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 19.555000000000007,
+        "tree": 20.305000000000007,
+        "pairs": 2,
+        "max_pin_distance": 16.562548867852442,
+        "computable": true
+       },
+       "base": {
+        "extent": 36.275600000000026,
+        "tree": 36.775600000000026,
+        "pairs": 2,
+        "max_pin_distance": 27.115231700651215,
+        "computable": true
+       },
+       "scene": {
+        "extent": 19.555000000000007,
+        "tree": 20.305000000000007,
+        "pairs": 2,
+        "max_pin_distance": 16.562548867852442,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/CONTROL_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5228"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 31.27000000000001,
+        "tree": 31.54000000000002,
+        "pairs": 3,
+        "max_pin_distance": 16.557201605343828,
+        "computable": true
+       },
+       "base": {
+        "extent": 29.14500000000001,
+        "tree": 29.79000000000002,
+        "pairs": 3,
+        "max_pin_distance": 16.557201605343828,
+        "computable": true
+       },
+       "scene": {
+        "extent": 31.27000000000001,
+        "tree": 31.54000000000002,
+        "pairs": 3,
+        "max_pin_distance": 16.557201605343828,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/Cb36f8a_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5226",
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 20.784999999999997,
+        "tree": 25.014999999999986,
+        "pairs": 3,
+        "max_pin_distance": 16.873918483861413,
+        "computable": true
+       },
+       "base": {
+        "extent": 21.77879999999999,
+        "tree": 23.799299999999988,
+        "pairs": 3,
+        "max_pin_distance": 14.224406510290683,
+        "computable": true
+       },
+       "scene": {
+        "extent": 20.784999999999997,
+        "tree": 25.014999999999986,
+        "pairs": 3,
+        "max_pin_distance": 16.873918483861413,
+        "computable": true
+       },
+       "fails": [
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/Cb36f8a_W_SENSE": {
+     "class": "P-moved",
+     "movers": [
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 30.174999999999983,
+        "tree": 31.924999999999983,
+        "pairs": 2,
+        "max_pin_distance": 24.174269895903766,
+        "computable": true
+       },
+       "base": {
+        "extent": 54.67350000000002,
+        "tree": 59.2381,
+        "pairs": 2,
+        "max_pin_distance": 35.70445621781687,
+        "computable": true
+       },
+       "scene": {
+        "extent": 31.799999999999983,
+        "tree": 36.36459999999997,
+        "pairs": 2,
+        "max_pin_distance": 25.406175335142418,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/DRIVE_INV_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5250",
+      "K R5251"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 16.41500000000002,
+        "tree": 16.41500000000002,
+        "pairs": 2,
+        "max_pin_distance": 13.380852924982044,
+        "computable": true
+       },
+       "base": {
+        "extent": 22.22060000000002,
+        "tree": 22.22060000000002,
+        "pairs": 2,
+        "max_pin_distance": 17.522972475011215,
+        "computable": true
+       },
+       "scene": {
+        "extent": 16.41500000000002,
+        "tree": 16.41500000000002,
+        "pairs": 2,
+        "max_pin_distance": 13.380852924982044,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/F1_OUT": {
+     "class": "P-moved",
+     "movers": [
+      "K R5256"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 18.034999999999997,
+        "tree": 18.034999999999997,
+        "pairs": 3,
+        "max_pin_distance": 12.775305280109746,
+        "computable": true
+       },
+       "base": {
+        "extent": 18.034999999999997,
+        "tree": 18.034999999999997,
+        "pairs": 3,
+        "max_pin_distance": 12.775305280109746,
+        "computable": true
+       },
+       "scene": {
+        "extent": 18.034999999999997,
+        "tree": 18.034999999999997,
+        "pairs": 3,
+        "max_pin_distance": 12.775305280109746,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/F1_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5253"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 30.555000000000007,
+        "tree": 30.555000000000007,
+        "pairs": 2,
+        "max_pin_distance": 23.34773275930663,
+        "computable": true
+       },
+       "base": {
+        "extent": 30.006,
+        "tree": 30.006,
+        "pairs": 2,
+        "max_pin_distance": 22.47106130114908,
+        "computable": true
+       },
+       "scene": {
+        "extent": 33.383399999999995,
+        "tree": 33.383399999999995,
+        "pairs": 2,
+        "max_pin_distance": 24.21213385433014,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W1/F2_CLIP": {
+     "class": "Other",
+     "movers": [
+      "K D5209"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 35.27000000000001,
+        "tree": 37.64500000000001,
+        "pairs": 3,
+        "max_pin_distance": 24.905339286988244,
+        "computable": true
+       },
+       "base": {
+        "extent": 35.27000000000001,
+        "tree": 37.64500000000001,
+        "pairs": 3,
+        "max_pin_distance": 24.905339286988244,
+        "computable": true
+       },
+       "scene": {
+        "extent": 38.02000000000001,
+        "tree": 43.14500000000001,
+        "pairs": 3,
+        "max_pin_distance": 24.905339286988244,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W1/F2_OUT": {
+     "class": "Other",
+     "movers": [
+      "K R5258"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 29.38499999999999,
+        "tree": 37.86499999999998,
+        "pairs": 3,
+        "max_pin_distance": 19.469671928412147,
+        "computable": true
+       },
+       "base": {
+        "extent": 29.38499999999999,
+        "tree": 35.11499999999998,
+        "pairs": 3,
+        "max_pin_distance": 16.232856341383666,
+        "computable": true
+       },
+       "scene": {
+        "extent": 29.38499999999999,
+        "tree": 37.86499999999998,
+        "pairs": 3,
+        "max_pin_distance": 19.469671928412147,
+        "computable": true
+       },
+       "fails": [
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W1/F2_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5256"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 19.86500000000001,
+        "tree": 21.345,
+        "pairs": 2,
+        "max_pin_distance": 13.271376153210351,
+        "computable": true
+       },
+       "base": {
+        "extent": 19.86500000000001,
+        "tree": 21.345,
+        "pairs": 2,
+        "max_pin_distance": 13.271376153210351,
+        "computable": true
+       },
+       "scene": {
+        "extent": 16.88500000000002,
+        "tree": 16.88500000000002,
+        "pairs": 2,
+        "max_pin_distance": 11.94931901825373,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/F3_CLIP": {
+     "class": "Other",
+     "movers": [
+      "K R5258"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 66.90500000000003,
+        "tree": 79.00000000000006,
+        "pairs": 3,
+        "max_pin_distance": 44.11852927059106,
+        "computable": true
+       },
+       "base": {
+        "extent": 60.65500000000003,
+        "tree": 67.74500000000006,
+        "pairs": 3,
+        "max_pin_distance": 44.11852927059106,
+        "computable": true
+       },
+       "scene": {
+        "extent": 66.90500000000003,
+        "tree": 79.00000000000006,
+        "pairs": 3,
+        "max_pin_distance": 44.11852927059106,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W1/F3_OUT": {
+     "class": "P-moved",
+     "movers": [
+      "K R5260",
+      "K R5261"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 21.744999999999976,
+        "tree": 24.494999999999976,
+        "pairs": 3,
+        "max_pin_distance": 16.037410171221527,
+        "computable": true
+       },
+       "base": {
+        "extent": 19.994999999999976,
+        "tree": 22.744999999999976,
+        "pairs": 3,
+        "max_pin_distance": 14.64543115719027,
+        "computable": true
+       },
+       "scene": {
+        "extent": 21.744999999999976,
+        "tree": 24.494999999999976,
+        "pairs": 3,
+        "max_pin_distance": 16.037410171221527,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/F3_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5260"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 17.080000000000013,
+        "tree": 18.43500000000003,
+        "pairs": 2,
+        "max_pin_distance": 13.34475271408205,
+        "computable": true
+       },
+       "base": {
+        "extent": 19.032900000000012,
+        "tree": 22.07830000000004,
+        "pairs": 2,
+        "max_pin_distance": 13.149997148288678,
+        "computable": true
+       },
+       "scene": {
+        "extent": 17.080000000000013,
+        "tree": 18.43500000000003,
+        "pairs": 2,
+        "max_pin_distance": 13.34475271408205,
+        "computable": true
+       },
+       "fails": [
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/F4_CLIP": {
+     "class": "Other",
+     "movers": [
+      "K D5213",
+      "K R5261"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 28.80499999999998,
+        "tree": 35.14999999999995,
+        "pairs": 3,
+        "max_pin_distance": 15.002130682006465,
+        "computable": true
+       },
+       "base": {
+        "extent": 28.80499999999998,
+        "tree": 39.27499999999998,
+        "pairs": 3,
+        "max_pin_distance": 15.002130682006465,
+        "computable": true
+       },
+       "scene": {
+        "extent": 30.395999999999987,
+        "tree": 38.331999999999965,
+        "pairs": 3,
+        "max_pin_distance": 15.002130682006465,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W1/F4_OUT": {
+     "class": "P-moved",
+     "movers": [
+      "K R5263"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 29.164999999999992,
+        "tree": 37.16499999999999,
+        "pairs": 4,
+        "max_pin_distance": 19.59616544122855,
+        "computable": true
+       },
+       "base": {
+        "extent": 28.647400000000005,
+        "tree": 36.54480000000001,
+        "pairs": 4,
+        "max_pin_distance": 19.59616544122855,
+        "computable": true
+       },
+       "scene": {
+        "extent": 29.164999999999992,
+        "tree": 37.16499999999999,
+        "pairs": 4,
+        "max_pin_distance": 19.59616544122855,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/F4_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5263"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 18.144999999999982,
+        "tree": 22.644999999999982,
+        "pairs": 2,
+        "max_pin_distance": 9.907831498365308,
+        "computable": true
+       },
+       "base": {
+        "extent": 19.559300000000007,
+        "tree": 24.059300000000007,
+        "pairs": 2,
+        "max_pin_distance": 10.661225931852307,
+        "computable": true
+       },
+       "scene": {
+        "extent": 18.144999999999982,
+        "tree": 22.644999999999982,
+        "pairs": 2,
+        "max_pin_distance": 9.907831498365308,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/FOLDER_DRIVE": {
+     "class": "P-moved",
+     "movers": [
+      "K R5251",
+      "K R5253"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 22.18500000000003,
+        "tree": 22.18500000000003,
+        "pairs": 3,
+        "max_pin_distance": 16.37574807451558,
+        "computable": true
+       },
+       "base": {
+        "extent": 24.234000000000037,
+        "tree": 24.234000000000037,
+        "pairs": 3,
+        "max_pin_distance": 17.669860950216922,
+        "computable": true
+       },
+       "scene": {
+        "extent": 27.08400000000003,
+        "tree": 27.08400000000003,
+        "pairs": 3,
+        "max_pin_distance": 20.28901628418689,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W1/FOLDER_NEG": {
+     "class": "P-moved",
+     "movers": [
+      "K R5249",
+      "K R5250"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 18.745000000000005,
+        "tree": 19.724999999999994,
+        "pairs": 2,
+        "max_pin_distance": 15.576357886232595,
+        "computable": true
+       },
+       "base": {
+        "extent": 18.745000000000005,
+        "tree": 19.724999999999994,
+        "pairs": 2,
+        "max_pin_distance": 15.576357886232595,
+        "computable": true
+       },
+       "scene": {
+        "extent": 18.624500000000012,
+        "tree": 18.624500000000012,
+        "pairs": 2,
+        "max_pin_distance": 14.668181388638478,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/FOLDER_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5247",
+      "K R5249"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 5,
+       "paper": {
+        "extent": 85.875,
+        "tree": 100.54000000000002,
+        "pairs": 4,
+        "max_pin_distance": 58.008564238394996,
+        "computable": true
+       },
+       "base": {
+        "extent": 85.875,
+        "tree": 90.22300000000001,
+        "pairs": 4,
+        "max_pin_distance": 58.008564238394996,
+        "computable": true
+       },
+       "scene": {
+        "extent": 85.875,
+        "tree": 99.29000000000002,
+        "pairs": 4,
+        "max_pin_distance": 58.008564238394996,
+        "computable": true
+       },
+       "fails": [
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/FOLD_BUFFER": {
+     "class": "P-moved",
+     "movers": [
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "JR": {
+       "points": 4,
+       "paper": {
+        "extent": 98.58499999999998,
+        "tree": 101.12499999999999,
+        "pairs": 9,
+        "max_pin_distance": 82.00971969833817,
+        "computable": true
+       },
+       "base": {
+        "extent": 98.58499999999998,
+        "tree": 101.12499999999999,
+        "pairs": 9,
+        "max_pin_distance": 82.00971969833817,
+        "computable": true
+       },
+       "scene": {
+        "extent": 98.58499999999998,
+        "tree": 101.12499999999999,
+        "pairs": 9,
+        "max_pin_distance": 82.00971969833817,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      },
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 201.90500000000003,
+        "tree": 202.48500000000004,
+        "pairs": 2,
+        "max_pin_distance": 146.65483771427387,
+        "computable": true
+       },
+       "base": {
+        "extent": 192.45050000000003,
+        "tree": 195.70850000000004,
+        "pairs": 2,
+        "max_pin_distance": 144.64586545853984,
+        "computable": true
+       },
+       "scene": {
+        "extent": 201.90500000000003,
+        "tree": 202.48500000000004,
+        "pairs": 2,
+        "max_pin_distance": 146.65483771427387,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/FOLD_DEPTH": {
+     "class": "P-moved",
+     "movers": [
+      "K R5226",
+      "K R5228",
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 4,
+       "paper": {
+        "extent": 22.485000000000014,
+        "tree": 29.585000000000036,
+        "pairs": 3,
+        "max_pin_distance": 14.293747759072842,
+        "computable": true
+       },
+       "base": {
+        "extent": 21.343400000000003,
+        "tree": 23.158500000000004,
+        "pairs": 3,
+        "max_pin_distance": 14.096499089135577,
+        "computable": true
+       },
+       "scene": {
+        "extent": 22.485000000000014,
+        "tree": 29.585000000000036,
+        "pairs": 3,
+        "max_pin_distance": 14.293747759072842,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/FOLD_MANUAL": {
+     "class": "P-moved",
+     "movers": [
+      "K U5207"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [],
+     "boards": {
+      "K": {
+       "points": 3,
+       "paper": {
+        "extent": 8.355000000000018,
+        "tree": 8.355000000000018,
+        "pairs": 4,
+        "max_pin_distance": 6.322588473086016,
+        "computable": true
+       },
+       "base": {
+        "extent": 24.20750000000001,
+        "tree": 24.20750000000001,
+        "pairs": 4,
+        "max_pin_distance": 18.717305208015393,
+        "computable": true
+       },
+       "scene": {
+        "extent": 8.355000000000018,
+        "tree": 8.355000000000018,
+        "pairs": 4,
+        "max_pin_distance": 6.322588473086016,
+        "computable": true
+       },
+       "fails": [],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W1/PRE_AC": {
+     "class": "Other",
+     "movers": [
+      "K C5209",
+      "K C5212",
+      "K C5213"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 12,
+       "paper": {
+        "extent": 62.5,
+        "tree": 109.38499999999999,
+        "pairs": 11,
+        "max_pin_distance": 28.267366785747843,
+        "computable": true
+       },
+       "base": {
+        "extent": 61.537499999999994,
+        "tree": 106.13,
+        "pairs": 11,
+        "max_pin_distance": 27.13348481415538,
+        "computable": true
+       },
+       "scene": {
+        "extent": 61.7235,
+        "tree": 108.012,
+        "pairs": 11,
+        "max_pin_distance": 28.335061286152186,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ]
+      }
+     }
+    },
+    "/W2/BIAS_BUFFER": {
+     "class": "P-moved",
+     "movers": [
+      "K R5148"
+     ],
+     "links_changed": [],
+     "inherited_excess": true,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "JL": {
+       "points": 4,
+       "paper": {
+        "extent": 29.534999999999997,
+        "tree": 30.939999999999998,
+        "pairs": 9,
+        "max_pin_distance": 20.31937252968211,
+        "computable": true
+       },
+       "base": {
+        "extent": 53.54350000000001,
+        "tree": 53.54350000000001,
+        "pairs": 9,
+        "max_pin_distance": 40.551823007726796,
+        "computable": true
+       },
+       "scene": {
+        "extent": 53.54350000000001,
+        "tree": 53.54350000000001,
+        "pairs": 9,
+        "max_pin_distance": 40.551823007726796,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": []
+      },
+      "K": {
+       "points": 2,
+       "paper": {
+        "extent": 123.34999999999998,
+        "tree": 123.34999999999998,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "base": {
+        "extent": 130.34999999999997,
+        "tree": 130.34999999999997,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "scene": {
+        "extent": 126.0037,
+        "tree": 126.0037,
+        "pairs": 0,
+        "max_pin_distance": null,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2"
+       ],
+       "fails_with_max_limit": []
+      }
+     }
+    },
+    "/W2/FOLDER_SUM": {
+     "class": "P-moved",
+     "movers": [
+      "K R5148"
+     ],
+     "links_changed": [],
+     "inherited_excess": false,
+     "fails": [
+      "NG1",
+      "NG2",
+      "NG3"
+     ],
+     "boards": {
+      "K": {
+       "points": 5,
+       "paper": {
+        "extent": 74.97999999999999,
+        "tree": 78.76499999999999,
+        "pairs": 4,
+        "max_pin_distance": 64.18325735735138,
+        "computable": true
+       },
+       "base": {
+        "extent": 69.47999999999999,
+        "tree": 74.76499999999999,
+        "pairs": 4,
+        "max_pin_distance": 63.75155311833587,
+        "computable": true
+       },
+       "scene": {
+        "extent": 73.10499999999999,
+        "tree": 77.6687,
+        "pairs": 4,
+        "max_pin_distance": 67.38509390577414,
+        "computable": true
+       },
+       "fails": [
+        "NG1",
+        "NG2",
+        "NG3"
+       ],
+       "fails_with_max_limit": [
+        "NG3"
+       ]
+      }
+     }
+    }
+   }
+  },
+  "observation": "no expected NG verdict (Ruling N7)"
+ },
+ "wall_s": 6.7
+}

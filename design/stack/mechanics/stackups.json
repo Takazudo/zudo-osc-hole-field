@@ -13,11 +13,11 @@
   "sources": {
     "S-PLAN": {
       "path": "doc/src/content/docs/decisions/osc-direct-stack-plan.mdx",
-      "sha256": "18eb6e60d81c45df0a594f464e5fb6fb6faac900e589934086af7947cc968ff4"
+      "sha256": "5df53b2e8c9dd4b255021a10d3f6477fdb1d456ac2b7a6db1267b6df257a1c1d"
     },
     "S-PART": {
       "path": "design/partition/partition.json",
-      "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
+      "sha256": "09a5ae28137297458a9c36a306673b457abd4e80e4952f32914323513dc732d4"
     },
     "S-MECH": {
       "path": "design/partition/mechanical-candidate.json",
@@ -131,7 +131,7 @@
     },
     "S-GEOM": {
       "path": "design/stack/geometry/stack-candidate.json",
-      "sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54",
+      "sha256": "22e817eae2af189119ff0a751a8f08099edd735b690954f7c3fbe6e66ff4004d",
       "note": "XY only. The candidate still holds the plan-page heights; the mechanics take heights from parameters.da01."
     },
     "S-DS": {
@@ -1248,11 +1248,11 @@
     "sources": {
       "stack_candidate": {
         "path": "design/stack/geometry/stack-candidate.json",
-        "sha256": "9bd03493c0a98c36357c90ee56e86dec57eb3dd5d0793a84f49f34f1c5d25f54"
+        "sha256": "22e817eae2af189119ff0a751a8f08099edd735b690954f7c3fbe6e66ff4004d"
       },
       "partition": {
         "path": "design/partition/partition.json",
-        "sha256": "7e3f5a39b001f80f38572c837a60e197fbb08ae588296e1d3bcb1339718db48f"
+        "sha256": "09a5ae28137297458a9c36a306673b457abd4e80e4952f32914323513dc732d4"
       },
       "placements_lock": {
         "path": "design/grid/placements.lock.json",
@@ -1973,6 +1973,36 @@
         "d_K_plus": 38.0
       },
       {
+        "id": "JL-K-26",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          142,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 41.6293,
+        "d_K_base": 41.6293,
+        "d_front_plus": 41.6293,
+        "d_K_plus": 41.6293
+      },
+      {
+        "id": "JL-K-27",
+        "family": "JL/K",
+        "board": "JL",
+        "joint": "JL",
+        "xy": [
+          159,
+          122
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 50.9902,
+        "d_K_base": 50.9902,
+        "d_front_plus": 50.9902,
+        "d_K_plus": 50.9902
+      },
+      {
         "id": "JL-K-3",
         "family": "JL/K",
         "board": "JL",
@@ -2438,6 +2468,36 @@
         "d_K_plus": 10.0
       },
       {
+        "id": "JR-K-28",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          193,
+          24
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 118.5095,
+        "d_K_base": 118.5095,
+        "d_front_plus": 36.7696,
+        "d_K_plus": 36.7696
+      },
+      {
+        "id": "JR-K-29",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          227,
+          24
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 84.5133,
+        "d_K_base": 84.5133,
+        "d_front_plus": 14.0,
+        "d_K_plus": 14.0
+      },
+      {
         "id": "JR-K-3",
         "family": "JR/K",
         "board": "JR",
@@ -2451,6 +2511,21 @@
         "d_K_base": 85.9098,
         "d_front_plus": 0.0,
         "d_K_plus": 0.0
+      },
+      {
+        "id": "JR-K-30",
+        "family": "JR/K",
+        "board": "JR",
+        "joint": "JR",
+        "xy": [
+          295,
+          24
+        ],
+        "positions_candidate": 6,
+        "d_front_base": 16.568,
+        "d_K_base": 16.568,
+        "d_front_plus": 16.568,
+        "d_K_plus": 16.568
       },
       {
         "id": "JR-K-4",
@@ -4656,6 +4731,8 @@
           "JL-K-23",
           "JL-K-24",
           "JL-K-25",
+          "JL-K-26",
+          "JL-K-27",
           "JL-K-3",
           "JL-K-4",
           "JL-K-5",
@@ -4675,6 +4752,8 @@
           "JR-K-2",
           "JR-K-22",
           "JR-K-23",
+          "JR-K-28",
+          "JR-K-29",
           "JR-K-3",
           "JR-K-4",
           "JR-K-5",
@@ -5478,7 +5557,7 @@
             ],
             "footprints_within_8_mm": [],
             "board_file": "boards/osc-core/osc-core.kicad_pcb",
-            "board_sha256": "7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22"
+            "board_sha256": "2c7535d13e88a0d4b9a438d51919829708c7c5825753dad7bb3e50a660c871b3"
           },
           "JL": {
             "edge_distances_mm": [
@@ -5509,7 +5588,7 @@
             ],
             "footprints_within_8_mm": [],
             "board_file": "boards/osc-jack-left/osc-jack-left.kicad_pcb",
-            "board_sha256": "2cd30044054fcdbf8c94de27515a5bc763e98de12c0f3df212cf5d84ded1ee19"
+            "board_sha256": "35a4b3430dabbd93d83b00e200757c66e878f47f067142d12fdae2d9c5403a10"
           }
         },
         "JR-SUP-1": {
@@ -5542,7 +5621,7 @@
             ],
             "footprints_within_8_mm": [],
             "board_file": "boards/osc-core/osc-core.kicad_pcb",
-            "board_sha256": "7311cd8e7aabb609c0a6d1a7f2ef42324c585d0c7b51f77c6bd3fc0338c54f22"
+            "board_sha256": "2c7535d13e88a0d4b9a438d51919829708c7c5825753dad7bb3e50a660c871b3"
           },
           "JR": {
             "edge_distances_mm": [
@@ -5634,7 +5713,7 @@
               }
             ],
             "board_file": "boards/osc-jack-right/osc-jack-right.kicad_pcb",
-            "board_sha256": "653b20312851fad1dcf1a90806c1fdc558edf32dfc25d6675b43bb100ff9b3c1"
+            "board_sha256": "c235cf4f6aa7c13bf1a12e839e0b3cd049b63f1453a6a06981a2a14e4f3cfad7"
           }
         }
       }
@@ -7391,6 +7470,13 @@
         "P": "unchanged: compliant take-up, P free in Z"
       },
       "joint_chain": "Selector row: K against panel + two SMT floats + leg float + hole and aperture positions, against 0.2 mm"
+    }
+  ],
+  "source_refreshes": [
+    {
+      "date": "2026-11-27",
+      "base": "80569b5375087df519b79ead67d1bf56c16301e6",
+      "reason": "Inherited stale pins. S-GEOM: geometry block re-derived with --refresh-geometry (MC04-S7 rev 13 adds JL-K-26/27 and JR-K-28..30; 197 -> 202 rigid K pairs); every pass/miss word unchanged. S-PART: the six cited terms (panel 2.0 mm, boards 1.6 mm, EL 0.4 mm, jack shoulder 8 mm, toggle body 8.64 mm, P face z -11.8 mm) equal the current file. S-PLAN: only the heat row changed (thermal refresh); the cited 5.2 mm SUB toggle hole is unchanged."
     }
   ]
 }

@@ -1,0 +1,20 @@
+{
+ "why": "The owner rule forbids Git LFS and committed large intermediate dumps (circuit/ORCHESTRATION.md section 6: large intermediates as budgeted artifacts, recovery-critical bytes outside the VM).",
+ "cache": ".circuit-cache/mc04-s16",
+ "durable_copy": {
+  "location": "/mnt/project-files/osc-s16-cache/",
+  "layout": "same relative paths, with a copy of this manifest"
+ },
+ "reproducibility": "a re-run does not reproduce these hashes: records carry wall times",
+ "files": {
+  "arm0/c4-census.json": {
+   "sha256": "595715c666a5d3a3806c6d2fe88052f60cc7a58bc7b1d1d3023f292a9ed846c0",
+   "bytes": 13627
+  },
+  "arm0/c5-census.json": {
+   "sha256": "c3a2047afe969e0ac42dfdcad3a6d67fcd73c35ec233dd2a56c186e28d9a6abb",
+   "bytes": 43832
+  }
+ },
+ "total_bytes": 57459
+}

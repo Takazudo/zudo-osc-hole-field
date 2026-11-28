@@ -1,0 +1,12 @@
+--- discarded-rev4-run1/replan-run1.py	2026-11-28 18:13:21.057968358 +0000
++++ replan.py	2026-11-28 16:37:45.470392805 +0000
+@@ -684,7 +684,8 @@
+             fails['A8'].append(crashed)
+     finally:
+         s.rows, s.out = old_rows, old_out
+-    res['overlay_search_stopped'] = crashed
++    if crashed:
++        res['overlay_search_stopped'] = crashed
+     res.update({'fails': {k: v for k, v in sorted(fails.items()) if v}, 'rows': info, 'link_figures': figs})
+     res['passes'] = {a: not fails.get(a) for a in ('A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11')}
+     return res

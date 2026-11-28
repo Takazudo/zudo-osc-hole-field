@@ -331,7 +331,7 @@ K F.Cu moves to −30.6 mm and P F.Cu to −12.0 mm. The catalogue posts bring a
 | Toggle gap, worst case, mm | 0.26 to 2.06 | 0.26 to 2.46 | DERIVED |
 | Toggle take-up window, mm | 0.3 to 2.1 (DA-01 D4) | 0.4 to 2.3 | DS-27 |
 | Fixings on K | 18 posts + 12 kept supports (+5 provisional) | 18 posts + 12 printed sleeves | DS-43 |
-| Rigid K pairs | 197 | 6 | DS-39 |
+| Rigid K pairs | 202 | 6 | DS-39 |
 <!-- /calc:a3_changes -->
 
 <!-- calc:a3_heights -->
@@ -649,18 +649,18 @@ In the final state (step 5) each board has moved toward the pairs' common fit. O
 <!-- calc:xy -->
 | Phase | Pairs | N | Worst pair, median, mm per axis | Worst pair, 95th percentile, mm | Worst case, mm | p95 against the sourced limits |
 | --- | --- | --- | --- | --- | --- | --- |
-| capture | JL to K | 29 | 0.347 | 0.527 | 0.816 | along misses 0.39; across meets 0.57 |
-| capture | JR to K | 27 | 0.344 | 0.524 | 0.816 | along misses 0.39; across meets 0.57 |
+| capture | JL to K | 31 | 0.349 | 0.529 | 0.816 | along misses 0.39; across meets 0.57 |
+| capture | JR to K | 30 | 0.348 | 0.528 | 0.816 | along misses 0.39; across meets 0.57 |
 | capture | P unit to K | 135 | 0.401 | 0.591 | 0.849 | along misses 0.39; across misses 0.57 |
 | capture | O1/O3/O5 to K | 6 | 0.165 | 0.245 | 0.304 | along meets 0.39; across meets 0.57 |
 | capture | EL to P | 6 | 0.274 | 0.519 | 0.955 | UNSOURCED limit (CLT); MMS double-row reference 0.37 |
-| capture | all K pairs | 197 | 0.459 | 0.606 | n/a | along misses 0.39; across misses 0.57 |
-| final | JL to K | 29 | 0.268 | 0.355 | 0.541 | along misses 0.07; across misses 0.16 |
-| final | JR to K | 27 | 0.266 | 0.353 | 0.541 | along misses 0.07; across misses 0.16 |
+| capture | all K pairs | 202 | 0.461 | 0.607 | n/a | along misses 0.39; across misses 0.57 |
+| final | JL to K | 31 | 0.270 | 0.357 | 0.541 | along misses 0.07; across misses 0.16 |
+| final | JR to K | 30 | 0.269 | 0.356 | 0.541 | along misses 0.07; across misses 0.16 |
 | final | P unit to K | 135 | 0.283 | 0.327 | 0.474 | along misses 0.07; across misses 0.16 |
 | final | O1/O3/O5 to K | 6 | 0.165 | 0.245 | 0.304 | along misses 0.07; across misses 0.16 |
 | final | EL to P | 6 | 0.274 | 0.519 | 0.955 | UNSOURCED limit (CLT); MMS double-row reference 0.07 |
-| final | all K pairs | 197 | 0.303 | 0.380 | n/a | along misses 0.07; across misses 0.16 |
+| final | all K pairs | 202 | 0.304 | 0.381 | n/a | along misses 0.07; across misses 0.16 |
 <!-- /calc:xy -->
 
 <!-- calc:xy_terms -->
@@ -750,17 +750,17 @@ Z is tested against the sourced MMS window: the open and closing margins from th
 | EL to P | EL collar posts | EL-P-E1 0.216 | EL-P-E1 0.093 | 0.416 | 0.293 | 1.540 | 0.592 | RSS: open meets, close meets; WC: meets both |
 <!-- /calc:z_gap -->
 
-### The 40 mm rule is not met from the retained fixings: 107 pairs miss it, and 67 with the five provisional sites (NEEDS_DESIGN to ST-08)
+### The 40 mm rule is not met from the retained fixings: 111 pairs miss it, and 69 with the five provisional sites (NEEDS_DESIGN to ST-08)
 
-D4 says 27 pairs miss it (JL 3, JR 7, P 17) and that the five sites cover them. That count used the 66 interior candidate sites, whose coordinates are not retained in this repository. From the retained fixings (18 posts, 12 kept supports, five provisional sites), JL keeps 9 and P keeps 58 pairs beyond 40 mm. The distance is taken to the nearest fixing on the same front board. ST-08 must place the fixings that close the rule. This calculator re-tests any set written into `stackups.json` `fixings`.
+D4 says 27 pairs miss it (JL 3, JR 7, P 17) and that the five sites cover them. That count used the 66 interior candidate sites, whose coordinates are not retained in this repository. From the retained fixings (18 posts, 12 kept supports, five provisional sites), JL keeps 11 and P keeps 58 pairs beyond 40 mm. The distance is taken to the nearest fixing on the same front board. ST-08 must place the fixings that close the rule. This calculator re-tests any set written into `stackups.json` `fixings`.
 
 <!-- calc:coverage -->
 | Fixings | Board | Pairs beyond 40 mm | References |
 | --- | --- | --- | --- |
-| 18 posts + 12 kept supports | JL | 14 | JL-K-12, JL-K-13, JL-K-14, JL-K-15, JL-K-16, JL-K-17, JL-K-18, JL-K-3, JL-K-4, JL-K-5, JL-K-6, JL-K-7, JL-K-8, JL-K-9 |
-| 18 posts + 12 kept supports | JR | 10 | JR-K-1, JR-K-10, JR-K-11, JR-K-12, JR-K-2, JR-K-3, JR-K-4, JR-K-5, JR-K-8, JR-K-9 |
+| 18 posts + 12 kept supports | JL | 16 | JL-K-12, JL-K-13, JL-K-14, JL-K-15, JL-K-16, JL-K-17, JL-K-18, JL-K-26, JL-K-27, JL-K-3, JL-K-4, JL-K-5, JL-K-6, JL-K-7, JL-K-8, JL-K-9 |
+| 18 posts + 12 kept supports | JR | 12 | JR-K-1, JR-K-10, JR-K-11, JR-K-12, JR-K-2, JR-K-28, JR-K-29, JR-K-3, JR-K-4, JR-K-5, JR-K-8, JR-K-9 |
 | 18 posts + 12 kept supports | P | 83 | K-P-1, K-P-100, K-P-101, K-P-102, K-P-103, K-P-104, K-P-105, K-P-106, K-P-107, K-P-108, K-P-109, K-P-11, K-P-110, K-P-111, K-P-112, K-P-113, K-P-114, K-P-115, K-P-116, K-P-117, K-P-118, K-P-119, K-P-120, K-P-121, K-P-122, K-P-123, K-P-14, K-P-15, K-P-17, K-P-2, K-P-21, K-P-22, K-P-23, K-P-25, K-P-26, K-P-27, K-P-28, K-P-29, K-P-30, K-P-32, K-P-36, K-P-40, K-P-41, K-P-42, K-P-43, K-P-46, K-P-47, K-P-48, K-P-52, K-P-53, K-P-55, K-P-58, K-P-59, K-P-60, K-P-64, K-P-65, K-P-66, K-P-67, K-P-68, K-P-70, K-P-71, K-P-72, K-P-73, K-P-74, K-P-76, K-P-77, K-P-8, K-P-80, K-P-9, K-P-91, K-P-95, K-P-96, K-P-97, K-P-98, K-P-99, P-K-E4, P-K-E5, P-K-E6, P-K-SUB-O2, P-K-SUB-O4, P-K-X2, P-K-X3, P-K-X4 |
-| with the 5 provisional sites | JL | 9 | JL-K-12, JL-K-18, JL-K-3, JL-K-4, JL-K-5, JL-K-6, JL-K-7, JL-K-8, JL-K-9 |
+| with the 5 provisional sites | JL | 11 | JL-K-12, JL-K-18, JL-K-26, JL-K-27, JL-K-3, JL-K-4, JL-K-5, JL-K-6, JL-K-7, JL-K-8, JL-K-9 |
 | with the 5 provisional sites | JR | 0 | none |
 | with the 5 provisional sites | P | 58 | K-P-1, K-P-100, K-P-101, K-P-102, K-P-103, K-P-104, K-P-105, K-P-106, K-P-107, K-P-108, K-P-109, K-P-11, K-P-110, K-P-111, K-P-112, K-P-113, K-P-114, K-P-115, K-P-116, K-P-120, K-P-121, K-P-122, K-P-123, K-P-26, K-P-28, K-P-32, K-P-36, K-P-40, K-P-41, K-P-42, K-P-43, K-P-46, K-P-47, K-P-48, K-P-52, K-P-53, K-P-67, K-P-68, K-P-70, K-P-71, K-P-72, K-P-73, K-P-74, K-P-76, K-P-91, K-P-95, K-P-96, K-P-97, K-P-98, K-P-99, P-K-E4, P-K-E5, P-K-E6, P-K-SUB-O2, P-K-SUB-O4, P-K-X2, P-K-X3, P-K-X4 |
 <!-- /calc:coverage -->
@@ -780,9 +780,9 @@ Model (ASSUMED): a circular plate of K's thickness, with the bay radius equal to
 <!-- calc:dish -->
 | Fixings | Bay centre (pair) | Bay radius, mm | Positions in the bay | f, N | Force, N | Dish, clamped edge, mm | Dish, simply supported edge, mm |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 18 posts + 12 kept supports | JL-K-9 | 126.649 | 228 | 0.84 | 192 | 2.188 | 9.797 |
-| 18 posts + 12 kept supports | JL-K-9 | 126.649 | 228 | 0.97 | 221 | 2.526 | 11.314 |
-| 18 posts + 12 kept supports | JL-K-9 | 126.649 | 228 | 1.33 | 303 | 3.464 | 15.512 |
+| 18 posts + 12 kept supports | JL-K-9 | 126.649 | 252 | 0.84 | 212 | 2.418 | 10.829 |
+| 18 posts + 12 kept supports | JL-K-9 | 126.649 | 252 | 0.97 | 244 | 2.792 | 12.504 |
+| 18 posts + 12 kept supports | JL-K-9 | 126.649 | 252 | 1.33 | 335 | 3.829 | 17.145 |
 | with the 5 provisional sites | K-P-42 | 90.588 | 263 | 0.84 | 221 | 1.291 | 5.782 |
 | with the 5 provisional sites | K-P-42 | 90.588 | 263 | 0.97 | 255 | 1.491 | 6.677 |
 | with the 5 provisional sites | K-P-42 | 90.588 | 263 | 1.33 | 350 | 2.044 | 9.155 |
@@ -825,19 +825,19 @@ D4 states the washer stack works over 0.3 to 2.1 mm and also that the gap is 1.1
 | Rear jam nut thickness against the nominal gap | 1.190 vs 1.160 | SOURCED / DERIVED |
 <!-- /calc:toggle -->
 
-### K needs 653 to 1,033 N to mate its 777 positions and 365 to 761 N to separate
+### K needs 678 to 1,073 N to mate its 807 positions and 379 to 791 N to separate
 
 Sourced from the double-row qualification report via DA-01 M9 (`V-QUAL-154341`): 0.84, 0.97 and 1.33 N per position mating, 0.47 to 0.98 N unmating. Applying them to the single-row pair is ASSUMED. Per-board totals count each joint's own positions. "K, all joints" counts K's 777 positions. "All joints per side" counts the 825 of D6, including EL's 48. The draw-down load per fixing divides each board's mating force by its fixings (posts plus kept supports, then with the provisional sites).
 
 <!-- calc:forces -->
 | Joint | Positions | Mating at 0.84 N, N | Mating at 0.97 N, N | Mating at 1.33 N, N | Unmating at 0.47 to 0.98 N, N | Draw-down load per fixing at each f, N (posts + kept supports) | At 1.33 N with the 5 provisional sites, N |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| JL to K | 162 | 136 | 157 | 215 | 76 to 159 | 14 / 16 / 22 over 10 | 20 over 11 |
-| JR to K | 162 | 136 | 157 | 215 | 76 to 159 | 14 / 16 / 22 over 10 | 18 over 12 |
+| JL to K | 174 | 146 | 169 | 231 | 82 to 171 | 15 / 17 / 23 over 10 | 21 over 11 |
+| JR to K | 180 | 151 | 175 | 239 | 85 to 176 | 15 / 17 / 24 over 10 | 20 over 12 |
 | P unit to K | 423 | 355 | 410 | 563 | 199 to 415 | 36 / 41 / 56 over 10 | 47 over 12 |
 | O1/O3/O5 to K | 30 | 25 | 29 | 40 | 14 to 29 | 4 / 5 / 7 over 6 | 7 over 6 |
 | EL to P | 48 | 40 | 47 | 64 | 23 to 47 | n/a (platen) | n/a |
-| K, all joints (count: K positions) | 777 | 653 | 754 | 1033 | 365 to 761 |  |  |
+| K, all joints (count: K positions) | 807 | 678 | 783 | 1073 | 379 to 791 |  |  |
 | All joints per side incl. EL (count: DA-01 D6) | 825 | 693 | 800 | 1097 | 388 to 808 |  |  |
 <!-- /calc:forces -->
 

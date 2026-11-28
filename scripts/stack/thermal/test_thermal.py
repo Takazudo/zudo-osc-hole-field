@@ -64,12 +64,13 @@ class PowerMap(unittest.TestCase):
             self.assertAlmostEqual(sum(m['boards'].values()) + m['external_W'], m['input_W'], places=9)
             self.assertLess(abs(m['residual_W']), 1e-9)
 
-    def test_normal_load_is_34_83_W_and_not_35_4(self):
-        self.assertAlmostEqual(self.normal['input_W'], 12 * 1.431825194 + 12 * 1.392592182 + 5 * 0.187873956, places=9)
-        self.assertAlmostEqual(round(self.normal['input_W'], 2), 34.83)
+    def test_normal_load_is_35_43_W_and_not_the_sh_short_case(self):
+        # 2026-11-27: MC04-S5 adds six OPA4197IPWR ledger rows (362 -> 368); was 34.83 W
+        self.assertAlmostEqual(self.normal['input_W'], 12 * 1.456825194 + 12 * 1.417592182 + 5 * 0.187873956, places=9)
+        self.assertAlmostEqual(round(self.normal['input_W'], 2), 35.43)
         cases = T.ledger_case_W(self.d)
-        self.assertAlmostEqual(cases['conditional_SH_short_resistor_case_mA'], 35.4, delta=0.01)
-        self.assertGreater(abs(cases['two_feed_total_mA'] - 35.4), 0.5)
+        self.assertAlmostEqual(cases['conditional_SH_short_resistor_case_mA'], 36.01, delta=0.01)
+        self.assertGreater(abs(cases['two_feed_total_mA'] - cases['conditional_SH_short_resistor_case_mA']), 0.5)
 
     def test_contract_is_41_1_W(self):
         self.assertAlmostEqual(self.contract['input_W'], 41.1, places=9)
@@ -86,7 +87,7 @@ class PowerMap(unittest.TestCase):
             rule, frac, ext = T.classify(self.d, row, pk)
             self.assertAlmostEqual(sum(frac.values()), 1.0, places=9, msg=row['id'])
             self.assertGreaterEqual(ext, 0.0)
-        self.assertEqual(len(T.all_rows(self.d)), 362 + 10 + 1)
+        self.assertEqual(len(T.all_rows(self.d)), 368 + 10 + 1)
 
     def test_external_loads_are_5V_into_10k(self):
         self.assertAlmostEqual(self.normal['external_W'], T.output_count(self.d) * 25 / 10000, places=12)
@@ -108,7 +109,7 @@ class Enclosure(unittest.TestCase):
 
     def test_plan_row_figures_are_reproduced(self):
         plan = T.term(self.d, 'plan_heat_W')
-        self.assertEqual(plan, [34.83, 41.1])
+        self.assertEqual(plan, [35.43, 41.1])
         self.assertAlmostEqual(T.power_map(self.d, 'normal')['input_W'], plan[0], delta=0.005)
         self.assertAlmostEqual(T.power_map(self.d, 'contract')['input_W'], plan[1], places=9)
 
@@ -379,8 +380,8 @@ class AttemptA2(unittest.TestCase):
 
     def test_low_heat_load_from_bundle_typicals(self):
         low = T.power_map(self.d, 'low')
-        self.assertAlmostEqual(low['input_W'], 28.111, places=3)
-        self.assertAlmostEqual(low['boards']['K'], 19.412, places=3)
+        self.assertAlmostEqual(low['input_W'], 28.524, places=3)
+        self.assertAlmostEqual(low['boards']['K'], 19.493, places=3)  # 2026-11-27 refresh; was 19.412
         self.assertLess(abs(low['residual_W']), 1e-9)
         facts = {x['fact'] for x in T.low_heat_rows(self.d).values()}
         self.assertEqual(facts, {'fact-op-precision-d-quiescent-current', 'fact-op-precision-quiescent-current',

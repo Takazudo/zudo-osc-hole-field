@@ -1,0 +1,368 @@
+{
+ "results": {
+  "M1": {
+   "vector": "PPPPF–––– ––––––",
+   "expected": "PPPPPPPPP FPPPPP",
+   "why": {
+    "R2": "a site beyond its class distance of the connector centres"
+   }
+  },
+  "M2": {
+   "vector": "––––––––– PPPPPP",
+   "expected": "––––––––– PPPPPP",
+   "why": {}
+  },
+  "M3": {
+   "vector": "F–––––––– ––––––",
+   "expected": "F–––––––– ––––––",
+   "why": {
+    "S1": "circuits_needed gives none (LOGIC with WIPER)"
+   },
+   "classes": [
+    "LOGIC",
+    "LOGIC",
+    "WIPER",
+    "WIPER"
+   ]
+  },
+  "M4": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PF––––––– ––––––",
+   "why": {
+    "S2": "no built order at 8 circuits"
+   }
+  },
+  "M5": {
+   "vector": "PPF–––––– ––––––",
+   "expected": "PPF–––––– ––––––",
+   "why": {
+    "S3": "/E1/REF5 (PRECISION, site K-P-18) has no host within 40 mm"
+   },
+   "host_distance_mm": 51.245
+  },
+  "M6": {
+   "vector": "PPF–––––– ––––––",
+   "expected": "PPF–––––– ––––––",
+   "why": {
+    "S3": "/E1/ASR_RAW (LOGIC, site K-P-16) has only full hosts within 55 mm: P-K-P-L13.01.01.01 at 52.6683 mm"
+   },
+   "plain_ride_accepts_ASR_RAW": true,
+   "plain_ride_refuses_CURVED": true,
+   "eligible": false
+  },
+  "M7": {
+   "vector": "PPPF––––– ––––––",
+   "expected": "PPPF––––– ––––––",
+   "why": {
+    "R1": "front field outside the P outline less 0.30 mm"
+   },
+   "slot": {
+    "slot_centre": [
+     232.6667,
+     184.3333
+    ],
+    "direction": "+x",
+    "dist": 0.0,
+    "why": "front field outside the P outline less 0.30 mm"
+   }
+  },
+  "M8": {
+   "vector": "PPPPF–––– ––––––",
+   "expected": "PPPPF–––– ––––––",
+   "why": {
+    "R2": "a site beyond its class distance of the connector centres"
+   },
+   "slot": {
+    "slot_centre": [
+     214.6667,
+     186.3333
+    ],
+    "direction": "-y",
+    "dist": 18.110770276274835,
+    "why": "a site beyond its class distance of the connector centres"
+   }
+  },
+  "M11": {
+   "vector": "PPPPPPPF– ––––––",
+   "expected": "PPPPPPPF– ––––––",
+   "why": {
+    "R5": "T1: C7205 (S), C8313 (N), R7216 (N), R7220 (N), R7519 (N), R8340 (N), R8462 (N), U8411 (S)"
+   },
+   "slot": {
+    "slot_centre": [
+     214.6667,
+     184.3333
+    ],
+    "direction": "-y",
+    "dist": 18.0,
+    "why": "T1: C7205 (S), C8313 (N), R7216 (N), R7220 (N), R7519 (N), R8340 (N), R8462 (N), U8411 (S)"
+   }
+  },
+  "M9": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PPPPPF––– ––––––",
+   "why": {
+    "S2": "no built order at 8 circuits"
+   },
+   "slot": {
+    "slot_centre": [
+     217.6667,
+     207.6667
+    ],
+    "direction": "+y",
+    "dist": 32.86715685908959
+   }
+  },
+  "M10": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PPPPPPF–– ––––––",
+   "why": {
+    "S2": "no built order at 8 circuits"
+   },
+   "slot": {
+    "slot_centre": [
+     184.1667,
+     189.6667
+    ],
+    "direction": "+y",
+    "dist": 6.0,
+    "why": "covers the recorded courtyard of U5210"
+   }
+  },
+  "M12": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PPPPPPPPF ––––––",
+   "why": {
+    "S2": "no built order at 8 circuits"
+   },
+   "footprint": {
+    "board": "K",
+    "ref": "C1101",
+    "courtyard": [
+     41.683,
+     187.75,
+     43.603,
+     191.03
+    ],
+    "face": "B",
+    "anchored_by": [
+     "O-K-O3"
+    ]
+   }
+  },
+  "M13": {
+   "vector": "––––––––– FPFPPP",
+   "expected": "––––––––– FPFPPP",
+   "why": {
+    "A2": [
+     "K C8405: shifted or turned protected row",
+     "K R5148: shifted or turned protected row",
+     "K R5249: new protected row (2)",
+     "K R5253: shifted or turned protected row"
+    ],
+    "A0": [
+     "U8409 has a row (no position)"
+    ]
+   }
+  },
+  "M14": {
+   "vector": "––––––––– FPPFPP",
+   "expected": "––––––––– FPPFPP",
+   "why": {
+    "A3": [
+     "K C1308: row without a position"
+    ],
+    "A0": [
+     "U8409 has a row (no position)"
+    ]
+   },
+   "footprint": [
+    "K",
+    "C1308"
+   ]
+  },
+  "M15": {
+   "vector": "––––––––– FPPPFP",
+   "expected": "––––––––– FPPPFP",
+   "why": {
+    "A4": [
+     "K RV2113: trimmer row changes face from paper B to F",
+     "K RV2113: trimmer newly lands on K front face"
+    ],
+    "A0": [
+     "U8409 has a row (no position)"
+    ]
+   },
+   "row_found": true,
+   "paper_face": "B",
+   "protected": false
+  },
+  "M16": {
+   "vector": "––––––––– FPPPPF",
+   "expected": "––––––––– FPPPPF",
+   "why": {
+    "A6": [
+     "rows on JL differ from the base"
+    ],
+    "A0": [
+     "U8409 has a row (no position)"
+    ]
+   },
+   "row_found": true,
+   "protected": false
+  },
+  "M17_strict": {
+   "R5": "F",
+   "vector": "PPPPPPPF– ––––––",
+   "why": {
+    "R5": "T1: C7205 (S), C8313 (N), R7216 (N), R7220 (N), R7519 (N), R8340 (N), R8462 (N), U8411 (S)"
+   }
+  },
+  "M17_default": {
+   "R5": "F",
+   "vector": "PPPPPPPF– ––––––",
+   "why": {
+    "R5": "T1: C8313 (N), R7216 (N), R7220 (N), R7519 (N), R8340 (N), R8462 (N)"
+   }
+  },
+  "M18": {
+   "strict": {
+    "R5": "F",
+    "class_N": [],
+    "class_S": [
+     "C7205",
+     "C8405",
+     "R8420",
+     "R8444",
+     "U8409",
+     "U8411"
+    ],
+    "bad": [
+     [
+      "C7205",
+      "S"
+     ],
+     [
+      "C8405",
+      "S"
+     ],
+     [
+      "R8420",
+      "S"
+     ],
+     [
+      "R8444",
+      "S"
+     ],
+     [
+      "U8409",
+      "S"
+     ],
+     [
+      "U8411",
+      "S"
+     ]
+    ]
+   },
+   "default": {
+    "R5": "P",
+    "class_N": [],
+    "class_S": [
+     "C7205",
+     "C8405",
+     "R8420",
+     "R8444",
+     "U8409",
+     "U8411"
+    ],
+    "bad": []
+   }
+  },
+  "M22": {
+   "vector": "––––––––– FFFPPP",
+   "expected": "––––––––– FFFPPP",
+   "why": {
+    "A1": [
+     "U5110 is not claimed and its row differs from the base row"
+    ],
+    "A2": [
+     "K U5110: shifted or turned protected row"
+    ],
+    "A0": [
+     "U8409 has a row (no position)"
+    ]
+   }
+  },
+  "M23": {
+   "vector": "PPF–––––– ––––––",
+   "expected": "PPF–––––– ––––––",
+   "why": {
+    "S3": "/O1/OCT_SELECTED (STATIC, site K-O1-1) is a static line, which rides on no other link (DS-79)"
+   }
+  },
+  "M24": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PF––––––– ––––––",
+   "why": {
+    "S2": "no built order at 8 circuits"
+   },
+   "circuits_needed": 8
+  },
+  "M25": {
+   "vector": "PF––––––– ––––––",
+   "expected": "PF––––––– ––––––",
+   "why": {
+    "S2": "logic run 19-23 has 5 lines, above DA-03 c6 cap"
+   }
+  },
+  "M26": {
+   "ride": [
+    "P-K-P-L03.02.01",
+    34.6434
+   ],
+   "ride_capped": [
+    "P-K-P-L05.01.01",
+    38.103
+   ]
+  },
+  "M27a": {
+   "vector": "PPF–––––– ––––––",
+   "expected": "PPF–––––– ––––––",
+   "why": {
+    "S3": "/E2/NOT_FALL (ANALOGUE, site P-K-E2) has only full hosts within 45 mm: P-K-P-L05.01.01 at 40.9004 mm"
+   }
+  },
+  "M27b": {
+   "S3": "P",
+   "legal_orders": 2,
+   "orders": 6,
+   "first_order": [
+    "K-P-20",
+    "P-K-E2",
+    "K-P-16"
+   ],
+   "K-P-16": [
+    [
+     "P-K-P-L01.01.02",
+     54.376
+    ],
+    [
+     "P-K-P-L01.01.02",
+     54.376
+    ]
+   ]
+  }
+ },
+ "problems": [
+  "M1: PPPPF–––– ––––––, expected PPPPPPPPP FPPPPP",
+  "M9: PF––––––– ––––––, expected PPPPPF––– ––––––",
+  "M10: PF––––––– ––––––, expected PPPPPPF–– ––––––",
+  "M12: PF––––––– ––––––, expected PPPPPPPPF ––––––"
+ ],
+ "first_four_directly_after_C4_C5": {
+  "M7": "PPPF––––– ––––––",
+  "M8": "PPPPF–––– ––––––",
+  "M10": "PF––––––– ––––––",
+  "M11": "PPPPPPPF– ––––––"
+ }
+}

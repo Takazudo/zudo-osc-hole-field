@@ -1,0 +1,152 @@
+{
+ "fingerprint": {
+  "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+  "arch": "x86_64",
+  "nproc": 4,
+  "cpu_affinity": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "cgroup": {
+   "memory.max": "not present (no cgroup v2 file)",
+   "memory.current": "not present (no cgroup v2 file)",
+   "cpu.max": "not present (no cgroup v2 file)"
+  },
+  "meminfo": {
+   "MemTotal": "16473316 kB",
+   "MemAvailable": "15746864 kB",
+   "SwapTotal": "0 kB",
+   "SwapFree": "0 kB"
+  },
+  "disk": [
+   "/dev/vda        252G   19G   51G  28% /"
+  ],
+  "interpreter": "/home/user/venv312/bin/python",
+  "python": "3.12.3",
+  "packages": {
+   "numpy": "2.2.6",
+   "scipy": "1.15.3",
+   "shapely": "2.1.2"
+  },
+  "kicad_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+  "kicad_image_present": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec 18693567392b",
+  "kicad_cli_version": "10.0.6",
+  "docker_daemon": "server 29.9.3, driver overlayfs, containers 0 (running 0)",
+  "processes": [
+   "PID   RSS     ELAPSED COMMAND",
+   "  122 434328      52:21 claude",
+   " 8754 95316       25:53 dockerd",
+   " 8763 50456       25:53 containerd",
+   "  114 41536       52:21 environment-man",
+   "27617 41456       00:00 python",
+   "   94 29084       52:22 rclone-filestor",
+   "27610 11968       00:00 python",
+   "    1  5964       52:22 process_api",
+   "27755  4420       00:00 ps",
+   "27123  3488       04:25 bash",
+   "27608  3436       00:00 bash",
+   "   93  3024       52:22 8",
+   "  109  2164       52:21 sh",
+   "27126  2072       04:25 grep"
+  ],
+  "commit": "cc63e3d960b674bb9651608cd32fd46ec22de62e",
+  "tree_clean_at_start": false,
+  "brief_sha256": "1ecf7da618924bf1a21b825ad1ce682ffa057b66cc950b0285f110e9e2069a2a"
+ },
+ "stages": {
+  "arm0": {
+   "returncode": 0,
+   "wall_s": 1690.3
+  },
+  "pilot": {
+   "returncode": 0,
+   "wall_s": 6.9
+  },
+  "stage1": {
+   "returncode": 0,
+   "wall_s": 176.6
+  },
+  "stage2": {
+   "returncode": 0,
+   "wall_s": 60.9
+  },
+  "stage3": {
+   "returncode": 0,
+   "wall_s": 2.7
+  },
+  "stage4": {
+   "returncode": 0,
+   "wall_s": 2.6
+  }
+ },
+ "stop": null,
+ "resumes": [
+  {
+   "at": "2026-11-27T08:15:58Z",
+   "finished_stages_kept": [
+    "arm0",
+    "pilot"
+   ],
+   "reason": "the first driver invocation was stopped at 08:13:45Z during stage 1 by the session tool background time limit (30 min), an external interruption, not a cap, ceiling or failure of the study; resumed once from the finished arm 0 and pilot stages",
+   "input_pins_unchanged": true,
+   "fingerprint": {
+    "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
+    "arch": "x86_64",
+    "nproc": 4,
+    "cpu_affinity": [
+     0,
+     1,
+     2,
+     3
+    ],
+    "cgroup": {
+     "memory.max": "not present (no cgroup v2 file)",
+     "memory.current": "not present (no cgroup v2 file)",
+     "cpu.max": "not present (no cgroup v2 file)"
+    },
+    "meminfo": {
+     "MemTotal": "16473316 kB",
+     "MemAvailable": "15710328 kB",
+     "SwapTotal": "0 kB",
+     "SwapFree": "0 kB"
+    },
+    "disk": [
+     "/dev/vda        252G   19G   50G  28% /"
+    ],
+    "interpreter": "/home/user/venv312/bin/python",
+    "python": "3.12.3",
+    "packages": {
+     "numpy": "2.2.6",
+     "scipy": "1.15.3",
+     "shapely": "2.1.2"
+    },
+    "kicad_image": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
+    "kicad_image_present": "kicad/kicad@sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec 18693567392b",
+    "kicad_cli_version": "10.0.6",
+    "docker_daemon": "server 29.9.3, driver overlayfs, containers 0 (running 0)",
+    "processes": [
+     "PID   RSS     ELAPSED COMMAND",
+     "  122 417004   01:24:27 claude",
+     " 8754 95132       57:59 dockerd",
+     " 8763 49500       57:59 containerd",
+     "30198 41860       00:00 python",
+     "  114 41704    01:24:27 environment-man",
+     "   94 29092    01:24:28 rclone-filestor",
+     "30191 11992       00:00 python",
+     "    1  5964    01:24:28 process_api",
+     "30363  4476       00:00 ps",
+     "28447  3500       21:36 bash",
+     "29316  3492       10:21 bash",
+     "28489  3476       21:31 bash",
+     "30189  3460       00:00 bash",
+     "   93  3024    01:24:28 8"
+    ],
+    "commit": "cc63e3d960b674bb9651608cd32fd46ec22de62e",
+    "tree_clean_at_start": false,
+    "brief_sha256": "1ecf7da618924bf1a21b825ad1ce682ffa057b66cc950b0285f110e9e2069a2a"
+   }
+  }
+ ]
+}

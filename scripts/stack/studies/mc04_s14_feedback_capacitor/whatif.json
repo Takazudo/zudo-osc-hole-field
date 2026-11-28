@@ -1,0 +1,3925 @@
+{
+ "method_limits": [
+  "generic single-channel TI family cores (OPAx196 Final 1.5, OPAx197 Final 1.3); no package parasitics, no coupling between the channels of a quad, no supply impedance",
+  "ideal +/-12 V rails",
+  "typical-only models",
+  "27 C",
+  "no temperature or tolerance corner: the factor of two stands in for them",
+  "capacitance lumped to AGND",
+  "0.20 pF/mm, the 1.5 route factor, 0.5 pF per via and 0.3 pF per pad are all ASSUMED (the last two new and unsourced)",
+  "Ruling 4 is pending its re-review in the placement brief",
+  "passives are ideal elements at their specification value; no vendor model exists for them and none is claimed",
+  "leakage, hum pickup and neighbour coupling are not covered by a capacitance budget",
+  "(Addendum B) the seed selects the zero-stray operating point, so no other DC state, such as a latched output or a start-up state, is examined",
+  "the feedback capacitor is an ideal 10 pF element (C0603C100J5GACTU has no retained vendor model)",
+  "its +/-5 % tolerance is not swept; the factor of two stands in for it",
+  "class G uses a two-step tolerance ladder (reltol=1e-5, then default)",
+  "arm R re-uses the S13 records and waveforms; the cache binding is by the recorded metrics, not by a data hash"
+ ],
+ "rows": [
+  {
+   "bracket_check": null,
+   "c_lim_pF": 16.0,
+   "c_paper": {
+    "/F3/RES_CONTROL_SUM": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 9.19,
+     "hpwl_mm": 21.62,
+     "n_pad": 4,
+     "n_via": 3,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 9.19,
+   "class": "E-control",
+   "corner": {},
+   "corners": [
+    {
+     "c_lim_pF": 16.0,
+     "corner": {},
+     "deciding": [
+      "K9"
+     ],
+     "lowest_fail_pF": 50,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 0.0,
+     "peak0_dB": 2.26867e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 16.9288,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.12
+      },
+      "100": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 32.0709,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 62.5058
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.7752,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.3126
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.7638,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.5614
+      },
+      "24": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 23.461,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.2953
+      },
+      "32": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.8832,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.451
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.3964,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 72.3675
+      },
+      "50": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 27.4282,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 70.6946
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.052,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.1037
+      },
+      "64": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 28.9955,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 68.3142
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.6637,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.6504
+      }
+     }
+    }
+   ],
+   "deciding": [
+    "K9"
+   ],
+   "id": "what-if E-control:0841e309:{}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET 16 pF (MODEL EVIDENCE ONLY)",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/F3/RES_CONTROL_SUM"
+   ],
+   "outpair": [
+    {
+     "c_pF": 16.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 77.7238
+    },
+    {
+     "c_pF": 16.0,
+     "failed": [],
+     "out_pF": 100.0,
+     "pass": true,
+     "pm_deg": 65.3025
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R2380",
+     "role": "filter:R_RES_CONTROL_MANUAL",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R2381",
+     "role": "filter:R_RES_CONTROL_DEPTH",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R2382",
+     "role": "filter:R_RES_CONTROL_FEEDBACK",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "6",
+     "ref": "U2313",
+     "role": "filter:RES_CONTROL_SUM",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "E-control",
+   "topology": "0841e3099266fde0",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1057460.0,
+     "what_if": 148715.0
+    },
+    "gain_20k_dB_diff": -0.0832,
+    "k6_s": {
+     "specification": [
+      5.22167e-06,
+      5.17668e-06
+     ],
+     "what_if": [
+      7.94142e-06,
+      7.98093e-06
+     ]
+    },
+    "noise_uVrms": {
+     "specification": 28.2324,
+     "what_if": 26.5085
+    },
+    "path": "sig@out",
+    "phase_20k_deg_diff": -7.153
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": null,
+   "c_lim_pF": 16.0,
+   "c_paper": {
+    "/M4B/COMMAND_SUM": {
+     "amp_side": "F.Cu",
+     "c_paper_pF": 8.27,
+     "hpwl_mm": 23.57,
+     "n_pad": 4,
+     "n_via": 0,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 8.27,
+   "class": "E-control",
+   "corner": {},
+   "corners": [
+    {
+     "c_lim_pF": 16.0,
+     "corner": {},
+     "deciding": [
+      "K9"
+     ],
+     "lowest_fail_pF": 50,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 0.0,
+     "peak0_dB": 2.26867e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 16.9288,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.12
+      },
+      "100": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 32.0709,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 62.5058
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.7752,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.3126
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.7638,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.5614
+      },
+      "24": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 23.461,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.2953
+      },
+      "32": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.8832,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.451
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.3964,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 72.3675
+      },
+      "50": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 27.4282,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 70.6946
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.052,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.1037
+      },
+      "64": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 28.9955,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 68.3142
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.6637,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.6504
+      }
+     }
+    }
+   ],
+   "deciding": [
+    "K9"
+   ],
+   "id": "what-if E-control:3ef5b8d0:{}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET 16 pF (MODEL EVIDENCE ONLY)",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/M4B/COMMAND_SUM"
+   ],
+   "outpair": [
+    {
+     "c_pF": 16.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 77.7238
+    },
+    {
+     "c_pF": 16.0,
+     "failed": [],
+     "out_pF": 100.0,
+     "pass": true,
+     "pm_deg": 65.3025
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R8462",
+     "role": "mix4_vca:R_COMMAND_MANUAL",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R8463",
+     "role": "mix4_vca:R_COMMAND_CV",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R8464",
+     "role": "mix4_vca:R_COMMAND_SUM_FB",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "2",
+     "ref": "U8412",
+     "role": "mix4_vca:COMMAND_SUM",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "E-control",
+   "topology": "3ef5b8d06b51acf2",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1057460.0,
+     "what_if": 148715.0
+    },
+    "gain_20k_dB_diff": -0.0832,
+    "k6_s": {
+     "specification": [
+      5.22167e-06,
+      5.17668e-06
+     ],
+     "what_if": [
+      7.94142e-06,
+      7.98093e-06
+     ]
+    },
+    "noise_uVrms": {
+     "specification": 28.2324,
+     "what_if": 26.5085
+    },
+    "path": "sig@out",
+    "phase_20k_deg_diff": -7.153
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": null,
+   "c_lim_pF": 16.0,
+   "c_paper": {
+    "/W1/CONTROL_SUM": {
+     "amp_side": "F.Cu",
+     "c_paper_pF": 10.58,
+     "hpwl_mm": 31.27,
+     "n_pad": 4,
+     "n_via": 0,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 10.58,
+   "class": "E-control",
+   "corner": {},
+   "corners": [
+    {
+     "c_lim_pF": 16.0,
+     "corner": {},
+     "deciding": [
+      "K9"
+     ],
+     "lowest_fail_pF": 50,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 0.0,
+     "peak0_dB": 2.26867e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 16.9288,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.12
+      },
+      "100": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 32.0709,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 62.5058
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.7752,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.3126
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.7638,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.5614
+      },
+      "24": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 23.461,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.2953
+      },
+      "32": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.8832,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.451
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.3964,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 72.3675
+      },
+      "50": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 27.4282,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 70.6946
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.052,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.1037
+      },
+      "64": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 28.9955,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 68.3142
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.6637,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.6504
+      }
+     }
+    }
+   ],
+   "deciding": [
+    "K9"
+   ],
+   "id": "what-if E-control:8fb559a8:{}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET 16 pF (MODEL EVIDENCE ONLY)",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/W1/CONTROL_SUM"
+   ],
+   "outpair": [
+    {
+     "c_pF": 16.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 77.7238
+    },
+    {
+     "c_pF": 16.0,
+     "failed": [],
+     "out_pF": 100.0,
+     "pass": true,
+     "pm_deg": 65.3025
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5227",
+     "role": "wavefolder:R_CONTROL_MANUAL",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5228",
+     "role": "wavefolder:R_CONTROL_DEPTH",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5229",
+     "role": "wavefolder:R_CONTROL_FB",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "2",
+     "ref": "U5208",
+     "role": "wavefolder:CONTROL_SUM",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "E-control",
+   "topology": "8fb559a875d967cb",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1057460.0,
+     "what_if": 148715.0
+    },
+    "gain_20k_dB_diff": -0.0832,
+    "k6_s": {
+     "specification": [
+      5.22167e-06,
+      5.17668e-06
+     ],
+     "what_if": [
+      7.94142e-06,
+      7.98093e-06
+     ]
+    },
+    "noise_uVrms": {
+     "specification": 28.2324,
+     "what_if": 26.5085
+    },
+    "path": "sig@out",
+    "phase_20k_deg_diff": -7.153
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": null,
+   "c_lim_pF": 8.0,
+   "c_paper": {
+    "/M4B/TARGET_SUM": {
+     "amp_side": "F.Cu",
+     "c_paper_pF": 18.22,
+     "hpwl_mm": 57.73,
+     "n_pad": 3,
+     "n_via": 0,
+     "unplaced": []
+    },
+    "/W1/TARGET_SUM": {
+     "amp_side": "F.Cu",
+     "c_paper_pF": 9.34,
+     "hpwl_mm": 28.15,
+     "n_pad": 3,
+     "n_via": 0,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 18.22,
+   "class": "E-control",
+   "corner": {},
+   "corners": [
+    {
+     "c_lim_pF": 8.0,
+     "corner": {},
+     "deciding": [
+      "K9"
+     ],
+     "lowest_fail_pF": 24,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 8.0972e-06,
+     "peak0_dB": 2.04733e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.5639,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 65.8409
+      },
+      "100": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 33.9472,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 53.1936
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 22.521,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 66.1783
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 23.5297,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 65.6759
+      },
+      "24": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 25.2562,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 64.4327
+      },
+      "32": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 26.6983,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 63.0895
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.0809,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 66.4876
+      },
+      "50": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 29.2714,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 60.1322
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.7554,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 66.5494
+      },
+      "64": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 30.8521,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 57.9969
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.3833,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 66.5001
+      }
+     }
+    }
+   ],
+   "deciding": [
+    "K9"
+   ],
+   "id": "what-if E-control:ee93250a:{}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: NO HEADROOM AT PAPER",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/M4B/TARGET_SUM",
+    "/W1/TARGET_SUM"
+   ],
+   "outpair": [
+    {
+     "c_pF": 8.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 69.9905
+    },
+    {
+     "c_pF": 8.0,
+     "failed": [],
+     "out_pF": 100.0,
+     "pass": true,
+     "pm_deg": 56.3761
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R8470",
+     "role": "mix4_vca:R_TARGET_IN",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R8471",
+     "role": "mix4_vca:R_TARGET_FB",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "13",
+     "ref": "U8412",
+     "role": "mix4_vca:EMITTER_TARGET",
+     "value": "OPA4196IDR"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5235",
+     "role": "wavefolder:R_TARGET_IN",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5236",
+     "role": "wavefolder:R_TARGET_FB",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "13",
+     "ref": "U5208",
+     "role": "wavefolder:EMITTER_TARGET",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "E-control",
+   "topology": "ee93250ac3b2981d",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1014520.0,
+     "what_if": 159957.0
+    },
+    "gain_20k_dB_diff": -0.0755,
+    "k6_s": {
+     "specification": [
+      1.16918e-05,
+      1.17076e-05
+     ],
+     "what_if": [
+      7.53093e-06,
+      7.513e-06
+     ]
+    },
+    "noise_uVrms": {
+     "specification": 28.4194,
+     "what_if": 27.1898
+    },
+    "path": "sig@out",
+    "phase_20k_deg_diff": -7.161
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": {
+    "c_lim_comparison": "NOT RUN: the AGND bracket is not swept",
+    "provisional_reasons": [
+     "brackets differ by 2.69 deg in K1 at 0 pF",
+     "brackets differ by 3.05 deg in K1 at 16 pF",
+     "brackets differ by 2.91 deg in K1 at 32 pF"
+    ],
+    "rows": [
+     {
+      "agnd_pass": true,
+      "c_pF": 0,
+      "dK1_deg": 2.692,
+      "pm_agnd_deg": 68.8672,
+      "pm_open_deg": 66.1748
+     },
+     {
+      "agnd_pass": true,
+      "c_pF": 16.0,
+      "dK1_deg": 3.048,
+      "pm_agnd_deg": 73.9221,
+      "pm_open_deg": 70.8742
+     },
+     {
+      "agnd_pass": true,
+      "c_pF": 32.0,
+      "dK1_deg": 2.911,
+      "pm_agnd_deg": 72.8402,
+      "pm_open_deg": 69.9289
+     }
+    ],
+    "status": "OK",
+    "values": [
+     0,
+     16.0,
+     32.0
+    ]
+   },
+   "c_lim_pF": 16.0,
+   "c_paper": {
+    "/M4B/COMMAND_INVERT_SUM": {
+     "amp_side": "F.Cu",
+     "c_paper_pF": 7.96,
+     "hpwl_mm": 23.55,
+     "n_pad": 3,
+     "n_via": 0,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 7.96,
+   "class": "E-control",
+   "corner": {
+    "bracket": "open"
+   },
+   "corners": [
+    {
+     "c_lim_pF": 16.0,
+     "corner": {
+      "bracket": "open"
+     },
+     "deciding": [
+      "K9"
+     ],
+     "lowest_fail_pF": 50,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 1.3878e-14,
+     "peak0_dB": 2.04712e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 16.6905,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 66.1748
+      },
+      "100": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 31.9888,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 59.5908
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.6116,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.5787
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.613,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.8742
+      },
+      "24": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 23.3288,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.6917
+      },
+      "32": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.7636,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 69.9289
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.1923,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 68.5139
+      },
+      "50": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 27.3257,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 67.352
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.8605,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 69.2856
+      },
+      "64": {
+       "clipped": false,
+       "failed": [
+        "K9"
+       ],
+       "gm_dB": 28.9013,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 65.1042
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.4828,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 69.8637
+      }
+     }
+    }
+   ],
+   "deciding": [
+    "K9"
+   ],
+   "id": "what-if E-control:c7bb7f88:{\"bracket\": \"open\"}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 16 pF: brackets differ by 2.69 deg in K1 at 0 pF; brackets differ by 3.05 deg in K1 at 16 pF; brackets differ by 2.91 deg in K1 at 32 pF",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/M4B/COMMAND_INVERT_SUM"
+   ],
+   "outpair": [
+    {
+     "c_pF": 16.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 74.2024
+    },
+    {
+     "c_pF": 16.0,
+     "failed": [],
+     "out_pF": 100.0,
+     "pass": true,
+     "pm_deg": 61.005
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R8465",
+     "role": "mix4_vca:R_COMMAND_INVERT_IN",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R8466",
+     "role": "mix4_vca:R_COMMAND_INVERT_FB",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "6",
+     "ref": "U8412",
+     "role": "mix4_vca:COMMAND_INVERT",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [
+    "brackets differ by 2.69 deg in K1 at 0 pF",
+    "brackets differ by 3.05 deg in K1 at 16 pF",
+    "brackets differ by 2.91 deg in K1 at 32 pF"
+   ],
+   "subclass": "E-control",
+   "topology": "c7bb7f889ff25a43",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1111060.0,
+     "what_if": 157664.0
+    },
+    "gain_20k_dB_diff": -0.0755,
+    "k6_s": {
+     "specification": [
+      8.5754e-06,
+      8.47465e-06
+     ],
+     "what_if": [
+      7.53942e-06,
+      7.58536e-06
+     ]
+    },
+    "noise_uVrms": {
+     "specification": 21.6372,
+     "what_if": 20.514
+    },
+    "path": "sig@out",
+    "phase_20k_deg_diff": -7.161
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": null,
+   "c_lim_pF": 50.0,
+   "c_paper": {
+    "/W1/FOLDER_SUM": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 28.26,
+     "hpwl_mm": 85.88,
+     "n_pad": 5,
+     "n_via": 2,
+     "unplaced": []
+    },
+    "/W2/FOLDER_SUM": {
+     "amp_side": "F.Cu",
+     "c_paper_pF": 24.99,
+     "hpwl_mm": 74.98,
+     "n_pad": 5,
+     "n_via": 2,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 28.26,
+   "class": "E-audio",
+   "corner": {},
+   "corners": [
+    {
+     "c_lim_pF": 50.0,
+     "corner": {},
+     "deciding": null,
+     "lowest_fail_pF": null,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 0.0,
+     "peak0_dB": 0.0,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 16.7832,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 67.1746
+      },
+      "100": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 32.0492,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 60.3017
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.6888,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 71.5682
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.6877,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 71.8596
+      },
+      "24": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 23.3996,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 71.6657
+      },
+      "32": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.8318,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.8824
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.2779,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 69.5082
+      },
+      "50": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 27.3904,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 68.2423
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.9435,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.2794
+      },
+      "64": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 28.9643,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 65.9403
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.5637,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.855
+      }
+     }
+    }
+   ],
+   "deciding": null,
+   "id": "what-if E-audio:a10f67ef:{}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 50 pF: IDENTITY OPEN: R5147, R5148, R5247, R5248",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/W1/FOLDER_SUM",
+    "/W2/FOLDER_SUM"
+   ],
+   "outpair": [
+    {
+     "c_pF": 50.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 71.251
+    },
+    {
+     "c_pF": 50.0,
+     "failed": [],
+     "out_pF": 100.0,
+     "pass": true,
+     "pm_deg": 58.157
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5246",
+     "role": "wavefolder:R_DRIVE_SIGNAL",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "2",
+     "ref": "R5247",
+     "role": "wavefolder:R_DRIVE_BIAS_MANUAL",
+     "value": "1 M\u03a9"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "2",
+     "ref": "R5248",
+     "role": "wavefolder:R_DRIVE_BIAS_BUFFER",
+     "value": "1 M\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5249",
+     "role": "wavefolder:R_DRIVE_FB",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "9",
+     "ref": "U5209",
+     "role": "wavefolder:DRIVE_SUM",
+     "value": "OPA4196IDR"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5146",
+     "role": "wavefolder:R_DRIVE_SIGNAL",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "2",
+     "ref": "R5147",
+     "role": "wavefolder:R_DRIVE_BIAS_MANUAL",
+     "value": "1 M\u03a9"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "2",
+     "ref": "R5148",
+     "role": "wavefolder:R_DRIVE_BIAS_BUFFER",
+     "value": "1 M\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5149",
+     "role": "wavefolder:R_DRIVE_FB",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "9",
+     "ref": "U5109",
+     "role": "wavefolder:DRIVE_SUM",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [
+    "IDENTITY OPEN: R5147, R5148, R5247, R5248"
+   ],
+   "subclass": "E-audio",
+   "topology": "a10f67efa357abed",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1100040.0,
+     "what_if": 155640.0
+    },
+    "gain_20k_dB_diff": -0.0772,
+    "k6_s": null,
+    "noise_uVrms": {
+     "specification": 10.1959,
+     "what_if": 10.17
+    },
+    "note": "exceeds the 2 deg of K7 against the specification cell",
+    "path": "sig@out",
+    "phase_20k_deg_diff": -7.16
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": {
+    "c_lim_comparison": "NOT RUN: the AGND bracket is not swept",
+    "provisional_reasons": [
+     "brackets differ by 2.69 deg in K1 at 0 pF",
+     "brackets differ by 2.38 deg in K1 at 50 pF"
+    ],
+    "rows": [
+     {
+      "agnd_pass": true,
+      "c_pF": 0,
+      "dK1_deg": 2.687,
+      "pm_agnd_deg": 69.1331,
+      "pm_open_deg": 66.4464
+     },
+     {
+      "agnd_pass": true,
+      "c_pF": 50.0,
+      "dK1_deg": 2.382,
+      "pm_agnd_deg": 70.0095,
+      "pm_open_deg": 67.6274
+     },
+     {
+      "agnd_pass": true,
+      "c_pF": 100.0,
+      "dK1_deg": 1.119,
+      "pm_agnd_deg": 60.8668,
+      "pm_open_deg": 59.7473
+     }
+    ],
+    "status": "OK",
+    "values": [
+     0,
+     50.0,
+     100.0
+    ]
+   },
+   "c_lim_pF": 50.0,
+   "c_paper": {
+    "/W1/DRIVE_INV_SUM": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 6.32,
+     "hpwl_mm": 16.42,
+     "n_pad": 3,
+     "n_via": 1,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 6.32,
+   "class": "E-audio",
+   "corner": {
+    "bracket": "open"
+   },
+   "corners": [
+    {
+     "c_lim_pF": 50.0,
+     "corner": {
+      "bracket": "open"
+     },
+     "deciding": null,
+     "lowest_fail_pF": null,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 0.0,
+     "peak0_dB": 2.05314e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 16.7465,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 66.4464
+      },
+      "100": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 32.0438,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 59.7473
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.6672,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.8859
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.6686,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 71.1869
+      },
+      "24": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 23.3842,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 71.0092
+      },
+      "32": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.8189,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.24
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.2481,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 68.7998
+      },
+      "50": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 27.381,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 67.6274
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.9163,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 69.5787
+      },
+      "64": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 28.9564,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 65.3442
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.5386,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 70.1611
+      }
+     }
+    }
+   ],
+   "deciding": null,
+   "id": "what-if E-audio:932a592b:{\"bracket\": \"open\"}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: PROVISIONAL 50 pF: brackets differ by 2.69 deg in K1 at 0 pF; brackets differ by 2.38 deg in K1 at 50 pF",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/W1/DRIVE_INV_SUM"
+   ],
+   "outpair": [
+    {
+     "c_pF": 50.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 70.6525
+    },
+    {
+     "c_pF": 50.0,
+     "failed": [],
+     "out_pF": 100.0,
+     "pass": true,
+     "pm_deg": 57.4772
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5250",
+     "role": "wavefolder:R_DRIVE_INV_IN",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-r-precision",
+     "mpn": "RT0603BRD07100KL",
+     "pin": "2",
+     "ref": "R5251",
+     "role": "wavefolder:R_DRIVE_INV_FB",
+     "value": "100 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "13",
+     "ref": "U5209",
+     "role": "wavefolder:DRIVE_INVERT",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [
+    "brackets differ by 2.69 deg in K1 at 0 pF",
+    "brackets differ by 2.38 deg in K1 at 50 pF"
+   ],
+   "subclass": "E-audio",
+   "topology": "932a592b7744d4ca",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1107960.0,
+     "what_if": 157499.0
+    },
+    "gain_20k_dB_diff": -0.0756,
+    "k6_s": null,
+    "noise_uVrms": {
+     "specification": 9.58889,
+     "what_if": 9.56553
+    },
+    "note": "exceeds the 2 deg of K7 against the specification cell",
+    "path": "sig@out",
+    "phase_20k_deg_diff": -7.161
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": {
+    "c_lim_comparison": "NOT RUN: the AGND bracket is not swept",
+    "provisional_reasons": [],
+    "rows": [
+     {
+      "agnd_pass": true,
+      "c_pF": 0,
+      "dK1_deg": 0.053,
+      "pm_agnd_deg": 75.8679,
+      "pm_open_deg": 75.8148
+     }
+    ],
+    "status": "OK",
+    "values": [
+     0
+    ]
+   },
+   "c_lim_pF": null,
+   "c_paper": {
+    "/E2/REF9_FB": {
+     "amp_side": "F.Cu",
+     "c_paper_pF": 11.6,
+     "hpwl_mm": 34.01,
+     "n_pad": 3,
+     "n_via": 1,
+     "unplaced": []
+    },
+    "/E4/REF9_FB": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 20.42,
+     "hpwl_mm": 63.39,
+     "n_pad": 3,
+     "n_via": 1,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 20.42,
+   "class": "H-REF9",
+   "corner": {
+    "bracket": "open",
+    "tmux_c": 0.0
+   },
+   "corners": [
+    {
+     "c_lim_pF": null,
+     "corner": {
+      "bracket": "open",
+      "tmux_c": 0.0
+     },
+     "deciding": [
+      "K4"
+     ],
+     "lowest_fail_pF": 8,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 3.4435e-07,
+     "peak0_dB": 9.26001e-10,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.5129,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 75.8148
+      },
+      "100": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4",
+        "K9"
+       ],
+       "gm_dB": 35.3027,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 66.1557
+      },
+      "12": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 23.6786,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 77.5272
+      },
+      "16": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 24.7207,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 77.3945
+      },
+      "24": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 26.4933,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 76.7182
+      },
+      "32": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 27.9661,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 75.7548
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.1288,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 76.9377
+      },
+      "50": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4",
+        "K9"
+       ],
+       "gm_dB": 30.5803,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 73.2139
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.8385,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 77.2398
+      },
+      "64": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4",
+        "K9"
+       ],
+       "gm_dB": 32.18,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 71.1641
+      },
+      "8": {
+       "clipped": false,
+       "failed": [
+        "K4"
+       ],
+       "gm_dB": 22.4955,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 77.4223
+      }
+     }
+    }
+   ],
+   "deciding": "no candidate from 4 pF passes",
+   "id": "what-if H-REF9:e06fd44a:{\"bracket\": \"open\", \"tmux_c\": 0.0}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: NO HEADROOM AT PAPER",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": null,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: NO HEADROOM AT PAPER"
+   },
+   "nets": [
+    "/E2/REF9_FB",
+    "/E4/REF9_FB"
+   ],
+   "outpair": null,
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "2",
+     "ref": "R4237",
+     "role": "envelope:R_REF9_FB",
+     "value": "40 k\u03a9"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "1",
+     "ref": "R4238",
+     "role": "envelope:R_REF9_RG",
+     "value": "50 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-precision",
+     "mpn": "OPA4197IPWR",
+     "pin": "2",
+     "ref": "U4240",
+     "role": "envelope:REF9",
+     "value": "OPA4197IPWR"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "2",
+     "ref": "R4437",
+     "role": "envelope:R_REF9_FB",
+     "value": "40 k\u03a9"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "1",
+     "ref": "R4438",
+     "role": "envelope:R_REF9_RG",
+     "value": "50 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-precision",
+     "mpn": "OPA4197IPWR",
+     "pin": "2",
+     "ref": "U4440",
+     "role": "envelope:REF9",
+     "value": "OPA4197IPWR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "H-REF9",
+   "topology": "e06fd44a70e36586",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 6776920.0,
+     "what_if": 5926120.0
+    },
+    "gain_20k_dB_diff": -0.0039,
+    "k6_s": {
+     "specification": [
+      9.42575e-07,
+      9.33387e-07
+     ],
+     "what_if": [
+      0.0,
+      0.0
+     ]
+    },
+    "noise_uVrms": {
+     "specification": 149.046,
+     "what_if": 148.632
+    },
+    "path": "ref5@out",
+    "phase_20k_deg_diff": -1.279
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": {
+    "c_lim_comparison": "NOT RUN: the AGND bracket is not swept",
+    "provisional_reasons": [],
+    "rows": [
+     {
+      "agnd_pass": true,
+      "c_pF": 0,
+      "dK1_deg": 0.05,
+      "pm_agnd_deg": 74.2992,
+      "pm_open_deg": 74.2489
+     }
+    ],
+    "status": "OK",
+    "values": [
+     0
+    ]
+   },
+   "c_lim_pF": null,
+   "c_paper": {
+    "/E2/REF9_FB": {
+     "amp_side": "F.Cu",
+     "c_paper_pF": 11.6,
+     "hpwl_mm": 34.01,
+     "n_pad": 3,
+     "n_via": 1,
+     "unplaced": []
+    },
+    "/E4/REF9_FB": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 20.42,
+     "hpwl_mm": 63.39,
+     "n_pad": 3,
+     "n_via": 1,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 20.42,
+   "class": "H-REF9",
+   "corner": {
+    "bracket": "open",
+    "tmux_c": 1e-10
+   },
+   "corners": [
+    {
+     "c_lim_pF": null,
+     "corner": {
+      "bracket": "open",
+      "tmux_c": 1e-10
+     },
+     "deciding": [
+      "K4"
+     ],
+     "lowest_fail_pF": 8,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 1.1111e-06,
+     "peak0_dB": 1.02198e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.8051,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 74.2489
+      },
+      "100": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4",
+        "K9"
+       ],
+       "gm_dB": 37.5661,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 57.7759
+      },
+      "12": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 25.9578,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 72.2685
+      },
+      "16": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 26.9976,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 71.3539
+      },
+      "24": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 28.7668,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 69.5391
+      },
+      "32": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 30.2372,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 67.8443
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 23.4154,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.8564
+      },
+      "50": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4",
+        "K9"
+       ],
+       "gm_dB": 32.8477,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 64.5427
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.123,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 73.521
+      },
+      "64": {
+       "clipped": false,
+       "failed": [
+        "K3",
+        "K4",
+        "K9"
+       ],
+       "gm_dB": 34.4457,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 62.3695
+      },
+      "8": {
+       "clipped": false,
+       "failed": [
+        "K4"
+       ],
+       "gm_dB": 24.7781,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 73.1334
+      }
+     }
+    }
+   ],
+   "deciding": "no candidate from 4 pF passes",
+   "id": "what-if H-REF9:e06fd44a:{\"bracket\": \"open\", \"tmux_c\": 1e-10}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: NO HEADROOM AT PAPER",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": null,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: NO HEADROOM AT PAPER"
+   },
+   "nets": [
+    "/E2/REF9_FB",
+    "/E4/REF9_FB"
+   ],
+   "outpair": null,
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "2",
+     "ref": "R4237",
+     "role": "envelope:R_REF9_FB",
+     "value": "40 k\u03a9"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "1",
+     "ref": "R4238",
+     "role": "envelope:R_REF9_RG",
+     "value": "50 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-precision",
+     "mpn": "OPA4197IPWR",
+     "pin": "2",
+     "ref": "U4240",
+     "role": "envelope:REF9",
+     "value": "OPA4197IPWR"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "2",
+     "ref": "R4437",
+     "role": "envelope:R_REF9_FB",
+     "value": "40 k\u03a9"
+    },
+    {
+     "inventory_line": "IDENTITY OPEN",
+     "mpn": "",
+     "pin": "1",
+     "ref": "R4438",
+     "role": "envelope:R_REF9_RG",
+     "value": "50 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-precision",
+     "mpn": "OPA4197IPWR",
+     "pin": "2",
+     "ref": "U4440",
+     "role": "envelope:REF9",
+     "value": "OPA4197IPWR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "H-REF9",
+   "topology": "e06fd44a70e36586",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 5398680.0,
+     "what_if": 4729070.0
+    },
+    "gain_20k_dB_diff": -0.0039,
+    "k6_s": {
+     "specification": [
+      1.28504e-06,
+      1.56458e-06
+     ],
+     "what_if": [
+      0.0,
+      0.0
+     ]
+    },
+    "noise_uVrms": {
+     "specification": 149.066,
+     "what_if": 148.652
+    },
+    "path": "ref5@out",
+    "phase_20k_deg_diff": -1.279
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": null,
+   "c_lim_pF": null,
+   "c_paper": {
+    "/W1/PRE_GAIN_SUM": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 11.2,
+     "hpwl_mm": 33.34,
+     "n_pad": 4,
+     "n_via": 0,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 11.2,
+   "class": "G",
+   "corner": {
+    "iabc": "low",
+    "trim": 1.0
+   },
+   "corners": [
+    {
+     "c_lim_pF": null,
+     "corner": {
+      "iabc": "low",
+      "trim": 1.0
+     },
+     "deciding": [
+      "K1",
+      "K2",
+      "K3",
+      "K4"
+     ],
+     "lowest_fail_pF": null,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": null,
+     "overshoot0_pct": 89.219,
+     "peak0_dB": 22.3874,
+     "status": "FAILS AT ZERO STRAY",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.49423,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 3.65421
+      },
+      "100": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.28914,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 1.19683
+      },
+      "12": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.37045,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.58101
+      },
+      "16": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.35276,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.38887
+      },
+      "24": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.33003,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.10631
+      },
+      "32": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.31654,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 1.90534
+      },
+      "4": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.43324,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 3.16413
+      },
+      "50": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.301,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 1.60594
+      },
+      "6": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.41236,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.98239
+      },
+      "64": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.29524,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 1.45124
+      },
+      "8": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.39557,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.82862
+      }
+     }
+    }
+   ],
+   "deciding": [
+    "K1",
+    "K2",
+    "K3",
+    "K4"
+   ],
+   "id": "arm G G:2f451c39:{\"iabc\": \"low\", \"trim\": 1.0}",
+   "label": "FAILS AT ZERO STRAY",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": null,
+    "label": "FAILS AT ZERO STRAY"
+   },
+   "nets": [
+    "/W1/PRE_GAIN_SUM"
+   ],
+   "notes": [
+    "class G trim 0 corners (49.9 kOhm) NOT RUN",
+    "class G ladder bounded to reltol=1e-5 and default (S6.10)",
+    "LM13700 identity limit: no class G row can be better than PROVISIONAL"
+   ],
+   "outpair": null,
+   "part": null,
+   "parts_on_net": [
+    {
+     "inventory_line": "line-ota",
+     "mpn": "LM13700M/NOPB",
+     "pin": "5",
+     "ref": "U5205",
+     "role": "wavefolder:OTA",
+     "value": "LM13700M/NOPB"
+    },
+    {
+     "inventory_line": "line-trim-103",
+     "mpn": "TC33X-2-103E",
+     "pin": "2",
+     "ref": "RV5205",
+     "role": "wavefolder:PRE_GAIN_MAX",
+     "value": "10 k\u03a9"
+    },
+    {
+     "inventory_line": "line-trim-103",
+     "mpn": "TC33X-2-103E",
+     "pin": "3",
+     "ref": "RV5205",
+     "role": "wavefolder:PRE_GAIN_MAX",
+     "value": "10 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "6",
+     "ref": "U5209",
+     "role": "wavefolder:PRE_GAIN",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "G",
+   "topology": "2f451c39c23b1f70",
+   "whatif": false
+  },
+  {
+   "bracket_check": null,
+   "c_lim_pF": null,
+   "c_paper": {
+    "/W1/PRE_GAIN_SUM": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 11.2,
+     "hpwl_mm": 33.34,
+     "n_pad": 4,
+     "n_via": 0,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 11.2,
+   "class": "G",
+   "corner": {
+    "iabc": "low",
+    "trim": 1.0
+   },
+   "corners": [
+    {
+     "c_lim_pF": 50.0,
+     "corner": {
+      "iabc": "low",
+      "trim": 1.0
+     },
+     "deciding": null,
+     "lowest_fail_pF": null,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 0.0,
+     "peak0_dB": 6.71304e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.7533,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 63.0781
+      },
+      "100": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 32.2873,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 46.3884
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.9624,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 62.7463
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 22.8168,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 62.1089
+      },
+      "24": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.3106,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 60.5353
+      },
+      "32": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 25.5863,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 58.7979
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.9561,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 63.367
+      },
+      "50": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 27.916,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 54.9215
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.5018,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 63.3283
+      },
+      "64": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 29.3763,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 52.1786
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.0159,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 63.2018
+      }
+     }
+    }
+   ],
+   "deciding": null,
+   "id": "what-if G:2f451c39:{\"iabc\": \"low\", \"trim\": 1.0}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: NOT EVALUATED: Ruling 6 output pair fails at C_lim 50 pF (100 pF on OUT: K1); no usable limit",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/W1/PRE_GAIN_SUM"
+   ],
+   "notes": [
+    "class G trim 0 corners (49.9 kOhm) NOT RUN",
+    "class G ladder bounded to reltol=1e-5 and default (S6.10)",
+    "LM13700 identity limit: no class G row can be better than PROVISIONAL"
+   ],
+   "other_open_reasons": [
+    "LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header)"
+   ],
+   "outpair": [
+    {
+     "c_pF": 50.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 58.1131
+    },
+    {
+     "c_pF": 50.0,
+     "failed": [
+      "K1"
+     ],
+     "out_pF": 100.0,
+     "pass": false,
+     "pm_deg": 44.0911
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-ota",
+     "mpn": "LM13700M/NOPB",
+     "pin": "5",
+     "ref": "U5205",
+     "role": "wavefolder:OTA",
+     "value": "LM13700M/NOPB"
+    },
+    {
+     "inventory_line": "line-trim-103",
+     "mpn": "TC33X-2-103E",
+     "pin": "2",
+     "ref": "RV5205",
+     "role": "wavefolder:PRE_GAIN_MAX",
+     "value": "10 k\u03a9"
+    },
+    {
+     "inventory_line": "line-trim-103",
+     "mpn": "TC33X-2-103E",
+     "pin": "3",
+     "ref": "RV5205",
+     "role": "wavefolder:PRE_GAIN_MAX",
+     "value": "10 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "6",
+     "ref": "U5209",
+     "role": "wavefolder:PRE_GAIN",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "G",
+   "swept_c_lim_pF_not_usable": 50.0,
+   "topology": "2f451c39c23b1f70",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1092960.0,
+     "what_if": 310287.0
+    },
+    "gain_20k_dB_diff": -0.0245,
+    "k6_s": null,
+    "noise_uVrms": {
+     "specification": 26.9364,
+     "what_if": 26.9118
+    },
+    "note": "exceeds the 2 deg of K7 against the specification cell",
+    "path": "sig@out",
+    "phase_20k_deg_diff": -4.308
+   },
+   "whatif": true
+  },
+  {
+   "bracket_check": null,
+   "c_lim_pF": null,
+   "c_paper": {
+    "/W1/PRE_GAIN_SUM": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 11.2,
+     "hpwl_mm": 33.34,
+     "n_pad": 4,
+     "n_via": 0,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 11.2,
+   "class": "G",
+   "corner": {
+    "iabc": "high",
+    "trim": 1.0
+   },
+   "corners": [
+    {
+     "c_lim_pF": null,
+     "corner": {
+      "iabc": "high",
+      "trim": 1.0
+     },
+     "deciding": [
+      "K1",
+      "K2",
+      "K3",
+      "K4"
+     ],
+     "lowest_fail_pF": null,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": null,
+     "overshoot0_pct": 88.722,
+     "peak0_dB": 22.0867,
+     "status": "FAILS AT ZERO STRAY",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.61071,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 3.85062
+      },
+      "100": {
+       "clipped": true,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.40401,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "second deck",
+       "pass": false,
+       "pm_deg": 1.26567
+      },
+      "12": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.48581,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.72516
+      },
+      "16": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.46797,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.52307
+      },
+      "24": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.44506,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.22554
+      },
+      "32": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.43147,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.01371
+      },
+      "4": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.54915,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 3.33738
+      },
+      "50": {
+       "clipped": true,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.41585,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "second deck",
+       "pass": false,
+       "pm_deg": 1.69781
+      },
+      "6": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.5281,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 3.14674
+      },
+      "64": {
+       "clipped": true,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5"
+       ],
+       "gm_dB": 2.41007,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "second deck",
+       "pass": false,
+       "pm_deg": 1.53446
+      },
+      "8": {
+       "clipped": false,
+       "failed": [
+        "K1",
+        "K2",
+        "K3",
+        "K4"
+       ],
+       "gm_dB": 2.51116,
+       "k4_status": [
+        "NOT EVALUATED: window not settled"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": false,
+       "pm_deg": 2.98532
+      }
+     }
+    }
+   ],
+   "deciding": [
+    "K1",
+    "K2",
+    "K3",
+    "K4"
+   ],
+   "id": "arm G G:2f451c39:{\"iabc\": \"high\", \"trim\": 1.0}",
+   "label": "FAILS AT ZERO STRAY",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": null,
+    "label": "FAILS AT ZERO STRAY"
+   },
+   "nets": [
+    "/W1/PRE_GAIN_SUM"
+   ],
+   "notes": [
+    "class G trim 0 corners (49.9 kOhm) NOT RUN",
+    "class G ladder bounded to reltol=1e-5 and default (S6.10)",
+    "LM13700 identity limit: no class G row can be better than PROVISIONAL"
+   ],
+   "outpair": null,
+   "part": null,
+   "parts_on_net": [
+    {
+     "inventory_line": "line-ota",
+     "mpn": "LM13700M/NOPB",
+     "pin": "5",
+     "ref": "U5205",
+     "role": "wavefolder:OTA",
+     "value": "LM13700M/NOPB"
+    },
+    {
+     "inventory_line": "line-trim-103",
+     "mpn": "TC33X-2-103E",
+     "pin": "2",
+     "ref": "RV5205",
+     "role": "wavefolder:PRE_GAIN_MAX",
+     "value": "10 k\u03a9"
+    },
+    {
+     "inventory_line": "line-trim-103",
+     "mpn": "TC33X-2-103E",
+     "pin": "3",
+     "ref": "RV5205",
+     "role": "wavefolder:PRE_GAIN_MAX",
+     "value": "10 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "6",
+     "ref": "U5209",
+     "role": "wavefolder:PRE_GAIN",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "G",
+   "topology": "2f451c39c23b1f70",
+   "whatif": false
+  },
+  {
+   "bracket_check": null,
+   "c_lim_pF": null,
+   "c_paper": {
+    "/W1/PRE_GAIN_SUM": {
+     "amp_side": "B.Cu",
+     "c_paper_pF": 11.2,
+     "hpwl_mm": 33.34,
+     "n_pad": 4,
+     "n_via": 0,
+     "unplaced": []
+    }
+   },
+   "c_paper_pF": 11.2,
+   "class": "G",
+   "corner": {
+    "iabc": "high",
+    "trim": 1.0
+   },
+   "corners": [
+    {
+     "c_lim_pF": 50.0,
+     "corner": {
+      "iabc": "high",
+      "trim": 1.0
+     },
+     "deciding": null,
+     "lowest_fail_pF": null,
+     "modes": {
+      "K3": "absolute",
+      "K4": "absolute"
+     },
+     "non_monotonic": false,
+     "overshoot0_pct": 0.0,
+     "peak0_dB": 3.30849e-09,
+     "status": "OK",
+     "tested": [
+      0,
+      4,
+      6,
+      8,
+      12,
+      16,
+      24,
+      32,
+      50,
+      64,
+      100
+     ],
+     "values": {
+      "0": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 18.7563,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 63.1525
+      },
+      "100": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 32.2879,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 46.4415
+      },
+      "12": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.9644,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 62.8165
+      },
+      "16": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 22.8186,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 62.1778
+      },
+      "24": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 24.3121,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 60.6022
+      },
+      "32": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 25.5876,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 58.8629
+      },
+      "4": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 19.9587,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 63.4398
+      },
+      "50": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 27.917,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 54.9827
+      },
+      "6": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 20.5042,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 63.4004
+      },
+      "64": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 29.3772,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 52.2372
+      },
+      "8": {
+       "clipped": false,
+       "failed": [],
+       "gm_dB": 21.0182,
+       "k4_status": [
+        "OK"
+       ],
+       "k5_figure_used": false,
+       "k5_source": "first deck",
+       "pass": true,
+       "pm_deg": 63.2732
+      }
+     }
+    }
+   ],
+   "deciding": null,
+   "id": "what-if G:2f451c39:{\"iabc\": \"high\", \"trim\": 1.0}",
+   "label": "WHAT-IF 10 pF, NOT ADOPTED: NOT EVALUATED: Ruling 6 output pair fails at C_lim 50 pF (100 pF on OUT: K1); no usable limit",
+   "limit_k1_to_k5_only": {
+    "c_lim_pF": 50.0,
+    "label": "WHAT-IF 10 pF, NOT ADOPTED: BUDGET CAPPED AT 50 pF (MODEL EVIDENCE ONLY)"
+   },
+   "nets": [
+    "/W1/PRE_GAIN_SUM"
+   ],
+   "notes": [
+    "class G trim 0 corners (49.9 kOhm) NOT RUN",
+    "class G ladder bounded to reltol=1e-5 and default (S6.10)",
+    "LM13700 identity limit: no class G row can be better than PROVISIONAL"
+   ],
+   "other_open_reasons": [
+    "LM13700 model overstates AC bandwidth and phase margin by more than twofold (its header)"
+   ],
+   "outpair": [
+    {
+     "c_pF": 50.0,
+     "failed": [],
+     "out_pF": 0.0,
+     "pass": true,
+     "pm_deg": 58.1728
+    },
+    {
+     "c_pF": 50.0,
+     "failed": [
+      "K1"
+     ],
+     "out_pF": 100.0,
+     "pass": false,
+     "pm_deg": 44.158
+    }
+   ],
+   "part": "KEMET C0603C100J5GACTU (line-audio-feedback-c), ideal 10 pF from OUT to the protected node",
+   "parts_on_net": [
+    {
+     "inventory_line": "line-ota",
+     "mpn": "LM13700M/NOPB",
+     "pin": "5",
+     "ref": "U5205",
+     "role": "wavefolder:OTA",
+     "value": "LM13700M/NOPB"
+    },
+    {
+     "inventory_line": "line-trim-103",
+     "mpn": "TC33X-2-103E",
+     "pin": "2",
+     "ref": "RV5205",
+     "role": "wavefolder:PRE_GAIN_MAX",
+     "value": "10 k\u03a9"
+    },
+    {
+     "inventory_line": "line-trim-103",
+     "mpn": "TC33X-2-103E",
+     "pin": "3",
+     "ref": "RV5205",
+     "role": "wavefolder:PRE_GAIN_MAX",
+     "value": "10 k\u03a9"
+    },
+    {
+     "inventory_line": "line-op-audio",
+     "mpn": "OPA4196IDR",
+     "pin": "6",
+     "ref": "U5209",
+     "role": "wavefolder:PRE_GAIN",
+     "value": "OPA4196IDR"
+    }
+   ],
+   "provisional_reasons": [],
+   "subclass": "G",
+   "swept_c_lim_pF_not_usable": 50.0,
+   "topology": "2f451c39c23b1f70",
+   "vs_specification_20kHz": {
+    "f_3dB_Hz": {
+     "specification": 1092880.0,
+     "what_if": 309766.0
+    },
+    "gain_20k_dB_diff": -0.0245,
+    "k6_s": null,
+    "noise_uVrms": {
+     "specification": 311.233,
+     "what_if": 310.939
+    },
+    "note": "exceeds the 2 deg of K7 against the specification cell",
+    "path": "sig@out",
+    "phase_20k_deg_diff": -4.308
+   },
+   "whatif": true
+  }
+ ],
+ "status": "MODEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT"
+}

@@ -1,0 +1,11 @@
+{
+ "what": "sweep slice 4, stopped by the session's 30 min background limit while a class G loop deck was running; its guard summary was never written; every line it wrote is discarded and re-run (coordinator ruling: reuse nothing from a crashed slice)",
+ "lines_discarded": 307,
+ "lines_sha256": "09b0386fe776bf98b73b3de8920d7cbb1663217a011109ea0c839754e4f90750",
+ "invocations": 319,
+ "invocations_note": "318 attempts with a key in the discarded lines plus the killed running deck ad579d27032519d8a05d",
+ "seed_invocations": 14,
+ "wall_s": 1800.0,
+ "wall_note": "estimate: launched after slice 3 ended at 21:52:15Z, killed at the 30 min limit",
+ "container_after": "one pinned-image container survived the kill of the process tree; removed with the pinned-image filtered docker kill; list empty after"
+}
