@@ -171,6 +171,26 @@ class Lite(unittest.TestCase):
         self.assertEqual(B.classify_lite({'A10': ['K C8308: effective pose differs']}), 'final')
 
 
+class K3Acceptance(unittest.TestCase):
+    """N15 (brief erratum 1, E2): the K3 acceptance as a function of its detail record. Not a vector."""
+    FIRST_RUN = {'tool_limit_s': 120, 'wrapper_rc': -9, 'wrapper_s': 120.0, 'heartbeat_lines': 300,
+                 'heartbeat_lines_after_wrapper_end': 180, 'guard_samples': 60, 'guard_samples_after_wrapper_end': 36,
+                 'guard_finished': True, 'child_returncode': 0}
+
+    def with_(self, **k):
+        return dict(self.FIRST_RUN, **k)
+
+    def test_n15_passes(self):
+        self.assertTrue(B.k3_accept(self.FIRST_RUN))
+        self.assertTrue(B.k3_accept(self.with_(wrapper_rc=137)))
+
+    def test_n15_fails(self):
+        for case in ({'wrapper_rc': 0}, {'wrapper_rc': 124}, {'wrapper_rc': -15}, {'wrapper_s': 60.0},
+                     {'heartbeat_lines_after_wrapper_end': 149}, {'guard_finished': False}, {'child_returncode': 1},
+                     {'guard_samples_after_wrapper_end': 0}):
+            self.assertFalse(B.k3_accept(self.with_(**case)), case)
+
+
 class Caps(unittest.TestCase):
     def test_n9_overlay_cap_inside_a_scene(self):
         d = Path(tempfile.mkdtemp(prefix='s16b-n9-'))

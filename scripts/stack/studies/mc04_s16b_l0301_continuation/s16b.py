@@ -837,12 +837,18 @@ def k3_control():
     after = [x for x in samples if json.loads(x)['t'] > t1]
     g = read_json(d / 'guard.json') if (d / 'guard.json').exists() else {}
     hb_after = sum(1 for x in hb if x > t1)
-    ok = p.returncode == 137 and hb_after >= 150 and bool(g.get('finished')) and g.get('returncode') == 0 and \
-        len(after) > 0
-    return ok, {'tool_limit_s': 120, 'wrapper_rc': p.returncode, 'wrapper_s': round(t1 - t0, 1),
-                'heartbeat_lines': len(hb), 'heartbeat_lines_after_wrapper_end': hb_after,
-                'guard_samples': len(samples), 'guard_samples_after_wrapper_end': len(after),
-                'guard_finished': g.get('finished'), 'child_returncode': g.get('returncode')}
+    detail = {'tool_limit_s': 120, 'wrapper_rc': p.returncode, 'wrapper_s': round(t1 - t0, 1),
+              'heartbeat_lines': len(hb), 'heartbeat_lines_after_wrapper_end': hb_after,
+              'guard_samples': len(samples), 'guard_samples_after_wrapper_end': len(after),
+              'guard_finished': g.get('finished'), 'child_returncode': g.get('returncode')}
+    return k3_accept(detail), detail
+
+
+def k3_accept(d):
+    """K3 acceptance on its detail record (brief erratum 1, E1; DS-219). A SIGKILL from `timeout -s KILL` reads 137
+    through a shell and -9 through subprocess.run; both mean the kill at the 120 s limit ended the wrapper."""
+    return d['wrapper_rc'] in (137, -9) and d['wrapper_s'] >= 119 and d['heartbeat_lines_after_wrapper_end'] >= 150 \
+        and bool(d['guard_finished']) and d['child_returncode'] == 0 and d['guard_samples_after_wrapper_end'] > 0
 
 
 def k4_control():

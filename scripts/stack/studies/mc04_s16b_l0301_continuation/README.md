@@ -5,19 +5,37 @@ unvalidated draft, and #318 stays HOLD.
 
 - Brief: `circuit/orchestration/campaigns/osc-stack-20261114/mc04-s16b-continuation-brief-20261128.md`, Revision 2,
   SHA-256 `09e9a228…8100e625`. It was admitted by DS-218. It is an addendum to the S16 brief (Revision 4).
+- Erratum 1 of the brief (SHA-256 `fa8dde3e…dc0bb6`) and DS-219 reopen the study as a fresh pinned run after the first
+  run's STOP 1 at K3. The first run's checkpoints are kept unchanged in `stopped-run-1/`. Its pins and code are at
+  commit `6d5e435f`.
 - Report: `mc04-s16b-report-20261128.md` in the same campaign folder.
+
+## What changed under erratum 1
+
+The erratum allows exactly these changes:
+
+- `k3_accept` checks K3 on its detail record. The wrapper return code must be 137 or −9, and the wrapper must
+  have run at least 119 s. The four survival clauses are unchanged: at least 150 heartbeat lines after the wrapper's
+  end, the guard finished, child return code 0, and at least one guard sample after the wrapper's end.
+- `test_s16b.py` adds N15, which tests that acceptance.
+- This README.
+
+`BRIEF_SHA` in `s16b.py` still holds the Revision 2 hash (`09e9a228…`), since nothing else may change. The fresh
+`pins.json` therefore records the erratum text as it now stands (`fa8dde3e…`). It is written by the same
+`compute_pins`, without `write_pins`' check against `BRIEF_SHA`.
 
 ## Files
 
 | File | Role |
 | --- | --- |
 | `s16b.py` | The driver and the S16b library. It imports S16's `replan.py` unchanged |
-| `test_s16b.py` | Cases N1 to N14, with the brief's vectors and reasons copied in |
+| `test_s16b.py` | Cases N1 to N15, with the brief's vectors and reasons copied in |
 | `k3_heartbeat.py` | The no-op child for control K3 (detachment) |
 | `pins.json` | Source pins, written before arm 0 |
 | `result.json` | Verdict, bounds, exclusions a to f, controls, counts and digests |
 | `bulk-manifest.json` | SHA-256 and size of every file in `.circuit-cache/mc04-s16b/` |
-| `checkpoints/` | Controls, per-stage summaries, guard summaries, logs, the overlay count and the clock |
+| `stopped-run-1/` | The first run's checkpoints, unchanged (STOP 1 at K3) |
+| `checkpoints/` | `ruling.json` (DS-219, from the manager), then controls, per-stage summaries, guard summaries, logs, the overlay count and the clock |
 | `candidates/` | `scene-N.json` for each scene that passes stage 3 full |
 
 ## How S16's files stay untouched (Ruling Q5)
