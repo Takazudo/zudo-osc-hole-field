@@ -987,6 +987,7 @@ CAND = OUTDIR / 'candidates'
 # their SHA-256 and sizes are pinned in the tracked BULK_MANIFEST.
 BULK = OUTDIR / 'cache' if os.environ.get('S15_DEV_OUT') else ROOT / '.circuit-cache' / 'mc04-s15'
 BULK_MANIFEST = OUTDIR / 'bulk-manifest.json'
+DURABLE = '/mnt/project-files/osc-s15-cache/'  # project file storage (network mount) holding a verified copy of the cache
 SCREEN = BULK / 'screen.json'
 STAGE1 = BULK / 'checkpoints' / 'stage1.json'
 CENSUS_NG = BULK / 'checkpoints' / 'census_ng.json'
@@ -1998,6 +1999,9 @@ def write_manifest():
         'why': 'The owner rule forbids Git LFS and committed large intermediate dumps, so the bulky stage 1 and stage 2 '
                'intermediates are kept out of git in the ignored cache below; their hashes and sizes are pinned here.',
         'cache': str(BULK.relative_to(ROOT)) if BULK.is_relative_to(ROOT) else str(BULK),
+        'durable_copy': {'location': DURABLE, 'layout': 'same relative paths, with a copy of this manifest',
+                         'verified': 'every SHA-256 and size re-read and compared after a 10 s settle'},
+        'reproducibility': 'a re-run does not reproduce these hashes: every record carries its wall_s',
         'files': files, 'total_bytes': sum(v['bytes'] for v in files.values())})
 
 
@@ -2256,7 +2260,9 @@ def check():
                     continue
             errs.append('%s differs from its record' % name)
     present, bad = bulk_state()
-    errs += bad
+    if bad:
+        raise SystemExit('CHECK FAILED: the bulky intermediates in %s are partly present or differ from the '
+                         'manifest: %s' % (BULK, bad))
     man = read_json(BULK_MANIFEST)['files'] if BULK_MANIFEST.exists() else {}
     not_run = []
     checked = 0
@@ -2282,7 +2288,8 @@ def check():
             errs += verify_scene(w, g, c['scene'], full=False)
         if errs:
             raise SystemExit('CHECK FAILED: %s' % errs)
-        print('result.json current for what is tracked: input pins, %d offline controls, %d digests, stage 3 and 4 '
+        print('PARTIAL CHECK (bulky intermediates absent; the copy is at %s): only the tracked part was checked' % DURABLE)
+        print('PASS for what is tracked: input pins, %d offline controls, %d digests, stage 3 and 4 '
               'summaries rebuilt equal, %d scenes verified' % (len(CHECK_CONTROLS), checked, len(res.get('candidates', []))))
         for n in not_run:
             print('NOT RUN:', n)

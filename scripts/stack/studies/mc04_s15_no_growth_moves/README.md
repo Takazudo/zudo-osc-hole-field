@@ -13,7 +13,8 @@ setsid nohup $PY scripts/stack/studies/mc04_s15_no_growth_moves/guard15.py <summ
 $PY no_growth.py --resume           # continue from the checkpoints (resume cap 4; the clock is never restarted)
 $PY no_growth.py --finish           # rebuild result.json from the checkpoints
 $PY no_growth.py --check            # pins, 11 offline controls, digests, 3 stage 2 replays, rebuilt summaries, scenes
-                                    # (without the cache: tracked digests and stage 3/4 only, the rest printed as NOT RUN)
+                                    # cache absent: first line PARTIAL CHECK, tracked part only, the rest printed as NOT RUN
+                                    # cache partly present or altered: CHECK FAILED (non-zero exit) naming the files
 $PY no_growth.py --verify-scene N   # rows-only replay and NG of candidates/scene-N.json
 $PY -m unittest test_s15            # from this directory: mutations M1 to M26 and the hand-value tests
 ```
@@ -31,11 +32,20 @@ $PY -m unittest test_s15            # from this directory: mutations M1 to M26 a
 | `checkpoints/` | `run.json` (cumulative clock, executor-timed checks, resumes), `pins.json`, `arm0/C*.json`, `stage3/pools.json` and `set-N.json`, `stage4/log.json`, `c17/`, `guard/`, the driver and end-check logs |
 | `candidates/` | written scenes only; empty in this run |
 
-## Bulky intermediates are kept out of git
+## Bulky intermediates are kept out of git, a deviation from the brief's Outputs
 
-The owner rule forbids Git LFS and committed large intermediate dumps. The run's four bulky intermediates, about
-71 MB in all, therefore live in the ignored cache `.circuit-cache/mc04-s15/` at the repository root, with the same
+The brief's "Outputs" puts `screen.json` in this directory. The run's four bulky intermediates (about 71 MB) are
+kept out of git instead. The owner's instruction forbids Git LFS and committed large intermediate dumps.
+`circuit/ORCHESTRATION.md` section 6 says to keep large intermediates as budgeted artifacts, not as repeated Git
+blobs, and to store recovery-critical bytes outside an ephemeral VM. The files are in two places, with the same
 relative paths as in this directory:
+
+- the ignored local cache `.circuit-cache/mc04-s15/` at the repository root;
+- a durable copy in the project file storage at `/mnt/project-files/osc-s15-cache/` (a network mount). It holds a
+  copy of the manifest. After a 10 s settle, every file was re-read and its SHA-256 and size were verified against
+  the manifest.
+
+The files are:
 
 | Cached path | Content |
 | --- | --- |
@@ -46,9 +56,11 @@ relative paths as in this directory:
 
 `bulk-manifest.json` pins the SHA-256 and size of all 23 files, and `result.json` carries the same digests. With the
 cache present, `--check` verifies each file against the manifest and then runs the full check. Without it,
-`--check` verifies the tracked files and the manifest against `result.json`, rebuilds the stage 3 and stage 4
-summaries, and prints the 23 digests, the 3 stage 2 replays and the stage 1, stage 2 and verdict rebuilds as NOT
-RUN. A fresh `--run` writes the cache again (about 30 min; not re-run for this split). `--finish` refuses to run without the cache.
+`--check` prints `PARTIAL CHECK` first. It then verifies the tracked files and the manifest against `result.json`,
+rebuilds the stage 3 and stage 4 summaries, and prints the 23 digests, the 3 stage 2 replays and the stage 1,
+stage 2 and verdict rebuilds as NOT RUN. A cache that is partly present or that differs from the manifest stops the
+check with `CHECK FAILED` and a non-zero exit. To restore the cache, copy the durable files back into `.circuit-cache/mc04-s15/`. A re-run does not reproduce
+these hashes, because every record carries its `wall_s`. `--finish` refuses to run without the cache.
 
 ## Derived functions
 

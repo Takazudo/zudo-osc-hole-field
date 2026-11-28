@@ -1,6 +1,12 @@
 {
  "why": "The owner rule forbids Git LFS and committed large intermediate dumps, so the bulky stage 1 and stage 2 intermediates are kept out of git in the ignored cache below; their hashes and sizes are pinned here.",
  "cache": ".circuit-cache/mc04-s15",
+ "durable_copy": {
+  "location": "/mnt/project-files/osc-s15-cache/",
+  "layout": "same relative paths, with a copy of this manifest",
+  "verified": "every SHA-256 and size re-read and compared after a 10 s settle"
+ },
+ "reproducibility": "a re-run does not reproduce these hashes: every record carries its wall_s",
  "files": {
   "checkpoints/census_ng.json": {
    "sha256": "227f37ce2840b630277e6abfe97da6e0c653ef468eed0f42f6c38f9bf233b2e6",
