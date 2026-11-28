@@ -29,6 +29,11 @@ from design.spec.modules.spice_trace import check_oracle_result
 WORK = ROOT / ".circuit-cache/sources/mc04-s13"
 TIMEOUT_S = 600
 INVOCATIONS = {"count": 0}
+DEADLINE = {"t": None}  # slice deadline (epoch s): no deck starts unless its full timeout fits before it
+
+
+class SliceDeadline(Exception):
+    """No room for one more deck, with its whole timeout, before the slice deadline."""
 
 
 class OracleError(RuntimeError):
@@ -86,9 +91,25 @@ def seed_control(method="op", src=None, value=None):
             "wrdata @D@.ref.dat all", "wrnodev @D@.nodes.txt", "quit", ".endc", ".end", ""]
 
 
-def run_seed(netlist_text, method="op", src=None, value=None):
-    """Run one seed deck. Returns (key, reference {node: V}, nodeset lines, transient_op, wall)."""
-    text = netlist_text.rstrip("\n") + "\n" + "\n".join(seed_control(method, src, value))
+SEED_INVOCATIONS = {"count": 0, "cap": 540}  # Addendum C2.8: a counter of its own; reaching the cap is STOP 3
+
+
+class SeedInvocationCap(SystemExit):
+    pass
+
+
+def seed_text(netlist_text, method="op", src=None, value=None, nodeset=()):
+    return netlist_text.rstrip("\n") + "\n" + "".join(x + "\n" for x in nodeset) + "\n".join(
+        seed_control(method, src, value))
+
+
+def run_seed(netlist_text, method="op", src=None, value=None, nodeset=()):
+    """Run one seed deck. Returns (key, reference {node: V}, nodeset lines, transient_op, wall, text).
+    `nodeset` is given only for the confirmation pass of Addendum C2.2."""
+    if SEED_INVOCATIONS["count"] >= SEED_INVOCATIONS["cap"]:
+        raise SeedInvocationCap(f"STOP 3: seed-deck invocation cap {SEED_INVOCATIONS['cap']} reached")
+    SEED_INVOCATIONS["count"] += 1
+    text = seed_text(netlist_text, method, src, value, nodeset)
     key = deck_key(text)
     nodes = WORK / f"{key[:20]}.nodes.txt"
     nodes.unlink(missing_ok=True)
@@ -121,12 +142,43 @@ def remove_spiceinit():
         init.unlink()
 
 
+AMP_SUBCKTS = {"OPAX196": (1, 2), "OPAX197": (1, 2), "LM13700/NS": (3, 4)}  # input pin positions on the X line
+
+
+def floating_inputs(deck_text):
+    """Addendum C1 / M19: amplifier and OTA input pins that sit on a node with no other element line, in the
+    complete deck text (title, .nodeset and the control block are not elements)."""
+    body = deck_text.split("\n.control\n")[0].splitlines()[1:]
+    elems = [ln.split() for ln in body if ln.strip() and not ln.lstrip().startswith((".", "*", "+"))]
+    count = {}
+    for f in elems:
+        if f[0][0].upper() == "X":
+            nodes = f[1:-1]
+        elif f[0][0].upper() in "RCLVIDBEFGH":
+            nodes = f[1:3] if f[0][0].upper() not in "EG" else f[1:5]
+        else:
+            nodes = f[1:3]
+        for n in nodes:
+            count[n] = count.get(n, 0) + 1
+    bad = []
+    for f in elems:
+        if f[0][0].upper() == "X" and f[-1].upper() in AMP_SUBCKTS:
+            for pos in AMP_SUBCKTS[f[-1].upper()]:
+                n = f[pos]
+                if n != "0" and count.get(n, 0) < 2:
+                    bad.append(f"{f[0]} pin {pos} on lone node {n}")
+    return bad
+
+
 def run(text: str, files: list[str], *, keep=True):
     """Run one deck. `text` holds `@D@` where data paths go; `files` are the data-file suffixes it writes.
 
     Returns (key, {suffix: table}, wall seconds)."""
     WORK.mkdir(parents=True, exist_ok=True)
     key = deck_key(text)
+    lone = floating_inputs(text)
+    if lone:
+        raise RuntimeError(f"deck builder: input pin alone on a node ({'; '.join(lone)})")
     stem = key[:20]
     rel = (WORK / stem).relative_to(ROOT).as_posix()
     body = text.replace("@D@", rel)
@@ -139,6 +191,8 @@ def run(text: str, files: list[str], *, keep=True):
         survivors = kill_pinned_containers()
         if survivors:
             raise SystemExit(f"STOP 3: container survived docker kill: {survivors}")
+    if DEADLINE["t"] is not None and time.time() + TIMEOUT_S + 60 > DEADLINE["t"]:
+        raise SliceDeadline("no room for one more deck before the slice deadline")
     INVOCATIONS["count"] += 1
     t0 = time.time()
     try:

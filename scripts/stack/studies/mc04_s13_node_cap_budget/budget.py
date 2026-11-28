@@ -1,4 +1,4 @@
-"""MC04-S13 driver: node capacitance budgets from vendor-model ngspice decks (brief Revision 6, DS-161 to DS-173).
+"""MC04-S13 driver: node capacitance budgets from vendor-model ngspice decks (brief Revision 8, DS-161 to DS-174).
 
     budget.py --pins              Arm 0 P1, P2 and P3 (the P3 read-only fetch is compared by --fetched)
     budget.py --controls          Arm 0 P5, P7, P8 with the study's own runner (P4a and P4b are run outside)
@@ -40,6 +40,7 @@ C_REDUCED_PF = [0, 25, 50, 100]
 CEILING_PF = 50.0
 OTHER_PF = (0.0, 50.0)
 DECK_CAP = 2400
+SLICE_HARD_S = 28 * 60  # the session's background limit is 30 min; a deck starts only if its 600 s timeout fits
 SWEEP_CEILING_S = 5 * 3600
 ORDER = ["B", "C", "A", "D", "H-REF9", "H-output", "E-control", "E-audio", "G"]
 PF_PER_MM, ROUTE, VIA_PF, PAD_PF = 0.20, 1.5, 0.5, 0.3
@@ -67,8 +68,8 @@ PINNED = {  # brief "Pinned inputs" (P1) and the model table (P3)
     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-disposition-20261127.md": "6c21cb39354f12f091472c1dd33c56ec53b4ea0bf1196489737f7bc1e8516f0b",
     "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s12-report-20261127.md": "d3b9a33026089d24aa4d8e4c591b1cb16545fb617e01800d3993e38a23470a19",
     "circuit/orchestration/campaigns/osc-stack-20261114/reviews/mc04-s12-result-review-20261127.md": "77f8039f95d1afce36e52fe056717dc0c77e0219283bc7f5cca5662dbd58f2d9",
-    # Addendum A5 and B6: this brief at its current Revision 6, and, for the record only, the regenerated stage 1b paper result
-    "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-node-capacitance-budget-brief-20261127.md": "b4be52d50212dad993c489b5d2a1df62df1e2ae8a8ddc509acae0d037bbd0c69",
+    # Addendum A5 and B6: this brief at its current Revision 8, and, for the record only, the regenerated stage 1b paper result
+    "circuit/orchestration/campaigns/osc-stack-20261114/mc04-s13-node-capacitance-budget-brief-20261127.md": "360eb262216fdf80004bc4d0d7d4108f64a8c003d1b2e97ab73f255d30225bf4",
     "scripts/stack/studies/mc04_s1b_indicator_loops/result.json": "4058446308c49e1b044cf933eb788706c43782492fa7968ac12c6ed06574840c",
 }
 MODEL_PINS = {
@@ -174,7 +175,7 @@ RAIL_MARGIN_V = 1.0  # B2.3: output at least 1 V inside each rail
 DC_TOL_V = 10e-3  # B2.3: a node with a derived DC value within 10 mV of it
 RAILS_V = (-12.0, 12.0)
 SEED_CAP = 180  # B2.7
-SEEDS = {"store": {}, "sink": None}
+SEEDS = {"store": {}, "groups": {}, "sink": None}
 
 
 class SeedCap(RuntimeError):
@@ -300,9 +301,11 @@ def expected_dc(t, p):
                  "specification netlist; nodes without a resistive DC path are left out")
 
 
-def seed_validity(c, kind, ref, expected):
-    """B2.3 on a seed reference. Reasons carry no figure (B2.6)."""
+def seed_validity(c, kind, ref, expected, transient_op=False):
+    """B2.3 plus Addendum C2.4 on a seed reference. Reasons carry no figure (B2.6)."""
     errs = []
+    if transient_op:
+        errs.append("the deck that produced the reference used the transient-op fallback")
     if c["class"] != "G":
         inm = "xinm" if kind == "loop" else ("out" if c["follower"] else "inm")
         ip = c["inp_node"]
@@ -321,49 +324,182 @@ def seed_validity(c, kind, ref, expected):
     return errs
 
 
+GROUP_TOL_V = 5e-6  # Addendum C2.5
+CAP_CORNER_KEYS = ("tmux_c", "harness_c")  # corner entries that only change a capacitor value
+
+
+def group_key(t, p):
+    """Addendum C2.5: one DC circuit = one topology and corner without its capacitor-only entries; the loop and
+    closed-loop seeds of it, and every C_stray, C_other, C_out and what-if capacitor value, belong to it."""
+    corner = {k: v for k, v in p["corner"].items() if k not in CAP_CORNER_KEYS}
+    return hashlib.sha256(json.dumps([t["key"], corner], sort_keys=True).encode()).hexdigest()[:24]
+
+
+def group_disagreement(refs):
+    """Largest difference over the shared external nodes of every pair of seed references; None if within 5 uV."""
+    worst = 0.0
+    for i in range(len(refs)):
+        for j in range(i + 1, len(refs)):
+            for k in set(refs[i]) & set(refs[j]):
+                worst = max(worst, abs(refs[i][k] - refs[j][k]))
+    return None if worst <= GROUP_TOL_V else "seed references of one DC circuit differ by more than 5 uV"
+
+
+def _seed_pass(net, method, src=None, val=None, nodeset=()):
+    text = runner.seed_text(net, method, src, val, nodeset)
+    try:
+        key, ref, ns, tranop, wall, _ = runner.run_seed(net, method, src, val, nodeset)
+    except runner.SeedInvocationCap:
+        raise
+    except (runner.OracleError, RuntimeError) as e:
+        if oracle_failure(str(e)) is None and "wrnodev" not in str(e) and ".ic" not in str(e):
+            raise
+        return {"method": method, "source": src, "value": val, "key": runner.deck_key(text),
+                "confirmation_of_nodeset": bool(nodeset), "result": "failed: " + str(e)[-300:]}, None
+    a = {"method": method, "source": src, "value": val, "key": key, "transient_op": tranop,
+         "confirmation_of_nodeset": bool(nodeset), "wall_s": round(wall, 2)}
+    return a, {"ref": ref, "nodeset": ns, "transient_op": tranop}
+
+
+def seed_one(t, p, kind, net, *, ramp_only=False):
+    """Addendum C2.1 to C2.4 for one seed netlist: first pass, one confirmation pass if it fell back, else the
+    DC ramp. A reference never comes from a deck with a "Transient op" line."""
+    c = t["circuit"]
+    expected, derivation = expected_dc(t, p)
+    attempts, chosen = [], None
+    if not ramp_only:
+        a, r1 = _seed_pass(net, "op")
+        attempts.append(a)
+        cand = None
+        if r1 is not None:
+            a["first_pass"] = True
+            if not r1["transient_op"]:
+                cand = ("op", r1)
+            else:
+                a["result"] = "fell back to transient op: not a reference; confirmation pass follows"
+                a2, r2 = _seed_pass(net, "op", nodeset=r1["nodeset"])
+                a2["nodeset"] = r1["nodeset"]  # the first pass's node values, kept so --check can rebuild this deck
+                attempts.append(a2)
+                if r2 is not None:
+                    if r2["transient_op"]:
+                        a2["result"] = "confirmation pass fell back to transient op: not accepted"
+                    else:
+                        cand = ("op confirmed", r2)
+        if cand:
+            errs = seed_validity(c, kind, cand[1]["ref"], expected, cand[1]["transient_op"])
+            attempts[-1]["result"] = "valid" if not errs else "invalid"
+            attempts[-1]["reasons"] = errs
+            if not errs:
+                chosen = cand
+    if chosen is None:
+        bs = bias_source(net)
+        if bs is None:
+            attempts.append({"method": "dc ramp", "result": "not applicable: no non-zero DC bias source"})
+        else:
+            a3, r3 = _seed_pass(net, "dc ramp", *bs)
+            attempts.append(a3)
+            if r3 is not None:
+                errs = seed_validity(c, kind, r3["ref"], expected, r3["transient_op"])
+                a3["result"], a3["reasons"] = ("valid" if not errs else "invalid"), errs
+                if not errs:
+                    chosen = ("dc ramp", r3)
+    sid = seed_id(net)
+    first_fell_back = any(a.get("first_pass") and a.get("transient_op") for a in attempts)
+    rec = {"deck": "seed", "point_id": sid, "kind": kind, "point": {**zero_point(p), "phase": "seed"},
+           "group": group_key(t, p), "expected_dc": expected, "derivation": derivation, "attempts": attempts,
+           "first_pass_fell_back": first_fell_back, "wall_s": round(sum(a.get("wall_s", 0) for a in attempts), 2)}
+    if chosen:
+        ns = "\n".join(chosen[1]["nodeset"])
+        rec.update({"status": "OK", "valid": True, "method": chosen[0], "reference": chosen[1]["ref"],
+                    "nodeset": chosen[1]["nodeset"], "nodeset_sha256": hashlib.sha256(ns.encode()).hexdigest()})
+    else:
+        rec.update({"status": "NOT EVALUATED", "valid": False, "reason": "no valid operating point"})
+    return rec
+
+
+def group_members(t, gkey):
+    """Every DC-distinct seed netlist of the group in the main plan of this topology, both deck kinds."""
+    out = {}
+    for p in sweep_points(t):
+        if group_key(t, p) != gkey:
+            continue
+        for kind in ("loop", "closed"):
+            net = seed_netlist(t, p, kind)
+            out.setdefault(seed_id(net), (p, kind, net))
+    return out
+
+
+def _store(rec):
+    SEEDS["store"][rec["point_id"]] = rec
+    if SEEDS["sink"]:
+        SEEDS["sink"](rec)
+
+
+def seed_group(t, p, kind):
+    """Seed the whole DC-equivalence group of (t, p) at first use, check C2.5, re-seed once by the ramp."""
+    gkey = group_key(t, p)
+    store = SEEDS["store"]
+    members = group_members(t, gkey)
+    net = seed_netlist(t, p, kind)
+    members.setdefault(seed_id(net), (p, kind, net))
+    fresh = []
+    for sid, (mp, mk, mn) in members.items():
+        if sid in store:
+            continue
+        if sum(1 for r in store.values() if r.get("deck") == "seed") >= SEED_CAP:
+            raise SeedCap(f"seed cap {SEED_CAP} reached")
+        rec = seed_one(t, mp, mk, mn)
+        store[sid] = rec
+        fresh.append(sid)
+    seeds = [store[s] for s in members]
+    grec = SEEDS["groups"].get(gkey)
+    refs = [s["reference"] for s in seeds if s["valid"]]
+    why = group_disagreement(refs)
+    reseeded = bool(grec and grec.get("reseeded_by_ramp"))
+    if why and not reseeded:
+        for sid, (mp, mk, mn) in members.items():
+            old = store[sid]
+            rec = seed_one(t, mp, mk, mn, ramp_only=True)
+            rec["attempts"] = old["attempts"] + rec["attempts"]
+            rec["reseeded_by_ramp"] = True
+            store[sid] = rec
+            if sid not in fresh:
+                fresh.append(sid)
+        reseeded = True
+        seeds = [store[s] for s in members]
+        refs = [s["reference"] for s in seeds if s["valid"]]
+        why = group_disagreement(refs)
+    worst = 0.0
+    for i in range(len(refs)):
+        for j in range(i + 1, len(refs)):
+            for k in set(refs[i]) & set(refs[j]):
+                worst = max(worst, abs(refs[i][k] - refs[j][k]))
+    grec = {"deck": "group", "point_id": gkey, "members": sorted(members), "status": "OK" if not why else
+            "NOT EVALUATED", "reason": why, "max_difference_V": worst if not why else None,
+            "reseeded_by_ramp": reseeded, "attempts": [], "wall_s": 0.0, "point": {**zero_point(p), "phase": "group"}}
+    for sid in members:
+        store[sid]["group_agreement"] = "within 5 uV" if not why else "disagrees"
+    for sid in fresh:
+        _store(store[sid])
+    old = SEEDS["groups"].get(gkey)
+    if old is None or old["members"] != grec["members"] or old["status"] != grec["status"]:
+        SEEDS["groups"][gkey] = grec
+        if SEEDS["sink"]:
+            SEEDS["sink"](grec)
+    return grec
+
+
 def get_seed(t, p, kind):
     net = seed_netlist(t, p, kind)
     sid = seed_id(net)
     store = SEEDS["store"]
-    if sid in store:
-        return store[sid]
-    if len(store) >= SEED_CAP:
-        raise SeedCap(f"seed cap {SEED_CAP} reached")
-    expected, derivation = expected_dc(t, p)
-    attempts, chosen = [], None
-    for method in ("op", "dc ramp"):
-        src = val = None
-        if method == "dc ramp":
-            bs = bias_source(net)
-            if bs is None:
-                attempts.append({"method": method, "result": "not applicable: no non-zero DC bias source"})
-                break
-            src, val = bs
-        text = net.rstrip("\n") + "\n" + "\n".join(runner.seed_control(method, src, val))
-        try:
-            key, ref, nodeset, tranop, wall, _ = runner.run_seed(net, method, src, val)
-        except (runner.OracleError, RuntimeError) as e:
-            attempts.append({"method": method, "source": src, "key": runner.deck_key(text),
-                             "result": "failed: " + str(e)[-300:]})
-            continue
-        errs = seed_validity(t["circuit"], kind, ref, expected)
-        attempts.append({"method": method, "source": src, "value": val, "key": key, "transient_op": tranop,
-                         "wall_s": round(wall, 2), "result": "valid" if not errs else "invalid", "reasons": errs})
-        if not errs:
-            chosen = {"method": method, "ref": ref, "nodeset": nodeset}
-            break
-    rec = {"deck": "seed", "point_id": sid, "kind": kind, "point": {**zero_point(p), "phase": "seed"},
-           "expected_dc": expected, "derivation": derivation, "attempts": attempts,
-           "wall_s": round(sum(a.get("wall_s", 0) for a in attempts), 2)}
-    if chosen:
-        ns = "\n".join(chosen["nodeset"])
-        rec.update({"status": "OK", "valid": True, "method": chosen["method"], "reference": chosen["ref"],
-                    "nodeset": chosen["nodeset"], "nodeset_sha256": hashlib.sha256(ns.encode()).hexdigest()})
-    else:
-        rec.update({"status": "NOT EVALUATED", "valid": False, "reason": "no valid operating point"})
-    store[sid] = rec
-    if SEEDS["sink"]:
-        SEEDS["sink"](rec)
+    gkey = group_key(t, p)
+    grec = SEEDS["groups"].get(gkey)
+    if sid not in store or grec is None or sid not in grec["members"]:
+        grec = seed_group(t, p, kind)
+    rec = store[sid]
+    if grec["status"] != "OK" and rec["valid"]:
+        rec = {**rec, "valid": False, "reason": "seed group disagrees (C2.5)"}
     return rec
 
 
@@ -372,6 +508,21 @@ def accept_op(ext, ref):
         return "operating-point node set differs from the seed"
     if any(abs(ext[k] - ref[k]) > SEED_TOL_V for k in ref):
         return "operating point differs from the seed reference by more than 50 uV"
+    return None
+
+
+def eval_reason(ops, ref, transient_op):
+    """B2.5 with Addendum C (Revision 8): an evaluation deck yields a metric at a ladder step only if no operating
+    point in it came from the transient-op fallback and every one is within 50 uV of the seed reference (and, in a
+    loop deck, the two agree within 0.1 mV)."""
+    if transient_op:
+        return "transient-op fallback in the evaluation deck"
+    for e in ops:
+        why = accept_op(e, ref)
+        if why:
+            return why
+    if len(ops) == 2:
+        return dc_moved(*ops)
     return None
 
 
@@ -434,9 +585,10 @@ def run_loop(t, p):
             attempts.append({"tolerance": name, "result": why, "key": runner.deck_key(text)})
             continue
         e1, e2 = runner.external_nodes(tab["op1"]), runner.external_nodes(tab["op2"])
-        why = accept_op(e1, seed["reference"]) or accept_op(e2, seed["reference"]) or dc_moved(e1, e2)
+        tranop = "Transient op" in runner.last_log(key)
+        why = eval_reason([e1, e2], seed["reference"], tranop)
         attempts.append({"tolerance": name, "result": why or "accepted", "key": key, "wall_s": round(wall, 2),
-                         "transient_op": "Transient op" in runner.last_log(key)})
+                         "transient_op": tranop})
         if why is None:
             m = runner.loop_metrics(tab["v"], tab["i"], vv, vi)
             m["op"] = dict(e1)  # accepted, full precision
@@ -460,9 +612,10 @@ def run_closed(t, p):
             attempts.append({"integration": name, "result": why, "key": runner.deck_key(text)})
             continue
         e0 = runner.external_nodes(tab["op"])
-        why = accept_op(e0, seed["reference"])
+        tranop = "Transient op" in runner.last_log(key)
+        why = eval_reason([e0], seed["reference"], tranop)
         attempts.append({"integration": name, "result": why or "accepted", "key": key, "wall_s": round(wall, 2),
-                         "transient_op": "Transient op" in runner.last_log(key)})
+                         "transient_op": tranop})
         if why is None:
             m = runner.closed_metrics(t["circuit"], p["corner"], P, tab)
             m["op"] = dict(e0)  # accepted, full precision
@@ -501,6 +654,17 @@ def append(rec):
 
 def invocations(results):
     return sum(1 for r in results.values() for a in r["attempts"] if a.get("key"))
+
+
+def discarded():
+    """Invocations, seed invocations and wall time of work that left no line in results.jsonl: slices whose
+    lines were discarded (checkpoints/discarded-*.json) and decks of points a slice deadline interrupted."""
+    out = {"invocations": 0, "seed_invocations": 0, "wall_s": 0.0}
+    for f in sorted((STUDY / "checkpoints").glob("discarded-*.json")):
+        d = json.loads(f.read_text())
+        for k in out:
+            out[k] += d[k]
+    return out
 
 
 # ------------------------------------------------------------------------------------------------ criteria
@@ -679,6 +843,19 @@ def all_phases(topo, ftopo, results):
     return plan
 
 
+def sweep_order(phases):
+    """The brief's order (classes B, C and A first, then D, H, E, G, then the what-if rows, the Ruling 6 pairs and
+    the class F diagnostic): every sweep phase in ORDER, a class's dependent full-list points with its own class,
+    then the later phases in their given order."""
+    def rank(item):
+        ph, t, _ = item
+        sub = t["circuit"]["subclass"] if isinstance(t, dict) and "circuit" in t else None
+        if ph == "sweep" and sub in ORDER:
+            return (0, ORDER.index(sub))
+        return (1, 0)
+    return sorted(phases, key=rank)
+
+
 def dependent_phases(topo, ftopo, results):
     plan = []
     # class C full list where a reduced-list corner fails
@@ -782,11 +959,29 @@ def drive(slice_min, *, resume, max_decks=None):
 
     def seed_sink(rec):
         append(rec)
-        results[(rec["point_id"], "seed")] = rec
+        results[(rec["point_id"], rec["deck"])] = rec
     SEEDS["store"] = {pid: rec for (pid, deck), rec in results.items() if deck == "seed"}
+    SEEDS["groups"] = {pid: rec for (pid, deck), rec in results.items() if deck == "group"}
     SEEDS["sink"] = seed_sink
-    t_start = time.time()
+    ctl = STUDY / "checkpoints/controls.json"
+    lost = discarded()
     state = json.loads((STUDY / "checkpoints/sweep-state.json").read_text()) if (STUDY / "checkpoints/sweep-state.json").exists() else {"sweep_s": 0.0, "slices": []}
+    state.setdefault("interrupted_invocations", 0)
+    state.setdefault("interrupted_seed_invocations", 0)
+    runner.SEED_INVOCATIONS["count"] = (json.loads(ctl.read_text()).get("seed_invocations", 0) if ctl.exists() else 0) + \
+        sum(1 for r in SEEDS["store"].values() for a in r["attempts"] if a.get("key")) + \
+        lost["seed_invocations"] + state["interrupted_seed_invocations"]
+    t_start = time.time()
+    runner.DEADLINE["t"] = t_start + SLICE_HARD_S
+    inv0, rec0 = runner.INVOCATIONS["count"], invocations(results)
+    seed0 = runner.SEED_INVOCATIONS["count"]
+    seedrec0 = sum(1 for r in SEEDS["store"].values() for a in r["attempts"] if a.get("key"))
+
+    def unrecorded():
+        return (runner.INVOCATIONS["count"] - inv0) - (invocations(results) - rec0)
+
+    def total_invocations():
+        return invocations(results) + lost["invocations"] + state["interrupted_invocations"] + unrecorded()
     done_new = 0
     created = runner.ensure_spiceinit()
     reason = "complete"
@@ -794,7 +989,7 @@ def drive(slice_min, *, resume, max_decks=None):
         while True:
             plan = all_phases(topo, ftopo, results)
             dep, ready = dependent_phases(topo, ftopo, results)
-            todo = [(ph, t, p) for ph, t, pts in plan + dep for p in pts
+            todo = [(ph, t, p) for ph, t, pts in sweep_order(plan + dep) for p in pts
                     if (point_id(p), "loop") not in results or (point_id(p), "closed") not in results]
             if not todo:
                 break
@@ -806,10 +1001,10 @@ def drive(slice_min, *, resume, max_decks=None):
             if max_decks is not None and done_new >= max_decks:
                 reason = f"pilot end after {done_new} decks"
                 break
-            if invocations(results) + 6 > DECK_CAP:
+            if total_invocations() + 6 > DECK_CAP:
                 reason = "deck cap reached"
                 break
-            if state["sweep_s"] + (time.time() - t_start) > SWEEP_CEILING_S:
+            if state["sweep_s"] + lost["wall_s"] + (time.time() - t_start) > SWEEP_CEILING_S:
                 reason = "sweep ceiling reached"
                 break
             pid = point_id(p)
@@ -822,12 +1017,19 @@ def drive(slice_min, *, resume, max_decks=None):
                 except SeedCap:
                     reason = "seed cap reached"
                     break
+                except runner.SeedInvocationCap:
+                    reason = "STOP 3: seed-deck invocation cap 540 reached"
+                    break
+                except runner.SliceDeadline:
+                    reason = "slice end (deadline: no room for one more deck)"
+                    break
                 rec = {"point_id": pid, "deck": deck, "point": p, "phase": ph, **out,
                        "wall_s": round(time.time() - t0, 2)}
                 append(rec)
                 results[(pid, deck)] = rec
                 done_new += 1
-            if reason == "seed cap reached":
+            if reason in ("seed cap reached", "STOP 3: seed-deck invocation cap 540 reached") or \
+                    reason.startswith("slice end"):
                 break
             if not ready and not [x for x in todo[1:] if x[0] == "sweep"]:
                 continue
@@ -836,22 +1038,47 @@ def drive(slice_min, *, resume, max_decks=None):
             runner.remove_spiceinit()
         survivors = kill_pinned_containers()
         SEEDS["sink"] = None
+        runner.DEADLINE["t"] = None
+    seed_rec = sum(1 for r in SEEDS["store"].values() for a in r["attempts"] if a.get("key"))
+    lost_now = unrecorded()
+    state["interrupted_invocations"] += lost_now
+    state["interrupted_seed_invocations"] += (runner.SEED_INVOCATIONS["count"] - seed0) - (seed_rec - seedrec0)
     state["sweep_s"] += time.time() - t_start
+    total = invocations(results) + lost["invocations"] + state["interrupted_invocations"]
     state["slices"].append({"ended": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "reason": reason,
                             "decks_written": done_new, "invocations_total": invocations(results),
+                            "invocations_with_discarded_and_interrupted": total,
+                            "interrupted_this_slice": lost_now,
+                            "seed_invocations_total": runner.SEED_INVOCATIONS["count"],
                             "wall_s": round(time.time() - t_start, 1), "containers_after": survivors})
     (STUDY / "checkpoints/sweep-state.json").write_text(json.dumps(state, indent=1) + "\n")
-    print(f"{reason}: {done_new} decks this slice, {invocations(results)} invocations in all", flush=True)
+    print(f"{reason}: {done_new} decks this slice, {invocations(results)} recorded invocations, "
+          f"{total} with discarded and interrupted work", flush=True)
     if survivors:
         raise SystemExit("STOP 3: container survived docker kill")
+    if reason.startswith("STOP 3"):
+        raise SystemExit(reason)
 
 
 # ------------------------------------------------------------------------------------------------ evaluation
 
+def group_filtered(results):
+    """Addendum C2.5: a row whose seed group disagrees after the ramp is NOT EVALUATED, also retroactively."""
+    groups = {pid: r for (pid, d), r in results.items() if d == "group"}
+    out = dict(results)
+    for key, r in results.items():
+        if key[1] in ("loop", "closed") and r.get("seed_id"):
+            s = results.get((r["seed_id"], "seed"))
+            g = groups.get(s.get("group")) if s else None
+            if g is not None and g["status"] != "OK":
+                out[key] = {**r, "status": "NOT EVALUATED", "metrics": None, "reason": "seed group disagrees (C2.5)"}
+    return out
+
+
 def evaluate(write=True):
     cen, topo, rows = topologies()
     ftopo = f_topologies(cen)
-    results = load_results()
+    results = group_filtered(load_results())
     paper = paper_estimates(list(cen["nets"]))
     inv = {l["mpn"]: l["line_id"] for l in json.loads(
         (ROOT / ".claude/skills/component-spec-audit/references/inventory.json").read_text())["lines"]}
@@ -1094,7 +1321,14 @@ def loop_run(lines, x, y, amp_inputs=None):
     evaluation deck with the seed as .nodeset, accepted only on the 50 uV and 0.1 mV tests (Addendum B2)."""
     net = runner.loop_netlist(lines, x=x, y=y)
     skey, ref, nodeset, tranop, _, _ = runner.run_seed(net)
-    seed = {"key": skey, "transient_op": tranop, "nodeset_sha256": hashlib.sha256("\n".join(nodeset).encode()).hexdigest()}
+    seed = {"key": skey, "first_pass_fell_back": tranop, "method": "op"}
+    if tranop:  # Addendum C2.2: one confirmation pass seeded from the first; no ramp source exists in these decks
+        skey, ref, nodeset, tranop2, _, _ = runner.run_seed(net, nodeset=nodeset)
+        seed.update({"confirmation_key": skey, "method": "op confirmed"})
+        if tranop2:
+            return {"seed": seed, "result": "no valid operating point", "reasons": ["confirmation pass fell back"],
+                    "pm": None, "f": None}
+    seed["nodeset_sha256"] = hashlib.sha256("\n".join(nodeset).encode()).hexdigest()
     if amp_inputs:
         vin = {**ref, "0": 0.0}
         errs = []
@@ -1107,7 +1341,7 @@ def loop_run(lines, x, y, amp_inputs=None):
     text, vv, vi = runner.loop_text(lines, x=x, y=y, tol=None, ac="ac dec 100 10 100meg", nodeset=nodeset)
     key, tab, wall = runner.run(text, ["op1", "v", "i", "op2"])
     e1, e2 = runner.external_nodes(tab["op1"]), runner.external_nodes(tab["op2"])
-    why = accept_op(e1, ref) or accept_op(e2, ref) or dc_moved(e1, e2)
+    why = eval_reason([e1, e2], ref, "Transient op" in runner.last_log(key))
     if why:
         return {"seed": seed, "deck": key, "result": why, "pm": None, "f": None}
     f, T, _ = runner.loop_gain(tab["v"], tab["i"], vv, vi)
@@ -1147,8 +1381,10 @@ def controls():
     check_models()
     if kill_pinned_containers():
         raise SystemExit("STOP 3")
-    out = {"P5": [], "P8": [], "P6b": [], "P7": {}, "M3": [], "seeds": []}
-    SEEDS["store"], SEEDS["sink"] = {}, out["seeds"].append
+    out = {"P5": [], "P8": [], "P6b": [], "P7": {}, "M3": [], "seeds": [], "groups": []}
+    SEEDS["store"], SEEDS["groups"] = {}, {}
+    SEEDS["sink"] = lambda rec: out["groups" if rec["deck"] == "group" else "seeds"].append(rec)
+    runner.SEED_INVOCATIONS["count"] = 0
     created = runner.ensure_spiceinit()
     stop = None
     try:
@@ -1177,8 +1413,13 @@ def controls():
                     s = get_seed(t, p, kind)
                     errs = p6b_check(s, kind)
                     row["seeds"][kind] = {"seed_id": s["point_id"], "method": s.get("method"), "errors": errs,
+                                          "first_pass_fell_back": s.get("first_pass_fell_back"),
                                           "out_V": s["reference"]["out"] if s["valid"] and not errs else None}
                     row["pass"] &= not errs
+                g = SEEDS["groups"][group_key(t, p)]
+                row["group"] = {"id": g["point_id"], "status": g["status"], "members": len(g["members"]),
+                                "reseeded_by_ramp": g["reseeded_by_ramp"]}
+                row["pass"] &= g["status"] == "OK"
                 lo, cl = run_loop(t, p), run_closed(t, p)
                 row["loop"] = {"status": lo["status"], "accepted_step": lo.get("accepted_step"), "attempts": lo["attempts"]}
                 row["closed"] = {"status": cl["status"], "accepted_step": cl.get("accepted_step"), "attempts": cl["attempts"]}
@@ -1228,6 +1469,7 @@ def controls():
         kill_pinned_containers()
         SEEDS["sink"] = None
     out["invocations"] = runner.INVOCATIONS["count"]
+    out["seed_invocations"] = runner.SEED_INVOCATIONS["count"]
     out["stopped_at"] = stop
     out["pass"] = stop is None and all(x["fails_P5"] for x in out["M3"])
     (STUDY / "checkpoints/controls.json").write_text(json.dumps(out, indent=1) + "\n")
@@ -1263,8 +1505,10 @@ def mutation_m12():
                 attempts.append({"tolerance": name, "result": why, "key": runner.deck_key(text)})
                 continue
             e1, e2 = runner.external_nodes(tab["op1"]), runner.external_nodes(tab["op2"])
-            why = accept_op(e1, seed["reference"]) or accept_op(e2, seed["reference"]) or dc_moved(e1, e2)
-            attempts.append({"tolerance": name, "result": why or "accepted", "key": key, "wall_s": round(wall, 2)})
+            tranop = "Transient op" in runner.last_log(key)
+            why = eval_reason([e1, e2], seed["reference"], tranop)
+            attempts.append({"tolerance": name, "result": why or "accepted", "key": key, "wall_s": round(wall, 2),
+                             "transient_op": tranop})
             if why is None:
                 break
     finally:
@@ -1295,18 +1539,22 @@ def check():
         if t is None:
             bad.append(f"{pid}: unknown topology")
             continue
+        if deck == "group":
+            continue
         if deck == "seed":
             net = seed_netlist(t, p, rec["kind"])
             if seed_id(net) != pid:
                 bad.append(f"{pid}: seed netlist differs from the rebuilt one")
             for a in rec["attempts"]:
                 if a.get("key"):
-                    txt = net.rstrip("\n") + "\n" + "\n".join(runner.seed_control(a["method"], a.get("source"), a.get("value")))
+                    txt = runner.seed_text(net, a["method"], a.get("source"), a.get("value"), a.get("nodeset", ()))
                     if runner.deck_key(txt) != a["key"]:
                         bad.append(f"{pid}: seed deck key differs")
             if rec["valid"]:
-                if accept_op(rec["reference"], rec["reference"]) or seed_validity(t["circuit"], rec["kind"], rec["reference"], rec["expected_dc"]):
-                    bad.append(f"{pid}: seed marked valid but fails B2.3")
+                prod = [a for a in rec["attempts"] if a.get("result") == "valid"]
+                if not prod or prod[-1].get("transient_op") or seed_validity(
+                        t["circuit"], rec["kind"], rec["reference"], rec["expected_dc"]):
+                    bad.append(f"{pid}: seed marked valid but fails B2.3 / C2.4")
             continue
         if point_id(p) != pid:
             bad.append(f"{pid}: point id")
@@ -1357,6 +1605,10 @@ def write_result(b):
                         for f in ("cells.py", "runner.py", "budget.py", "guard.py", "p4b.py", "test_s13.py")},
         "fingerprint": fingerprint(), "arm0": arm0, "controls": controls, "sweep_state": state, "guards": guards,
         "deck_records": len(results), "invocations": invocations(results), "deck_cap": DECK_CAP,
+        "discarded_work": {**discarded(), "records": {f.name: json.loads(f.read_text())
+                                                      for f in sorted(ck.glob("discarded-*.json"))}},
+        "invocations_with_discarded_and_interrupted": invocations(results) + discarded()["invocations"] +
+        (state or {}).get("interrupted_invocations", 0),
         "deck_wall_s": {"sum": round(sum(walls), 1), "mean": round(sum(walls) / len(walls), 2) if walls else None,
                         "max": max(walls) if walls else None},
         "not_evaluated_decks": sum(1 for r in results.values() if r["status"] != "OK"),

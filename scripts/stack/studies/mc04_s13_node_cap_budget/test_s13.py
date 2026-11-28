@@ -1,4 +1,4 @@
-"""MC04-S13 tests and mutations M1 to M16 (offline; M3 and M12 read recorded runs; M9 to M11 and M13 to M16 use in-memory copies)."""
+"""MC04-S13 tests and mutations M1 to M21 (offline; M3 and M12 read recorded runs; the others use in-memory copies or deck text)."""
 import copy
 import json
 import sys
@@ -310,6 +310,139 @@ class SeedAndP7(unittest.TestCase):
             c = copy.deepcopy(self.controls["P7"]["/W1/DRIVE_INV_SUM"])
             c.pop("K4_fails", None)
             self.assertFalse(budget.p7_pass(c, need_k4=True))
+
+
+class AddendumC(unittest.TestCase):
+    """Addendum C: M17 to M21."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.cen, cls.topo, cls.rows = budget.topologies()
+        cls.ref9 = cls.topo[cls.rows["/E2/REF9_FB"]["topology"]]
+        cls.good = {"inp": 5.0, "inm": 5.000021, "xinm": 5.000021, "n1": 5.000021, "out": 9.00004,
+                    "vp": 12.0, "vn": -12.0, "top_threshold": 0.0}
+
+    def test_m17_fallback_reference_rejected(self):
+        c = self.ref9["circuit"]
+        exp, _ = budget.expected_dc(self.ref9, budget.sweep_points(self.ref9)[0])
+        self.assertEqual(budget.seed_validity(c, "loop", self.good, exp, transient_op=False), [])
+        self.assertTrue(budget.seed_validity(c, "loop", self.good, exp, transient_op=True))
+
+    def test_m18_group_disagreement(self):
+        a = dict(self.good)
+        b = {**a, "out": a["out"] + 124e-6}
+        self.assertTrue(budget.group_disagreement([a, b]))
+        self.assertIsNone(budget.group_disagreement([a, {**a, "out": a["out"] + 4e-6}]))
+
+    def test_group_key_joins_capacitor_corners_and_both_kinds(self):
+        pts = budget.sweep_points(self.ref9, values=[0])
+        keys = {json.dumps(p["corner"], sort_keys=True): budget.group_key(self.ref9, p) for p in pts}
+        self.assertEqual(keys['{"bracket": "agnd", "tmux_c": 0.0}'], keys['{"bracket": "agnd", "tmux_c": 1e-10}'])
+        self.assertNotEqual(keys['{"bracket": "agnd", "tmux_c": 0.0}'], keys['{"bracket": "open", "tmux_c": 0.0}'])
+
+    def all_deck_texts(self):
+        for t in self.topo.values():
+            p = budget.sweep_points(t)[0]
+            for kind in ("loop", "closed"):
+                yield "seed " + kind, t, runner.seed_text(budget.seed_netlist(t, p, kind))
+            for name, text, *_ in budget.loop_texts(t, p, [".nodeset v(out) = 0"]):
+                yield "loop", t, text
+            for name, text, *_ in budget.closed_texts(t, p, [".nodeset v(out) = 0"]):
+                yield "closed", t, text
+
+    def test_m19_no_lone_input_pin_in_any_complete_deck(self):
+        n = 0
+        for kind, t, text in self.all_deck_texts():
+            self.assertEqual(runner.floating_inputs(text), [], (kind, t["key"]))
+            n += 1
+        self.assertGreater(n, 80)
+
+    def test_noise_spectrum_plot_selected_relative_to_noise_in_every_closed_deck(self):
+        """The spectrum written after each `noise` is the plot made just before the one `noise` leaves current;
+        no closed deck names a numbered noise plot (ngspice numbered it noise2 after two ac runs in run 4)."""
+        n = 0
+        for kind, t, text in self.all_deck_texts():
+            if kind != "closed":
+                continue
+            ctl = text.split("\n.control\n", 1)[1].splitlines()
+            self.assertFalse([ln for ln in ctl if ln.startswith("setplot noise")], t["key"])
+            for i, ln in enumerate(ctl):
+                if ln.startswith("noise "):
+                    self.assertEqual(ctl[i + 1], "setplot previous", t["key"])
+                    self.assertTrue(ctl[i + 2].startswith("wrdata ") and ctl[i + 2].endswith(" onoise_spectrum"))
+                    n += 1
+        self.assertGreater(n, 20)
+
+    def test_slice_deadline_refuses_a_deck_whose_timeout_does_not_fit(self):
+        import time as _t
+        saved = runner.DEADLINE["t"]
+        try:
+            runner.DEADLINE["t"] = _t.time() + runner.TIMEOUT_S  # less than one timeout plus margin left
+            n = runner.INVOCATIONS["count"]
+            with self.assertRaises(runner.SliceDeadline):
+                runner.run("title\nR1 a 0 1k\nR2 a 0 1k\n.end\n", ["op1"])
+            self.assertEqual(runner.INVOCATIONS["count"], n)  # nothing started, nothing counted
+            self.assertFalse(issubclass(runner.SliceDeadline, (RuntimeError, runner.OracleError)))
+        finally:
+            runner.DEADLINE["t"] = saved
+
+    def test_discarded_work_counts_against_the_caps(self):
+        d = budget.discarded()
+        self.assertGreaterEqual(d["invocations"], 319 + 6)
+        self.assertGreaterEqual(d["seed_invocations"], 14 + 4 + 22)
+
+    def test_sweep_order_puts_class_c_full_list_before_g_and_whatifs_last(self):
+        tc = next(t for t in self.topo.values() if t["circuit"]["class"] == "C")
+        tg = next(t for t in self.topo.values() if t["circuit"]["class"] == "G")
+        tb = next(t for t in self.topo.values() if t["circuit"]["class"] == "B")
+        got = budget.sweep_order([("sweep", tg, []), ("whatif", tb, []), ("sweep", tc, []), ("sweep", tb, [])])
+        self.assertEqual([(ph, t["circuit"]["class"]) for ph, t, _ in got],
+                         [("sweep", "B"), ("sweep", "C"), ("sweep", "G"), ("whatif", "B")])
+
+    def drop(self, text, pred):
+        return "\n".join(ln for ln in text.splitlines() if not pred(ln)) + "\n"
+
+    def test_m19_mutations_rejected(self):
+        p = budget.sweep_points(self.ref9)[0]
+        loop = budget.loop_texts(self.ref9, p)[0][1]
+        no_inp = self.drop(loop, lambda ln: ln.startswith("Vdc_ref5"))  # IN+ left alone
+        self.assertTrue(runner.floating_inputs(no_inp))
+        no_inm = self.drop(loop, lambda ln: ln.startswith("Vinj"))  # the inverting pin (xinm) left alone
+        self.assertTrue(runner.floating_inputs(no_inm))
+        closed = budget.closed_texts(self.ref9, p)[0][1]
+        no_inm_c = self.drop(closed, lambda ln: ln.split()[:1] and ln.split()[0][0] in "RC" and " inm " in f" {ln} ")
+        self.assertTrue(runner.floating_inputs(no_inm_c))
+        with_ns = no_inp.replace("\n.control\n", "\n.nodeset v(inp) = 5\n.control\n", 1)
+        self.assertTrue(runner.floating_inputs(with_ns))  # a .nodeset line is not a connection
+        g = next(t for t in self.topo.values() if t["circuit"]["class"] == "G")
+        gp = budget.sweep_points(g)[0]
+        gt = budget.loop_texts(g, gp)[0][1]
+        ota = next(ln for ln in gt.splitlines() if ln.startswith("XOTA")).split()
+        for pin in (3, 4):
+            node = ota[pin]
+            mut = self.drop(gt, lambda ln, node=node: not ln.startswith("XOTA") and node in ln.split()[1:3]
+                            and not ln.startswith("."))
+            self.assertTrue(runner.floating_inputs(mut), pin)
+        with self.assertRaises(RuntimeError):
+            runner.run(no_inp, ["op1"])
+
+    def test_m20_fallback_evaluation_deck_yields_no_metric(self):
+        ref = dict(self.good)
+        inside = {k: v + 1e-6 for k, v in ref.items()}
+        self.assertIsNone(budget.eval_reason([inside, inside], ref, False))
+        self.assertTrue(budget.eval_reason([inside, inside], ref, True))
+        self.assertTrue(budget.eval_reason([inside], ref, True))
+
+    def test_m21_seed_invocation_cap_stops(self):
+        saved = dict(runner.SEED_INVOCATIONS)
+        try:
+            runner.SEED_INVOCATIONS["count"] = 540
+            with self.assertRaises(SystemExit) as cm:
+                runner.run_seed("title\nR1 a 0 1k\n")
+            self.assertIn("STOP 3", str(cm.exception))
+            self.assertEqual(runner.SEED_INVOCATIONS["count"], 540)
+        finally:
+            runner.SEED_INVOCATIONS.update(saved)
 
 
 if __name__ == "__main__":

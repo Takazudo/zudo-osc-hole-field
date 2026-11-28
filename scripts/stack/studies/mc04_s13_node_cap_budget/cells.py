@@ -820,7 +820,9 @@ def closed_text(circuit, corner, lines):
     for other in ac_paths:
         ctl.append(f"alter @vac_{other}[acmag]=0")
     for k, node in enumerate(meas):
-        ctl += [f"noise {node} vac_{main} dec 20 {band[0]:g} {band[1]:g}", f"setplot noise{2 * k + 1}",
+        # ngspice numbers noise plots after the preceding plots (noise2/noise3 after two ac runs), so the
+        # spectrum is addressed as the plot made just before the integrated-noise plot that `noise` leaves current
+        ctl += [f"noise {node} vac_{main} dec 20 {band[0]:g} {band[1]:g}", "setplot previous",
                 f"wrdata @D@.noise{k}.dat onoise_spectrum"]
         files.append(f"noise{k}")
     for tr in P["tran"]:
