@@ -70,7 +70,11 @@
   "1200 rows-only replays in stage 2b",
   "411 live structures not searched",
   "5 kept scenes",
-  "10 overlay block searches"
+  "10 overlay block searches",
+  "12 rows-only replays per structure, reached in 93 structures",
+  "structure 122 cut at 2 kept replays by the 1200 cap (10 computed replays discarded; the worker reached 12 with no pass)",
+  "one scene judged per passing structure (first pass)",
+  "pool: cheapest survivor per spot; the 20-spot limit binds on 15 of the 45 blocks with survivors"
  ],
  "controls": {
   "C1": true,
@@ -5610,5 +5614,6 @@
   "manifest": "bulk-manifest.json",
   "files": 189,
   "durable_copy": "/mnt/project-files/osc-s16-cache/"
- }
+ },
+ "bounds_note": "The last four bounds were added on 2026-11-28 under finding 1 of reviews/mc04-s16-result-review-20261128.md, after the run, by corrections_20261128.py output (checkpoints/review-corrections-20261128.json); replan.py --finish did not write them and would drop them if re-run. The first five are as the run wrote them; \"5 kept scenes\" there means the 5 scenes judged in stage 3, of which none passes. checkpoints/run.json keeps the run's original list unchanged."
 }
