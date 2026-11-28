@@ -399,6 +399,19 @@ class AddendumC(unittest.TestCase):
         self.assertEqual([(ph, t["circuit"]["class"]) for ph, t, _ in got],
                          [("sweep", "B"), ("sweep", "C"), ("sweep", "G"), ("whatif", "B")])
 
+    def test_class_c_k5_at_wiper_1_is_withdrawn_and_no_row_is_promoted(self):
+        cid = json.dumps({"topology": "t", "corner": {"wiper": 1.0}, "swept": "inp", "other": None,
+                          "whatif": False, "phase": "sweep", "out_pF": 20.0})
+        self.assertTrue(budget.c5_withdrawn({"class": "C"}, cid))
+        self.assertFalse(budget.c5_withdrawn({"class": "C"}, cid.replace("1.0", "0.5")))
+        self.assertFalse(budget.c5_withdrawn({"class": "B"}, cid))
+        b = json.loads(budget.BUDGET.read_text())
+        rows = [r for r in b["rows"] if r["class"] == "C"]
+        self.assertEqual(len(rows), 10)
+        for r in rows:
+            self.assertEqual(r["label"], "NOT EVALUATED: " + budget.C_K5_WITHDRAWN)
+            self.assertIsNone(r["c_lim_pF"])
+
     def drop(self, text, pred):
         return "\n".join(ln for ln in text.splitlines() if not pred(ln)) + "\n"
 

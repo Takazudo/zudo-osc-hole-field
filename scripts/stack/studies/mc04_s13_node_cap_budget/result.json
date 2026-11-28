@@ -561,7 +561,7 @@
   }
  },
  "brief_sha256": "360eb262216fdf80004bc4d0d7d4108f64a8c003d1b2e97ab73f255d30225bf4",
- "budget_sha256": "35fcca7ade7ce9ec8b561f693c33be9c704fad42b12a8e4d345aa26f2a5f1973",
+ "budget_sha256": "511c29409661dd236695dc0bcb368f97d5e95b87bf0f29d1378b5dae01bd4136",
  "controls": {
   "M3": [
    {
@@ -3478,7 +3478,7 @@
   "/sys/fs/cgroup/cpu.max": "absent",
   "/sys/fs/cgroup/memory.current": "absent",
   "/sys/fs/cgroup/memory.max": "absent",
-  "MemAvailable": "15617120 kB",
+  "MemAvailable": "15601332 kB",
   "SwapTotal": "0 kB",
   "affinity": [
    0,
@@ -3486,7 +3486,7 @@
    2,
    3
   ],
-  "commit": "7b75ee1e597adefae1a44d514972f0a62bba3f4e",
+  "commit": "23d6fb49eb46a8888ebcb9d36c4e64e5ef1e58d0",
   "disk_free_GiB": 50.3,
   "docker": "29.9.3",
   "image": "sha256:18693567392b80da435f9fa952ce3a3e534c66eb5a6033f5b9c80aa3b19dd3ec",
@@ -3496,17 +3496,37 @@
   "os": "Linux-6.18.44-fc-v880-x86_64-with-glibc2.39",
   "processes_top_rss": [
    "RSS COMMAND",
-   "431492 claude",
-   "104032 dockerd",
-   "89696 python",
-   "61448 containerd",
-   "42568 environment-man",
-   "28288 rclone-filestor",
-   "12072 python"
+   "474528 claude",
+   "97936 dockerd",
+   "89524 python",
+   "51136 containerd",
+   "42700 environment-man",
+   "28304 rclone-filestor",
+   "12076 python"
   ],
   "python": "3.12.3"
  },
  "guards": {
+  "guard-check.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "/home/user/venv312/bin/python",
+    "scripts/stack/studies/mc04_s13_node_cap_budget/budget.py",
+    "--check"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15267.9,
+   "peak_docker_container_mem_mib": 0.0,
+   "peak_tree_plus_container_mib": 4.5,
+   "peak_tree_rss_bytes": 4722688,
+   "peak_tree_rss_mib": 4.5,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 1,
+   "wall_s": 5.1,
+   "watchdog_fired": null
+  },
   "guard-controls.json": {
    "budget_bytes": 4294967296,
    "command": [
@@ -3525,6 +3545,65 @@
    "returncode": 0,
    "samples": 11,
    "wall_s": 61.0,
+   "watchdog_fired": null
+  },
+  "guard-end-circuit-check.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "pnpm",
+    "circuit:check"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15226.1,
+   "peak_docker_container_mem_mib": 0.0,
+   "peak_tree_plus_container_mib": 0.1,
+   "peak_tree_rss_bytes": 135168,
+   "peak_tree_rss_mib": 0.1,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 1,
+   "wall_s": 5.1,
+   "watchdog_fired": null
+  },
+  "guard-end-regen-check.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "bash",
+    "scripts/checks/regen-all.sh",
+    "--check"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 14444.1,
+   "peak_docker_container_mem_mib": 840.1,
+   "peak_tree_plus_container_mib": 881.4,
+   "peak_tree_rss_bytes": 387010560,
+   "peak_tree_rss_mib": 369.1,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 70,
+   "wall_s": 387.3,
+   "watchdog_fired": null
+  },
+  "guard-evaluate.json": {
+   "budget_bytes": 4294967296,
+   "command": [
+    "/home/user/venv312/bin/python",
+    "scripts/stack/studies/mc04_s13_node_cap_budget/budget.py",
+    "--evaluate"
+   ],
+   "measure": "tree RSS plus docker stats of pinned-image containers, both every 5 s, enforced; MemAvailable floor as backstop",
+   "mem_available_floor_bytes": 8589934592,
+   "min_mem_available_mib": 15292.4,
+   "peak_docker_container_mem_mib": 0.0,
+   "peak_tree_plus_container_mib": 4.4,
+   "peak_tree_rss_bytes": 4620288,
+   "peak_tree_rss_mib": 4.4,
+   "pinned_containers_after": [],
+   "returncode": 0,
+   "samples": 1,
+   "wall_s": 5.2,
    "watchdog_fired": null
   },
   "guard-m12.json": {
@@ -4025,9 +4104,9 @@
  "invocations_with_discarded_and_interrupted": 1846,
  "label_counts": {
   "BLOCKED": 6,
-  "FAILS": 48,
+  "FAILS": 38,
   "NO": 9,
-  "NOT": 1
+  "NOT": 11
  },
  "models": {
   ".circuit-cache/sources/opa196-model/OPAx196.LIB": "31142f5dbd71b758d887ee8a411692fc4c1309c8f47100af4ba5bed7e173c430",
@@ -4064,12 +4143,12 @@
  },
  "status": "MODEL EVIDENCE ONLY, STUDY, NOT ADOPTED, UNVALIDATED DRAFT",
  "study_files": {
-  "budget.py": "b958c03984924d26ba9de44865253d7ca60c97ad645884f838240cd7ed80214f",
+  "budget.py": "e691ef182b165fc7a1b27e1a721a869d66ca568dd536be9b39cbc91a895ec931",
   "cells.py": "a4105eb400d733480f0831308ec29f6bad2fccea557c7ebbb0ba9447affade6c",
   "guard.py": "5d066228ed1efca4f4f072efa52b5e5c4432f34ca0ec77e90da5d4baa4c51651",
   "p4b.py": "80637cda77bb4df3c7a0269e862d28c355f1e2a13f3d6ea990f70511e319b130",
   "runner.py": "225f5283c5967f12b77ad141b49119f7451ea9ebef5da9f88b991332747131c2",
-  "test_s13.py": "9174c69962e1bcba8ed20b1675b50d22e224bdc00422c8d5446955f9d274f825"
+  "test_s13.py": "67cc1115e70bcaf977aa58aac0fb1111be7a9e5d13ecf29163a26edffec53ac6"
  },
  "sweep_state": {
   "interrupted_invocations": 9,

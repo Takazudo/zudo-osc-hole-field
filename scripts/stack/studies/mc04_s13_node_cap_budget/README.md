@@ -31,8 +31,9 @@ $P $S/budget.py --evaluate && $P $S/budget.py --check
 $P -m unittest discover -s $S -p 'test_*.py'
 ```
 
-Status 2026-11-28, fourth run (Revision 8): Arm 0 passed (P1 to P8, P4b reused under B6; M12 NOT EVALUATED as
-required). The sweep stopped at the 5 h sweep ceiling (STOP 3), with 1 480 deck records. 62 class G sweep points and
-all 320 what-if points are NOT RUN. Every class G deck run was NOT EVALUATED. `budget.json` labels 64 rows: 48
-FAILS AT ZERO STRAY, 9 NO HEADROOM AT PAPER, 6 BLOCKED (classes F and I), 1 NOT EVALUATED (class G). No row is
+Status 2026-11-28, fourth run (Revision 8), with the result review's corrections: Arm 0 passed (P1 to P8, P4b reused
+under B6; M12 NOT EVALUATED as required). The sweep stopped at the 5 h sweep ceiling (STOP 3), with 1 480 deck records.
+62 class G sweep points and the whole what-if arm are NOT RUN. Every class G deck run was NOT EVALUATED. `budget.json`
+labels 64 rows: 38 FAILS AT ZERO STRAY, 9 NO HEADROOM AT PAPER, 6 BLOCKED (classes F and I) and 11 NOT EVALUATED.
+The 11 are 10 class C rows, whose K5 at wiper 1.0 is withdrawn (review finding 1), and the class G row. No row is
 BUDGETED. Model evidence only, an unvalidated draft. See `result.json` and the report.

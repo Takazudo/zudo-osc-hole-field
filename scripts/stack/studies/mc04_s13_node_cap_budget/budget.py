@@ -1119,7 +1119,8 @@ def evaluate(write=True):
                          "c_lim_pF": v["c_lim_pF"], "status": v["status"], "lowest_fail_pF": v["lowest_fail_pF"],
                          "deciding": v["deciding"], "non_monotonic": v["non_monotonic"],
                          "values": {str(k): {"pass": x["pass"], "failed": x["failed"], "pm_deg": x.get("pm_deg"),
-                                             "gm_dB": x.get("gm_dB")} for k, x in v["verdicts"].items()}}
+                                             "gm_dB": x.get("gm_dB")} for k, x in v["verdicts"].items()},
+                         **({"k5_withdrawn": C_K5_WITHDRAWN} if c5_withdrawn(c, cid) else {})}
                         for cid, v in lims.items()]
         r["outpair"] = [x for x in op.get(t["key"], []) if x["swept"] == swept]
         r["label"], r["c_lim_pF"], r["deciding"] = label(r, c, lims, pe, parts)
@@ -1187,12 +1188,27 @@ def validate_budget(budget):
         raise ValueError("budget table rejected: " + "; ".join(errs[:10]))
 
 
+# Result review 2026-11-28, finding 1: at wiper 1.0 the class C K5 late window starts 7 time constants after the
+# step, on the cell's own RC tail; K5 is withdrawn there until the design authority rules on the window.
+C_K5_WITHDRAWN = "K5 late window overlaps the cell's RC settling tail at wiper 1.0"
+
+
+def c5_withdrawn(c, cid):
+    return c["class"] == "C" and json.loads(cid)["corner"].get("wiper") == 1.0
+
+
 def label(r, c, lims, pe, parts):
     if not lims or any(v["status"] == "INCOMPLETE" for v in lims.values()):
+        run = [x for v in (lims or {}).values() for x in v["verdicts"].values()]
+        if run and all(x.get("not_evaluated") for x in run):
+            return ("NOT EVALUATED: sweep incomplete (cap, ceiling or STOP); no run point had an accepted operating "
+                    "point"), None, None
         return "NOT EVALUATED: sweep incomplete (cap, ceiling or STOP)", None, None
     ne = [v for v in lims.values() if v["not_evaluated"]]
     if ne:
         return "NOT EVALUATED: no accepted operating point or no convergence at " + ", ".join(f"{x} pF" for v in ne for x in v["not_evaluated"]), None, None
+    if any(c5_withdrawn(c, cid) for cid in lims):
+        return "NOT EVALUATED: " + C_K5_WITHDRAWN, None, None
     if any(v["status"] == "FAILS AT ZERO STRAY" for v in lims.values()):
         d = next(v for v in lims.values() if v["status"] == "FAILS AT ZERO STRAY")["deciding"]
         return "FAILS AT ZERO STRAY", None, d
